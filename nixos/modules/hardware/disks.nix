@@ -34,4 +34,20 @@
     swapDevices = [{
         device = "/dev/disk/by-uuid/${vars.UUIDs.swap}";
     }];
+    kernel.sysctl."vm.swappiness" = 10; # Lower count of swap using (0..100 value)
+    lib.unique ((config.boot.kernelParams or []) ++ [ "resume=UUID=${vars.UUIDs.swap}" ]);
+
+    # Optimizations
+    services = {
+        fstrim.enable = true;
+        btrfs.autoScrub = {
+            enable = true;
+            interval = "monthly";
+        };
+    };
+    zramSwap = {
+        enable = true; # Compress unactive RAM (zstd)
+        memoryPercent = 100;
+        priority = 999;
+    };
 }

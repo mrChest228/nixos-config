@@ -2,12 +2,11 @@
 {
     imports = [        
         ./modules/bootloader.nix
-        ./modules/hardware.nix
-        ./modules/disks.nix
-        ./modules/nvidia.nix
+        ./modules/hardware
+
         ./modules/greetd.nix
         ./modules/hibernation.nix
-        ./modules/optimizations.nix
+        ./modules/ccache.nix
         ./modules/sound.nix
         ./modules/hyprland.nix
         ./modules/zsh.nix

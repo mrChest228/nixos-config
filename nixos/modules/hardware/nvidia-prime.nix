@@ -25,12 +25,23 @@
                     enable = true;
                     enableOffloadCmd = true;
                 };
-                amdgpuBusId = "PCI:06:00:0"; # Watch by lspci | grep -i "VGA" (needs pciutils package) 
+                amdgpuBusId = "PCI:06:00:0"; # Watch by lspci | grep -i "VGA" (needs pciutils package)
                 nvidiaBusId = "PCI:01:00:0";
             };
         };
     };
-    services.xserver.videoDrivers = [ "amdgpu" "nvidia" ];
+    services = {
+        xserver.videoDrivers = lib.unique ((config.services.xserver.videoDrivers or []) ++ [ "nvidia" ]);
+        tlp.settings.RUNTIME_PM_BLACKLIST = "01:00:0"; # Remove discrete GPU from tlp power-management control
+    };
+
+    boot = {
+        initrd.availableKernelModules = lib.unique ((config.boot.initrd.availableKernelModules or []) ++ [ "nvidia" ]);
+        kernelParams = lib.unique ((config.boot.kernelParams or []) ++ [ "nvidia-drm.modeset=1" ]);
+        blacklistedKernelModules = lib.unique ((config.boot.blacklistedKernelModules or []) ++ [ "nouveau" ]); # Disable not proprietary nvidia driver for boot's speeding up
+        extraModulePackages = lib.unique ((config.boot.extraModulePackages or []) ++ [ config.boot.kernelPackages.nvidiaPackages.production ]);
+    };
+
     environment.sessionVariables = {
         WLR_DRM_DEVICES = "/dev/dri/card0:/dev/dri/card1"; # NVIDIA's first, amdgpu's second 
     };

@@ -1,3 +1,4 @@
+{ config, lib, pkgs, vars, ... }:
 {
     security = {
 #         polkit = {
@@ -14,7 +15,7 @@
             enable = true;
             extraConfig = ''
                 # Enable sudo without password for mrchest
-                mrchest ALL=(ALL) NOPASSWD: ALL
+                ${vars.userName} ALL=(ALL) NOPASSWD: ALL
             '';
         };
     };

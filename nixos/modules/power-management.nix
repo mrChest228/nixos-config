@@ -14,8 +14,6 @@
                 WIFI_PWR_ON_BAT = "on";
                 SOUND_POWER_SAVE_ON_BAT = "on";
                 USB_AUTOSUSPEND = 1;
-                # Remove discrete GPU from control
-                RUNTIME_PM_BLACKLIST = "01:00.0"; # Nvidia Bus ID
             };
         };
     };
