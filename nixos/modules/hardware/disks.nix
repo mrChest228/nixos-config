@@ -34,8 +34,10 @@
     swapDevices = [{
         device = "/dev/disk/by-uuid/${vars.UUIDs.swap}";
     }];
-    kernel.sysctl."vm.swappiness" = 10; # Lower count of swap using (0..100 value)
-    lib.unique ((config.boot.kernelParams or []) ++ [ "resume=UUID=${vars.UUIDs.swap}" ]);
+    boot = {
+        kernel.sysctl."vm.swappiness" = 10; # Lower count of swap using (0..100 value)
+        kernelParams = /*lib.unique ((config.boot.kernelParams or []) ++*/ [ "resume=UUID=${vars.UUIDs.swap}" ];
+    };
 
     # Optimizations
     services = {

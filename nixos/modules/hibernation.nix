@@ -1,3 +1,4 @@
+{ config, lib, pkgs, vars, ... }:
 {
     powerManagement.enable = true;
     # Hibernate after 30 min with lid closed
@@ -13,5 +14,5 @@
         HibernateState=disk
         SuspendState=mem
     '';
-    boot.kernelParams = lib.unique ((config.boot.kernelParams or []) ++ [ "mem_sleep_default=deep" ]);
+    boot.kernelParams = /*lib.unique ((config.boot.kernelParams or []) ++*/ [ "mem_sleep_default=deep" ];
 }

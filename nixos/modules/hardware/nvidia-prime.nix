@@ -31,15 +31,15 @@
         };
     };
     services = {
-        xserver.videoDrivers = lib.unique ((config.services.xserver.videoDrivers or []) ++ [ "nvidia" ]);
+        xserver.videoDrivers = /*lib.unique ((config.services.xserver.videoDrivers or []) ++*/ [ "nvidia" ];
         tlp.settings.RUNTIME_PM_BLACKLIST = "01:00:0"; # Remove discrete GPU from tlp power-management control
     };
 
     boot = {
-        initrd.availableKernelModules = lib.unique ((config.boot.initrd.availableKernelModules or []) ++ [ "nvidia" ]);
-        kernelParams = lib.unique ((config.boot.kernelParams or []) ++ [ "nvidia-drm.modeset=1" ]);
-        blacklistedKernelModules = lib.unique ((config.boot.blacklistedKernelModules or []) ++ [ "nouveau" ]); # Disable not proprietary nvidia driver for boot's speeding up
-        extraModulePackages = lib.unique ((config.boot.extraModulePackages or []) ++ [ config.boot.kernelPackages.nvidiaPackages.production ]);
+        initrd.availableKernelModules = /*lib.unique ((config.boot.initrd.availableKernelModules or []) ++*/ [ "nvidia" ];
+        kernelParams = /*lib.unique ((config.boot.kernelParams or []) ++*/ [ "nvidia-drm.modeset=1" ];
+        blacklistedKernelModules = /*lib.unique ((config.boot.blacklistedKernelModules or []) ++*/ [ "nouveau" ]; # Disable not proprietary nvidia driver for boot's speeding up
+        extraModulePackages = /*lib.unique ((config.boot.extraModulePackages or []) ++*/ [  config.boot.kernelPackages.nvidiaPackages.production ];
     };
 
     environment.sessionVariables = {
