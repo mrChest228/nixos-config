@@ -3,14 +3,15 @@
     imports = [        
         ./modules/bootloader.nix
         ./modules/hardware
+        ./hardware-configuration.nix
 
         ./modules/greetd.nix
         ./modules/hibernation.nix
+        ./modules/power-management.nix
         ./modules/ccache.nix
         ./modules/sound.nix
         ./modules/hyprland.nix
         ./modules/zsh.nix
-        ./modules/power-management.nix
 
         ./modules/packages.nix
         ./modules/security.nix

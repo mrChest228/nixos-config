@@ -17,7 +17,7 @@
             compressor="zstd";
         };
         kernelPackages = pkgs.stable.linuxPackages_latest; # Latest stable kernel
-        kernelParams = /*lib.unique ((config.boot.kernelParams or []) ++*/ [ # Supplemented in nvidia.nix, amd.nix, disks.nix and hibernation.nix
+        kernelParams = [
             # Optimizations
             # "quiet"                     # Minimize kernel output (speeds up)
             # "initcall_debug=n"          # Disables debug calls (speeds up)

@@ -36,7 +36,7 @@
     }];
     boot = {
         kernel.sysctl."vm.swappiness" = 10; # Lower count of swap using (0..100 value)
-        kernelParams = /*lib.unique ((config.boot.kernelParams or []) ++*/ [ "resume=UUID=${vars.UUIDs.swap}" ];
+        kernelParams = [ "resume=UUID=${vars.UUIDs.swap}" ];
     };
 
     # Optimizations
