@@ -32,8 +32,6 @@
     time.timeZone = vars.timeZone;
     
     i18n.defaultLocale = "en_US.UTF-8"; # Programs language
-
-    nix.settings.experimental-features = [ "nix-command" "flakes" ];
     
     system.stateVersion = vars.systemVersion;
 }
