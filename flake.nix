@@ -6,6 +6,7 @@
             url = "github:nix-community/home-manager";
             inputs.nixpkgs.follows = "nixpkgs";
         };
+        import-tree = "github:vic/import-tree";
     };
     outputs = { self, nixpkgs, nixpkgs-stable, home-manager, ... }:
         let
@@ -33,7 +34,7 @@
                 specialArgs = { inherit vars; }; # Pass vars into all imported modules
                 modules = [
                     { nixpkgs.pkgs = pkgs; }
-                    ./nixos/configuration.nix
+                    ./nixos/config.nix
                 ];
             };
             homeConfigurations.${vars.userName} = home-manager.lib.homeManagerConfiguration {

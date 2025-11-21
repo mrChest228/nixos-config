@@ -2,7 +2,7 @@
 {
     imports = [        
         ./modules/bootloader.nix
-        ./modules/hardware
+        (inputs.import-tree ./modules/hardware)
         ./hardware-configuration.nix
 
         ./modules/greetd.nix

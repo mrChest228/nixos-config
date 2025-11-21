@@ -16,6 +16,16 @@
         device = "/dev/disk/by-uuid/${vars.UUIDs.esp}";
         fsType = "vfat";
     };
+
+    # Link from ~/config to /etc/nixos/home-manager
+    systemd.tmpfiles.rules = [
+        "d /home/${vars.userName}/config 0755 ${vars.userName} ${vars.userName} - -"
+    ];
+    fileSystems."/home/${vars.userName}/config" = {
+        device = "/etc/nixos/home-manager";
+        fsType = "none";
+        options = [ "bind" ];
+    };
     # fileSystems."/home/${vars.userName}/.local/share/Trash" = { # Trash big compression
     #     device = "/dev/disk/by-uuid/${vars.UUIDs.root}";
     #     fsType = "btrfs";
