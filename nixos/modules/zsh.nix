@@ -11,18 +11,18 @@
     #             (
     #                 cd /etc/nixos && \
     #                 sudo nix flake update && \
-    #                 sudo nixos-rebuild switch --flake .#${vars.userName} && \
-    #                 home-manager switch --flake .#${vars.userName}
+    #                 sudo nixos-rebuild switch --flake .#${vars.user} && \
+    #                 home-manager switch --flake .#${vars.user}
     #             )
     #         '';
     #         rebuild = ''
     #             (
     #                 cd /etc/nixos && \
-    #                 sudo nixos-rebuild switch --flake .#${vars.userName} && \
-    #                 home-manager switch --flake .#${vars.userName}
+    #                 sudo nixos-rebuild switch --flake .#${vars.user} && \
+    #                 home-manager switch --flake .#${vars.user}
     #             )
     #         '';
-    #         reconf = "home-manager switch --flake /etc/nixos#${vars.userName}";
+    #         reconf = "home-manager switch --flake /etc/nixos#${vars.user}";
     #     };
     #     ohMyZsh = {
     #         enable = true;

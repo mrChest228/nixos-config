@@ -17,16 +17,16 @@
         fsType = "vfat";
     };
 
-    # Link from ~/config to /etc/nixos/home-manager
+    # Symlink from ~/config to /etc/nixos/home-manager
     systemd.tmpfiles.rules = [
-        "d /home/${vars.userName}/config 0755 ${vars.userName} ${vars.userName} - -"
+        "d /home/${vars.user}/config 0755 ${vars.user} ${vars.user} - -"
     ];
-    fileSystems."/home/${vars.userName}/config" = {
+    fileSystems."/home/${vars.user}/config" = {
         device = "/etc/nixos/home-manager";
         fsType = "none";
         options = [ "bind" ];
     };
-    # fileSystems."/home/${vars.userName}/.local/share/Trash" = { # Trash big compression
+    # fileSystems."/home/${vars.user}/.local/share/Trash" = { # Trash big compression
     #     device = "/dev/disk/by-uuid/${vars.UUIDs.root}";
     #     fsType = "btrfs";
     #     options = [

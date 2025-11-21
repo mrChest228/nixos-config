@@ -1,13 +1,12 @@
 { config, pkgs, vars, ... }:
 {
     imports = [
-        ./modules/hyprland.nix
-        ./modules/packages.nix
-        ./modules/zsh.nix
+        ( inputs.import-tree ./modules )
+        ( inputs.import-tree /etc/nixos/hosts/${vars.host}/home-manager )
     ];
     home = {
-        username = vars.userName;
-        homeDirectory = "/home/${vars.userName}";
+        username = vars.user;
+        homeDirectory = "/home/${vars.user}";
         stateVersion = vars.systemVersion;
     };
 }

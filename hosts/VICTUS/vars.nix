@@ -7,8 +7,7 @@
         swap = "41e22e4c-9572-47da-aebd-c908ce7c1250";
     };
     
-    userName = "mrchest";
-    hostName = "VICTUS";
+    user = "mrchest";
     
     timeZone = "Europe/Minsk";
 }

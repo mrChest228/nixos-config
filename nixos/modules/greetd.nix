@@ -4,11 +4,11 @@
         enable = true;
         settings = {
             initial_session = {
-                user = vars.userName;
+                user = vars.user;
                 command = "hyprland";
             };
             default_session = {
-                user = vars.userName;
+                user = vars.user;
                 command = "zsh";
             };
         };
