@@ -6,7 +6,7 @@
             url = "github:nix-community/home-manager";
             inputs.nixpkgs.follows = "nixpkgs";
         };
-        import-tree = "github:vic/import-tree";
+        import-tree.url = "github:vic/import-tree";
     };
     outputs = { self, nixpkgs, nixpkgs-stable, home-manager, ... }:
         let

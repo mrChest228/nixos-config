@@ -1,4 +1,4 @@
-{ config, lib, pkgs, vars, ... }:
+{ config, inputs, lib, pkgs, vars, ... }:
 {
     imports = [
         ( inputs.import-tree ./modules )
