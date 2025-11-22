@@ -2,7 +2,7 @@
 {
     imports = [
         ( inputs.import-tree ./modules )
-        ( inputs.import-tree /etc/nixos/hosts/${vars.host}/home-manager )
+        ( inputs.import-tree ../hosts/${vars.host}/home-manager )
     ];
     home = {
         username = vars.user;

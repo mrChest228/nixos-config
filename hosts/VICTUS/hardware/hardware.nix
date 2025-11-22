@@ -1,8 +1,8 @@
-{ config, lib, pkgs, vars, ... }:
+{ config, inputs, lib, pkgs, vars, self, ... }:
 {
     imports = [
-        /etc/nixos/nixos/hardware/amd-integrated.nix
-        /etc/nixos/nixos/hardware/nvidia-prime.nix
-        /etc/nixos/nixos/hardware/disks.nix
+        "${self}/nixos/hardware/amd-integrated.nix"
+        "${self}/nixos/hardware/nvidia-prime.nix"
+        "${self}/nixos/hardware/disks.nix"
     ];
 }

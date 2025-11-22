@@ -32,7 +32,7 @@
         in {
             nixosConfigurations.${vars.host} = nixpkgs.lib.nixosSystem {
                 system = vars.arch;
-                specialArgs = { inherit inputs vars; }; # Pass vars into all imported modules
+                specialArgs = { inherit inputs vars self; }; # Pass vars into all imported modules
                 modules = [
                     { nixpkgs.pkgs = pkgs; }
                     ./nixos/config.nix
@@ -40,7 +40,7 @@
             };
             homeConfigurations.${vars.user} = home-manager.lib.homeManagerConfiguration {
                 inherit pkgs;
-                extraSpecialArgs = { inherit inputs vars; }; # Pass vars into all imported modules
+                extraSpecialArgs = { inherit inputs vars self; }; # Pass vars into all imported modules
                 modules = [ ./home-manager/home.nix ];
             };
         };

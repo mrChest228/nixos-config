@@ -1,9 +1,9 @@
-{ config, inputs, lib, pkgs, vars, ... }:
+{ config, inputs, lib, pkgs, vars, self, ... }:
 {
     imports = [
         ( inputs.import-tree ./modules )
-        ( inputs.import-tree /etc/nixos/hosts/${vars.host}/hardware )
-        ( inputs.import-tree /etc/nixos/hosts/${vars.host}/nixos )
+        ( inputs.import-tree "${self}/hosts/${vars.host}/hardware" )
+        ( inputs.import-tree "${self}/hosts/${vars.host}/nixos" )
     ];
     
     users.users.${vars.user} = {
