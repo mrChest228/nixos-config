@@ -16,21 +16,21 @@
                 (
                     cd /etc/nixos && \
                     sudo nix flake update && \
-                    sudo nixos-rebuild switch --flake .#${vars.userName} && \
-                    home-manager switch --flake .#${vars.userName}
+                    sudo nixos-rebuild switch --flake .#${vars.user} && \
+                    home-manager switch --flake .#${vars.user}
                 )
             '';
             rebuild = ''
                 (
                     cd /etc/nixos && \
-                    sudo nixos-rebuild switch --flake .#${vars.userName} && \
-                    home-manager switch --flake .#${vars.userName}
+                    sudo nixos-rebuild switch --flake .#${vars.user} && \
+                    home-manager switch --flake .#${vars.user}
                 )
             '';
             reconf = ''
                 (
                     cd /etc/nixos && \
-                    home-manager switch --flake .#${vars.userName}
+                    home-manager switch --flake .#${vars.user}
                 )
             '';
         };

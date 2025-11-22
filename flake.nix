@@ -8,7 +8,7 @@
         };
         import-tree.url = "github:vic/import-tree";
     };
-    outputs = { self, nixpkgs, nixpkgs-stable, home-manager, ... }:
+    outputs = inputs@{ self, nixpkgs, nixpkgs-stable, home-manager, ... }:
         let
             host = "VICTUS";
             systemVersion = "25.05"; # System version. Do not change, if you don't read release notes. All versions variables (nixpkgs-stable version, systemVersion) must be declared in flake.nix, not variables.nix
@@ -32,7 +32,7 @@
         in {
             nixosConfigurations.${vars.host} = nixpkgs.lib.nixosSystem {
                 system = vars.arch;
-                specialArgs = { inherit vars; }; # Pass vars into all imported modules
+                specialArgs = { inherit inputs vars; }; # Pass vars into all imported modules
                 modules = [
                     { nixpkgs.pkgs = pkgs; }
                     ./nixos/config.nix
@@ -40,7 +40,7 @@
             };
             homeConfigurations.${vars.user} = home-manager.lib.homeManagerConfiguration {
                 inherit pkgs;
-                extraSpecialArgs = { inherit vars; }; # Pass vars into all imported modules
+                extraSpecialArgs = { inherit inputs vars; }; # Pass vars into all imported modules
                 modules = [ ./home-manager/home.nix ];
             };
         };
