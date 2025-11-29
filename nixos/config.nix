@@ -1,10 +1,6 @@
-{ config, inputs, lib, pkgs, vars, self, ... }:
+{ config, lib, inputs, pkgs, vars, self, ... }:
 {
-    imports = [
-        ( inputs.import-tree ./modules )
-        ( inputs.import-tree "${self}/hosts/${vars.host}/hardware" )
-        ( inputs.import-tree "${self}/hosts/${vars.host}/nixos" )
-    ];
+    imports = [ inputs.import-tree ./modules ];
     
     users.users.${vars.user} = {
         isNormalUser = true;

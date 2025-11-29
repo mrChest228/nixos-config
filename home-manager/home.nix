@@ -1,9 +1,6 @@
-{ config, inputs, lib, pkgs, vars, ... }:
+{ config, lib, inputs, pkgs, vars, self, ... }:
 {
-    imports = [
-        ( inputs.import-tree ./modules )
-        ( inputs.import-tree ../hosts/${vars.host}/home-manager )
-    ];
+    imports = [ inputs.import-tree ./modules ];
     home = {
         username = vars.user;
         homeDirectory = "/home/${vars.user}";

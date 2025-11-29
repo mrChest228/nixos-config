@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, vars, self, ... }:
+{ config, lib, inputs, pkgs, vars, self, ... }:
 {
     imports = [
         "${self}/nixos/hardware/amd-integrated.nix"
