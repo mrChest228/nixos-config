@@ -2,7 +2,7 @@
     environment.systemPackages = with pkgs.stable; [
         home-manager # Home manager command
         cudaPackages.cudatoolkit
-    ] ++ with pkgs; [];
+    ] ++ (with pkgs; []);
     fonts.packages = with pkgs; [
         # Google basic fonts for Hieroglyphs and emoji
         noto-fonts
