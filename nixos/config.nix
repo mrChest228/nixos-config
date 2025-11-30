@@ -1,6 +1,6 @@
-{ config, lib, inputs, pkgs, vars, self, ... }:
+{ config, libs, lib, pkgs, vars, self, ... }:
 {
-    imports = [ inputs.import-tree ./modules ];
+    imports = [ ( libs.import-tree ./modules ) ];
     
     users.users.${vars.user} = {
         isNormalUser = true;
