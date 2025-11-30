@@ -15,7 +15,7 @@
             systemVersion = "25.11"; # System version. Do not change, if you don't read release notes. All version variables (nixpkgs-stable version, systemVersion) must be declared in flake.nix, not variables.nix
             vars = (import ./hosts/${host}/vars.nix) // { inherit host systemVersion; }; # Imports my variables and adds system version variable into vars
             pkgs = import nixpkgs {
-                system = vars.arch;
+                stdenv.hostPlatform.system = vars.arch;
                 config = {
                     allowUnfree = true;
                     cuda.acceptLicense = true;
@@ -24,7 +24,7 @@
                 overlays = [
                     (final: prev: {
                         stable = import nixpkgs-stable {
-                            system = prev.system;
+                            stdenv.hostPlatform.system = prev.stdenv.hostPlatform.system;
                             config = prev.config;
                         };
                     })
