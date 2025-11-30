@@ -7,7 +7,7 @@
         # Google basic fonts for Hieroglyphs and emoji
         noto-fonts
         noto-fonts-cjk-sans
-        noto-fonts-emoji
+        noto-fonts-color-emoji
         # Font for coding and other with ligatures
         nerd-fonts.caskaydia-cove
         nerd-fonts.d2coding
