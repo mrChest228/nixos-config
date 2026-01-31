@@ -1,7 +1,7 @@
 { config, libs, lib, pkgs, vars, self, ... }:
 {
-    imports = [
-        "${self}/hardware/amd-integrated.nix"
-        "${self}/hardware/nvidia-prime.nix"
+    imports = map (name: self + "/hardware/${name}") [
+        "amd-integrated.nix"
+        "nvidia-prime.nix"
     ];
 }
