@@ -42,7 +42,6 @@
                     # { nixpkgs.pkgs = pkgs; }
                     ( inputs.import-tree ./hosts/${vars.host}/hardware )
                     ( inputs.import-tree ./hosts/${vars.host}/nixos )
-                    ./nixos/config.nix
                 ];
             };
             homeConfigurations.${vars.user} = home-manager.lib.homeManagerConfiguration {
@@ -53,7 +52,6 @@
                 };
                 modules = [
                     ( inputs.import-tree ./hosts/${vars.host}/home-manager )
-                    ./home-manager/home.nix
                 ];
             };
         };

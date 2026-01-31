@@ -16,14 +16,14 @@
                 (
                     cd /etc/nixos && \
                     sudo nix flake update && \
-                    sudo nixos-rebuild switch --flake .#${vars.user} && \
+                    sudo nixos-rebuild switch --flake .#${vars.host} && \
                     home-manager switch --flake .#${vars.user}
                 )
             '';
             rebuild = ''
                 (
                     cd /etc/nixos && \
-                    sudo nixos-rebuild switch --flake .#${vars.user} && \
+                    sudo nixos-rebuild switch --flake .#${vars.host} && \
                     home-manager switch --flake .#${vars.user}
                 )
             '';

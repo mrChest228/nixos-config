@@ -20,7 +20,7 @@
                 enable = true;
                 finegrained = true;
             };
-            prime = {
+            prime = { # Starts GPU by nvidia-offload command
                 offload = {
                     enable = true;
                     enableOffloadCmd = true;
