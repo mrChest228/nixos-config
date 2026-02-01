@@ -14,7 +14,7 @@
         };
         initrd = {
             systemd.enable = true; # Speeds up boot
-            compressor="zstd";
+            compressor = "zstd";
         };
         kernelPackages = pkgs.stable.linuxPackages_latest; # Latest stable kernel
         kernelParams = [

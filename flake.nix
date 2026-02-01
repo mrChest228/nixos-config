@@ -31,7 +31,7 @@
                 ];
             };
         in {
-            nixosConfigurations.${vars.host} = nixpkgs-stable.lib.nixosSystem {
+            nixosConfigurations.${vars.host} = nixpkgs.lib.nixosSystem {
                 system = vars.arch;
                 inherit pkgs;
                 specialArgs = {
