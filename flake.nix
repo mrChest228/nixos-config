@@ -34,7 +34,7 @@
                 };
                 modules = [
                     # { nixpkgs.pkgs = pkgs; }
-                    { nixpkgs.hostPlatform = vars.arch; }
+                    # { nixpkgs.hostPlatform = vars.arch; }
                     ( inputs.import-tree ./hosts/${vars.host}/hardware )
                     ( inputs.import-tree ./hosts/${vars.host}/nixos )
                 ];
