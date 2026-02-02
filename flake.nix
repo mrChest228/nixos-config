@@ -14,24 +14,19 @@
             host = "VICTUS";
             systemVersion = "25.11"; # System version. Do not change, if you don't read release notes. All version variables (nixpkgs-stable version, systemVersion) must be declared in flake.nix, not variables.nix
             vars = (import ./hosts/${host}/vars.nix) // { inherit host systemVersion; }; # Imports my variables and adds system version variable into vars
-            pkgs = import nixpkgs-stable {
-                system = vars.arch;
+            pkgsConfig = {
+                hostPlatform = vars.arch;
                 config = {
                     allowUnfree = true;
                     cuda.acceptLicense = true;
                     permittedInsecurePackages = []; # Clever people use this
                 };
-                overlays = [
-                    (final: prev: {
-                        unstable = import nixpkgs-unstable {
-                            system = prev.system; # It was system = prev.system earlier
-                            config = prev.config;
-                        };
-                    })
-                ];
             };
+            pkgs = (import nixpkgs-stable pkgsConfig).appendOverlays (_: _: {
+                unstable = import nixpkgs-unstable pkgsConfig;
+            });
         in {
-            nixosConfigurations.${vars.host} = nixpkgs-stable.lib.nixosSystem {
+            nixosConfigurations.${vars.host} = pkgs.lib.nixosSystem {
                 inherit pkgs;
                 specialArgs = {
                     libs = inputs;
@@ -39,6 +34,7 @@
                 };
                 modules = [
                     # { nixpkgs.pkgs = pkgs; }
+                    { nixpkgs.hostPlatform = vars.arch; }
                     ( inputs.import-tree ./hosts/${vars.host}/hardware )
                     ( inputs.import-tree ./hosts/${vars.host}/nixos )
                 ];
