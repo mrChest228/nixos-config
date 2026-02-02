@@ -30,6 +30,6 @@
     #         # theme = "";
     #     };
     };
-    users.defaultUserShell = pkgs.zsh;
-    environment.shells = [ pkgs.zsh ];
+    users.defaultUserShell = pkgs.unstable.zsh;
+    environment.shells = [ pkgs.unstable.zsh ];
 }

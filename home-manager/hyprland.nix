@@ -13,7 +13,7 @@
     #     emable = true;
     #     theme = {
     #         name = "adw-gtk3-light";
-    #         package = pkgs.gnome.adw-gtk3-theme;
+    #         package = pkgs.unstable.gnome.adw-gtk3-theme;
     #     };
     #     iconTheme = {
     #         name = "";

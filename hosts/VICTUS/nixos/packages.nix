@@ -1,6 +1,8 @@
 { pkgs, ... }: {
-    environment.systemPackages = with pkgs; [
+    environment.systemPackages = with pkgs.stable; [
         git
+        cudaPackages.cudatoolkit
+    ] ++ (with pkgs.unstable; [
         gh
 
         kitty
@@ -23,7 +25,7 @@
         
         # GTK themes for thunar
         adw-gtk3
-    ];
-    fonts.packages = with pkgs; [
+    ]);
+    fonts.packages = with pkgs.unstable; [
     ];
 }

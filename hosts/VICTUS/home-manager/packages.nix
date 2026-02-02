@@ -1,6 +1,7 @@
 { config, libs, lib, pkgs, vars, self, ... }:
 {
     home.packages = with pkgs; [
+    ] ++ (with pkgs.unstable; [
         # Desktop
         waybar
         swww # Wallpappers
@@ -16,5 +17,5 @@
         kitty
         vivaldi
         btop
-    ];
+    ]);
 }

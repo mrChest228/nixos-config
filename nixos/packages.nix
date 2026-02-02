@@ -1,9 +1,9 @@
 { pkgs, ... }: {
-    environment.systemPackages = with pkgs.stable; [
-        home-manager # Home manager command
-        cudaPackages.cudatoolkit
-    ] ++ (with pkgs; []);
-    fonts.packages = with pkgs; [
+    environment.systemPackages = with pkgs; [
+    ] ++ (with pkgs.unstable; [
+        home-manager # HM command
+    ]);
+    fonts.packages = with pkgs.unstable; [
         # Google basic fonts for Hieroglyphs and emoji
         noto-fonts
         noto-fonts-cjk-sans

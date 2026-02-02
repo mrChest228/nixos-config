@@ -16,7 +16,7 @@
             systemd.enable = true; # Speeds up boot
             compressor = "zstd";
         };
-        kernelPackages = pkgs.stable.linuxPackages_latest; # Latest stable kernel
+        kernelPackages = pkgs.linuxPackages_latest; # The latest stable kernel
         kernelParams = [
             # Optimizations
             # "quiet"                     # Minimize kernel output (speeds up)
