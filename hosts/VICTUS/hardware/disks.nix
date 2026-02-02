@@ -20,7 +20,7 @@
     # Symlink from ~/config to /etc/nixos/home-manager
     systemd.tmpfiles.rules = [
         "d /home/${vars.user}/config 0755 ${vars.user} ${vars.user} - -"
-        "d /etc/nixos 0755 root root - -"
+        "d /etc/nixos/host 0755 root root - -"
     ];
     fileSystems."/home/${vars.user}/config" = {
         device = "/etc/nixos/home-manager";
