@@ -21,8 +21,8 @@
         # "d /home/${vars.user}/config      0755 ${vars.user} ${vars.user} - -"
         "d ${self}/host 0755 ${vars.user} ${vars.user} - -"
     ];
-    fileSystems."${self}/host" = {
-        device = "${self}/hosts/${vars.host}";
+    fileSystems."${vars.configPath}/host" = {
+        device = "${vars.configPath}/hosts/${vars.host}";
         fsType = "none";
         options = [ "bind" ];
     };

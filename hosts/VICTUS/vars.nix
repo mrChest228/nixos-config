@@ -1,4 +1,4 @@
-{
+rec { # For using attrs that was created in this file
     arch = "x86_64-linux";
     
     UUIDs = {
@@ -8,6 +8,7 @@
     };
     
     user = "mrchest";
+    configPath = "/home/${user}/config";
     
     timeZone = "Europe/Minsk";
 }
