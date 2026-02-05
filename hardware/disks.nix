@@ -18,8 +18,8 @@
     };
 
     systemd.tmpfiles.rules = [
-        # "d /home/${vars.user}/config      0755 ${vars.user} ${vars.user} - -"
         "d ${self}/host 0755 ${vars.user} ${vars.user} - -"
+        # "d /home/${vars.user}/.local/share/Trash 0700 ${vars.user} ${vars.user} - -"
     ];
     fileSystems."${vars.configPath}/host" = {
         device = "${vars.configPath}/hosts/${vars.host}";

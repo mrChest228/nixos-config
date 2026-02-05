@@ -2,6 +2,8 @@
 {
     home.packages = with pkgs; [
     ] ++ (with pkgs.unstable; [
+        # Thash in terminal
+        trash-cli
         # Desktop
         waybar
         swww # Wallpappers
@@ -13,9 +15,9 @@
         pavucontrol # For volume changing
         networkmanagerapplet # For NetManag in a tray (hz)
         # Apps
-        xfce.thunar
+        thunar
         kitty
-        vivaldi
+        firefox
         btop
     ]);
 }

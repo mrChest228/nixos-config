@@ -2,8 +2,8 @@
 {
     programs.zsh = {
         enable = true;
+        dotDir = "${config.xdg.configHome}/zsh";
 
-        enableCompletion = true;
         autosuggestion.enable = true;
         syntaxHighlighting.enable = true;
         history = {
@@ -14,7 +14,7 @@
         shellAliases = {
             update = ''
                 (
-                    cd /etc/nixos && \
+                    cd ${vars.configPath} && \
                     sudo nix flake update && \
                     sudo nixos-rebuild switch --flake .#${vars.host} && \
                     home-manager switch --flake .#${vars.user}
@@ -22,17 +22,18 @@
             '';
             rebuild = ''
                 (
-                    cd /etc/nixos && \
+                    cd ${vars.configPath} && \
                     sudo nixos-rebuild switch --flake .#${vars.host} && \
                     home-manager switch --flake .#${vars.user}
                 )
             '';
             reconf = ''
                 (
-                    cd /etc/nixos && \
+                    cd ${vars.configPath} && \
                     home-manager switch --flake .#${vars.user}
                 )
             '';
+            tp = "trash-put";
         };
         
         oh-my-zsh = {
