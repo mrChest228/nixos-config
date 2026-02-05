@@ -1,4 +1,4 @@
-{ config, lib, pkgs, vars, ... }:
+{ config, lib, pkgs, vars, self, ... }:
 {
     fileSystems."/" = {
         device = "/dev/disk/by-uuid/${vars.UUIDs.root}";
@@ -17,18 +17,12 @@
         fsType = "vfat";
     };
 
-    # Symlink from ~/config to /etc/nixos/home-manager
     systemd.tmpfiles.rules = [
-        "d /home/${vars.user}/config 0755 ${vars.user} ${vars.user} - -"
-        "d /etc/nixos/host 0755 root root - -"
+        # "d /home/${vars.user}/config      0755 ${vars.user} ${vars.user} - -"
+        "d ${self}/host 0755 ${vars.user} ${vars.user} - -"
     ];
-    fileSystems."/home/${vars.user}/config" = {
-        device = "/etc/nixos/home-manager";
-        fsType = "none";
-        options = [ "bind" ];
-    };
-    fileSystems."/etc/nixos/host" = {
-        device = "/etc/nixos/hosts/${vars.host}";
+    fileSystems."${self}/host" = {
+        device = "${self}/hosts/${vars.host}";
         fsType = "none";
         options = [ "bind" ];
     };
@@ -38,10 +32,10 @@
     #     options = [
     #         "subvol=@trash"
     #         "noatime"
-    #         "compress=zstd:7" # Better compression
-    #         "ssd"             # SSD optimizations
-    #         "discard=async"   # Async TRIM (hz)
-    #         "space_cache=v2"  # Effectieve caching
+    #         "compress=zstd:15" # Good compression
+    #         "ssd"              # SSD optimizations
+    #         "discard=async"    # Async TRIM (hz)
+    #         "space_cache=v2"   # Effectieve caching
     #         "autodefrag"
     #     ];
     # };
@@ -51,7 +45,7 @@
         device = "/dev/disk/by-uuid/${vars.UUIDs.swap}";
     }];
     boot = {
-        kernel.sysctl."vm.swappiness" = 10; # Lower count of swap using (0..100 value)
+        kernel.sysctl."vm.swappiness" = 20; # Count of swap using (0..100 value)
         kernelParams = [ "resume=UUID=${vars.UUIDs.swap}" ];
     };
 
