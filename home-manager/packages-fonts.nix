@@ -1,12 +1,12 @@
 { config, libs, lib, pkgs, vars, self, ... }:
 {
+    fonts.fontconfig.enable = true;
     home.packages = with pkgs; [
         git
         # Trash in terminal
         trash-cli
     ] ++ (with pkgs.unstable; [
-    ]);
-    fonts.packages = with pkgs.unstable; [
+        # Fonts
         # Google basic fonts for Hieroglyphs and emoji
         noto-fonts
         noto-fonts-cjk-sans
@@ -22,5 +22,5 @@
         nerd-fonts.jetbrains-mono
 
         font-awesome
-    ];
+    ]);
 }

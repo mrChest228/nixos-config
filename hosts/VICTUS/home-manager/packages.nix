@@ -1,7 +1,9 @@
 { config, libs, lib, pkgs, vars, self, ... }:
 {
+    imports = [
+        (self + /home-manager/packages-fonts.nix) # Import the default HM packages (like git, trash-cli, etc.)
+    ];
     home.packages = with pkgs; [
-        git
     ] ++ (with pkgs.unstable; [
         # Desktop
         waybar
@@ -18,5 +20,5 @@
         kitty
         firefox
         btop
-    ]); #++ (import (self + /home-manager/packages.nix) { inherit pkgs; }); # Import the default HM packages (like git, trash-cli, etc.)
+    ]);
 }
