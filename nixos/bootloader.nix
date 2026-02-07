@@ -27,6 +27,6 @@
         ];
     };
     systemd.services = {
-        # NetworkManager-wait-online.enable = false; # Don't wait, before NetworkManager find a network - continue bootloading and connect in parallel
+        NetworkManager-wait-online.enable = false; # Don't wait, before NetworkManager find a network - continue bootloading and connect in parallel
     };
 }

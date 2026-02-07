@@ -1,9 +1,8 @@
 { config, libs, lib, pkgs, vars, self, ... }:
 {
     home.packages = with pkgs; [
+        git
     ] ++ (with pkgs.unstable; [
-        # Thash in terminal
-        trash-cli
         # Desktop
         waybar
         swww # Wallpappers
@@ -19,5 +18,5 @@
         kitty
         firefox
         btop
-    ]);
+    ]); #++ (import (self + /home-manager/packages.nix) { inherit pkgs; }); # Import the default HM packages (like git, trash-cli, etc.)
 }

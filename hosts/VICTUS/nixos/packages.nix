@@ -1,6 +1,5 @@
 { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
-        git
         cudaPackages.cudatoolkit
     ] ++ (with pkgs.unstable; [
         gh
