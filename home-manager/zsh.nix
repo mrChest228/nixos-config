@@ -50,8 +50,8 @@
                     if [[ "$1" ]]; then
                         git commit -m "$1"
                     else
-                        echo "\e[1;32mGit commit name\e[0m: \"Reconf $(date +\"%Y-%m-%d %H:%M\")\""
-                        git commit -m "Reconf $(date +\"%Y-%m-%d %H:%M\")"
+                        echo "\e[1;32mGit commit name\e[0m: \"Reconf $(date +'%Y-%m-%d %H:%M')\""
+                        git commit -m "Reconf $(date +'%Y-%m-%d %H:%M')"
                     fi
                     nh home switch .
                 )
