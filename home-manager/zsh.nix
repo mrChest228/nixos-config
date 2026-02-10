@@ -15,22 +15,27 @@
             update = ''
                 (
                     cd ${vars.configPath} && \
-                    sudo nix flake update && \
-                    sudo nixos-rebuild switch --flake .#${vars.host} && \
-                    home-manager switch --flake .#${vars.user}
+                    git add . && \
+                    git commit -m "Update" && \
+                    nh os switch && \
+                    nh home switch && \
+                    nh clean all --keep 3 --keep-since 3d
                 )
             '';
             rebuild = ''
                 (
                     cd ${vars.configPath} && \
-                    sudo nixos-rebuild switch --flake .#${vars.host} && \
-                    home-manager switch --flake .#${vars.user}
+                    git add . && \
+                    nh os switch && \
+                    nh home switch && \
+                    nh clean all --keep 3 --keep-since 3d
                 )
             '';
             reconf = ''
                 (
                     cd ${vars.configPath} && \
-                    home-manager switch --flake .#${vars.user}
+                    git add . && \
+                    nh home switch
                 )
             '';
             tp = "trash-put";

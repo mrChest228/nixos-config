@@ -6,4 +6,13 @@
         experimental-features = [ "nix-command" "flakes" ];
         use-xdg-base-directories = true;
     };
+    programs.nh = {
+        enable = true;
+        flake = vars.configPath;
+        clean = {
+            enable = true;
+            extraArgs = "--keep 3 --keep-since 3d";
+            dates = "daily";
+        };
+    };
 }

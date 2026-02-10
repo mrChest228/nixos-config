@@ -23,7 +23,7 @@
                     permittedInsecurePackages = []; # Clever people use this
                 };
             };
-            pkgs = (import nixpkgs-stable pkgsConfig).appendOverlays [(_: _: {
+            pkgs = (import nixpkgs-stable pkgsConfig).appendOverlays [(final: prev: {
                 unstable = import nixpkgs-unstable pkgsConfig;
             })];
         in {
