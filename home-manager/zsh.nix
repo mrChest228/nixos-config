@@ -20,8 +20,8 @@
                     if [[ "$1" ]]; then
                         git commit -m "$1"
                     else
-                        echo "\e[1;32mGit commit name\e[0m: \"Update $(date +\"%Y-%m-%d %H:%M\")\""
-                        git commit -m "Update $(date +\"%Y-%m-%d %H:%M\")"
+                        echo "\e[1;32mGit commit name\e[0m: \"Update $(date +'%Y-%m-%d %H:%M')\""
+                        git commit -m "Update $(date +'%Y-%m-%d %H:%M')"
                     fi
                     nh os switch . && \
                     nh home switch . && \
@@ -35,8 +35,8 @@
                     if [[ "$1" ]]; then
                         git commit -m "$1"
                     else
-                        echo "\e[1;32mGit commit name\e[0m: \"Rebuild $(date +\"%Y-%m-%d %H:%M\")\""
-                        git commit -m "Rebuild $(date +\"%Y-%m-%d %H:%M\")"
+                        echo "\e[1;32mGit commit name\e[0m: \"Rebuild $(date +'%Y-%m-%d %H:%M')\""
+                        git commit -m "Rebuild $(date +'%Y-%m-%d %H:%M')"
                     fi
                     nh os switch . && \
                     nh home switch . && \
