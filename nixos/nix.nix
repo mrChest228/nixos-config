@@ -12,13 +12,13 @@ let
 
         ids_to_die=""
 
-        nix-env -p "$PROFILE" --list-generations | head -n -$KEEP_GENS | while read -r id date time misc; do
+        while read -r id date time misc; do
             gen_ts=$(date -d "$date $time" +%s)
             if [[ $gen_ts -lt $CUTOFF && -z $misc ]]; then
                 ids_to_die="$ids_to_die $id"
                 echo "Gen to die: id: $id  time: $date $time ($gen_ts)"
             fi
-        done
+        done < <(nix-env -p "$PROFILE" --list-generations | head -n -$KEEP_GENS)
 
         echo "All IDs to die: $ids_to_die"
         nix-env -p $PROFILE --delete-generations $ids_to_die
