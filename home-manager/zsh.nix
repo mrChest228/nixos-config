@@ -23,9 +23,9 @@
                         echo "\e[1;32mGit commit name\e[0m: \"Update $(date +'%Y-%m-%d %H:%M')\""
                         git commit -m "Update $(date +'%Y-%m-%d %H:%M')"
                     fi
-                    nh os switch . && \
-                    nh home switch . && \
-                    nh clean all --keep 3 --keep-since 3d
+                    nixos-rebuild switch --flake .#${vars.host} && \
+                    home-manager switch --flake .#${vars.user}
+                    # TODO: remove the previous generation and run cleaning script
                 )
             '';
             rebuild = ''
@@ -38,9 +38,8 @@
                         echo "\e[1;32mGit commit name\e[0m: \"Rebuild $(date +'%Y-%m-%d %H:%M')\""
                         git commit -m "Rebuild $(date +'%Y-%m-%d %H:%M')"
                     fi
-                    nh os switch . && \
-                    nh home switch . && \
-                    nh clean all --keep 3 --keep-since 3d
+                    nixos-rebuild switch --flake .#${vars.host} && \
+                    home-manager switch --flake .#${vars.user}
                 )
             '';
             reconf = ''
@@ -53,7 +52,7 @@
                         echo "\e[1;32mGit commit name\e[0m: \"Reconf $(date +'%Y-%m-%d %H:%M')\""
                         git commit -m "Reconf $(date +'%Y-%m-%d %H:%M')"
                     fi
-                    nh home switch .
+                    home-manager switch --flake .#${vars.user}
                 )
             '';
         };
