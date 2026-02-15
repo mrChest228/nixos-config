@@ -2,8 +2,6 @@
     environment.systemPackages = with pkgs; [
         cudaPackages.cudatoolkit
     ] ++ (with pkgs.unstable; [
-        gh
-
         kitty
 
         #dmidecode # Gets BIOS and firmware drivers/microcodes info
@@ -13,7 +11,7 @@
 
         btrfs-progs # Utility for my FS
         # testing
-        acpi # Battery status
+        # acpi # Battery status
         #linuxPackages.cpupower
         lm_sensors # Sensors
         alsa-utils
