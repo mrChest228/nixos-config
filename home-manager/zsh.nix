@@ -23,7 +23,7 @@
                         echo "\e[1;32mGit commit name\e[0m: \"Update $(date +'%Y-%m-%d %H:%M')\""
                         git commit -m "Update $(date +'%Y-%m-%d %H:%M')"
                     fi
-                    nixos-rebuild switch --flake .#${vars.host} && \
+                    sudo nixos-rebuild switch --flake .#${vars.host} && \
                     home-manager switch --flake .#${vars.user}
                     # TODO: remove the previous generation and run cleaning script
                 )
@@ -38,7 +38,7 @@
                         echo "\e[1;32mGit commit name\e[0m: \"Rebuild $(date +'%Y-%m-%d %H:%M')\""
                         git commit -m "Rebuild $(date +'%Y-%m-%d %H:%M')"
                     fi
-                    nixos-rebuild switch --flake .#${vars.host} && \
+                    sudo nixos-rebuild switch --flake .#${vars.host} && \
                     home-manager switch --flake .#${vars.user}
                 )
             '';
