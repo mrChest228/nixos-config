@@ -6,10 +6,35 @@
         experimental-features = [ "nix-command" "flakes" ];
         use-xdg-base-directories = true;
     };
+    # gen-clean command, that deletes all gens except at least 3 and at least 3 days
+    environment.systemPackages = [
+        (pkgs.writeShellScriptBin "gen-clean" ''
+            #!/bin/sh
+            PROFILE="/nix/var/nix/profiles/system"
+            KEEP_GENS=3
+            KEEP_DAYS=3
+
+            CUTOFF=$(date -d "-$KEEP_DAYS days" +%s)
+            echo "CUTOFF: $CUTOFF"
+
+            ids_to_die=""
+
+            nix-env -p "$PROFILE" --list-generations | head -n -$KEEP_GENS | while read -r id date time misc; do
+                gen_ts=$(date -d "$date $time" +%s)
+                if [[ $gen_ts -lt $CUTOFF && -z $misc ]]; then
+                    ids_to_die="$ids_to_die $id"
+                    echo "Gen to die: id: $id  time: $date $time ($gen_ts)"
+                fi
+            done
+
+            echo "All IDs to die: $ids_to_die"
+            nix-env -p $PROFILE --delete-generations $ids_to_die
+        '')
+    ];
     
-    # nh clean all --keep 3 --keep-days 3, but that doesn't crush my generations
+    # Automatically deleting generations and cleaning /nix/store
     systemd = {
-        timers.nixos-cleanup = {
+        timers.nix-store-optimize = {
             wantedBy = [ "timers.target" ];
             timerConfig = {
                 OnCalendar = "12:00";
@@ -17,42 +42,26 @@
                 RandomizeDelaySec = "10m";
             };
         };
-        services.nixos-cleanup = {
+        services.nix-store-optimize = {
             serviceConfig = {
                 Type = "oneshot";
                 User = "root";
                 CPUSchedulingPolicy = "idle";
                 IOSchedulingClass = "idle";
             };
+            path = with pkgs; [
+                nix
+                gen-clean
+            ];
             script = ''
-                PROFILE="/nix/var/nix/profiles/system"
-                KEEP_GENS=3
-                KEEP_DAYS=3
-
-                echo "--- nixos-cleanup's started ---"
-
-                CUTOFF=$(date -d "-$KEEP_DAYS days" +%s)
-                echo "CUTOFF: $CUTOFF"
-
-                ids_to_die=""
-
-                nix-env -p "$PROFILE" --list-generations | head -n -$KEEP_GENS | while read -r id date time misc; do
-                    gen_ts=$(date -d "$date $time" +%s)
-                    if [[ $gen_ts -lt $CUTOFF && -z $misc ]]; then
-                        ids_to_die="$ids_to_die $id"
-                        echo "Gen to die: id: $id  time: $date $time ($gen_ts)"
-                    fi
-                done
-
-                echo "All IDs to die: $ids_to_die"
-                nix-env -p $PROFILE --delete-generations $ids_to_die
+                echo "Generations cleaning"
+                gen-clean
 
                 echo "Nix store cleaning"
                 echo "Nix-collect-garbage's started"
                 nix-collect-garbage
                 echo "Nix-stote optimize's started"
                 nix-store --optimize
-                echo "--- Done ---"
             '';
         };
     };
