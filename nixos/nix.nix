@@ -6,9 +6,10 @@
         experimental-features = [ "nix-command" "flakes" ];
         use-xdg-base-directories = true;
     };
-    # gen-clean command, that deletes all gens except at least 3 and at least 3 days
-    environment.systemPackages = [
-        (pkgs.writeShellScriptBin "gen-clean" ''
+
+    let
+        # gen-clean command, that deletes all gens except at least 3 and at least 3 days
+        gen-clean = pkgs.writeShellScriptBin "gen-clean" ''
             #!/bin/sh
             PROFILE="/nix/var/nix/profiles/system"
             KEEP_GENS=3
@@ -29,19 +30,22 @@
 
             echo "All IDs to die: $ids_to_die"
             nix-env -p $PROFILE --delete-generations $ids_to_die
-        '')
-    ];
+        '';
+    in {
+        environment.systemPackages = [
+            gen-clean
+        ];
     
-    # Automatically deleting generations and cleaning /nix/store
-    systemd = {
-        timers.nix-store-optimize = {
-            wantedBy = [ "timers.target" ];
-            timerConfig = {
-                OnCalendar = "12:00";
-                Persistent = true;
-                RandomizeDelaySec = "10m";
+        # Automatically deleting generations and cleaning /nix/store
+        systemd = {
+            timers.nix-store-optimize = {
+                wantedBy = [ "timers.target" ];
+                timerConfig = {
+                    OnCalendar = "12:00";
+                    Persistent = true;
+                    RandomizeDelaySec = "10m";
+                };
             };
-        };
         services.nix-store-optimize = {
             serviceConfig = {
                 Type = "oneshot";
@@ -64,5 +68,6 @@
                 nix-store --optimize
             '';
         };
+    };
     };
 }
