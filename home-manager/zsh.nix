@@ -22,7 +22,8 @@
                     else
                         echo "\e[1;32mGit commit name\e[0m: \"Update $(date +'%Y-%m-%d %H:%M')\""
                         git commit -m "Update $(date +'%Y-%m-%d %H:%M')"
-                    fi
+                    fi && \
+                    git push
                     sudo nixos-rebuild switch --flake .#${vars.host} && \
                     home-manager switch --flake .#${vars.user}
                     # TODO: remove the previous generation and run cleaning script
@@ -37,7 +38,8 @@
                     else
                         echo "\e[1;32mGit commit name\e[0m: \"Rebuild $(date +'%Y-%m-%d %H:%M')\""
                         git commit -m "Rebuild $(date +'%Y-%m-%d %H:%M')"
-                    fi
+                    fi && \
+                    git push
                     sudo nixos-rebuild switch --flake .#${vars.host} && \
                     home-manager switch --flake .#${vars.user}
                 )
@@ -51,7 +53,8 @@
                     else
                         echo "\e[1;32mGit commit name\e[0m: \"Reconf $(date +'%Y-%m-%d %H:%M')\""
                         git commit -m "Reconf $(date +'%Y-%m-%d %H:%M')"
-                    fi
+                    fi && \
+                    git push
                     home-manager switch --flake .#${vars.user}
                 )
             '';
