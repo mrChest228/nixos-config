@@ -25,8 +25,9 @@
                     fi && \
                     git push
                     sudo nixos-rebuild switch --flake .#${vars.host} && \
-                    home-manager switch --flake .#${vars.user}
-                    # TODO: remove the previous generation and run cleaning script
+                    home-manager switch --flake .#${vars.user} && \
+                    # TODO: remove the previous generation
+                    sudo gen-clean
                 )
             '';
             rebuild = ''
@@ -41,7 +42,8 @@
                     fi && \
                     git push
                     sudo nixos-rebuild switch --flake .#${vars.host} && \
-                    home-manager switch --flake .#${vars.user}
+                    home-manager switch --flake .#${vars.user} && \
+                    sudo gen-clean
                 )
             '';
             reconf = ''
@@ -56,11 +58,13 @@
                     fi && \
                     git push
                     home-manager switch --flake .#${vars.user}
+                    # TODO: hm-clean script
                 )
             '';
         };
         shellAliases = {
             tp = "trash-put";
+            gen-list = "nixos-rebuild list-generations";
         };
         
         oh-my-zsh = {
