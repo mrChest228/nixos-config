@@ -30,6 +30,16 @@ in
         max-jobs = 3;          # Number of parallel compilations (TODO: increase this value if needs)
         experimental-features = [ "nix-command" "flakes" ];
         use-xdg-base-directories = true;
+        auto-optimize-store = true;
+    };
+    programs.nh = {
+        enable = true;
+        flake = vars.configPath;
+        clean = {
+            enable = true;
+            extraArgs = "--keep 3 --keep-since 3d";
+            dates = "12:00";
+        };
     };
 
     environment.systemPackages = [
@@ -37,36 +47,33 @@ in
     ];
     
     # Automatically deleting generations and cleaning /nix/store
-    systemd = {
-        timers.nix-store-optimize = {
-            wantedBy = [ "timers.target" ];
-            timerConfig = {
-                OnCalendar = "12:00";
-                Persistent = true;
-                RandomizeDelaySec = "10m";
-            };
-        };
-        services.nix-store-optimize = {
-            serviceConfig = {
-                Type = "oneshot";
-                User = "root";
-                CPUSchedulingPolicy = "idle";
-                IOSchedulingClass = "idle";
-            };
-            path = with pkgs; [
-                nix
-                gen-clean
-            ];
-            script = ''
-                echo "Generations cleaning"
-                gen-clean
-
-                echo "Nix store cleaning"
-                echo "Nix-collect-garbage's started"
-                nix-collect-garbage
-                echo "Nix-stote optimize's started"
-                nix-store --optimize
-            '';
-        };
-    };
+    # systemd = {
+    #     timers.nix-cg = {
+    #         wantedBy = [ "timers.target" ];
+    #         timerConfig = {
+    #             OnCalendar = "12:00";
+    #             Persistent = true;
+    #             RandomizeDelaySec = "10m";
+    #         };
+    #     };
+    #     services.nix-cg = {
+    #         serviceConfig = {
+    #             Type = "oneshot";
+    #             User = "root";
+    #             CPUSchedulingPolicy = "idle";
+    #             IOSchedulingClass = "idle";
+    #         };
+    #         path = with pkgs; [
+    #             nix
+    #             gen-clean
+    #         ];
+    #         script = ''
+    #             echo "Generations cleaning"
+    #             gen-clean
+    #             echo "Nix-collect-garbage's started"
+    #             nix-collect-garbage
+    #             echo "Done"
+    #         '';
+    #     };
+    # };
 }
