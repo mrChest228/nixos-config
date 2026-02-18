@@ -30,7 +30,7 @@ in
         max-jobs = 3;          # Number of parallel compilations (TODO: increase this value if needs)
         experimental-features = [ "nix-command" "flakes" ];
         use-xdg-base-directories = true;
-        auto-optimize-store = true;
+        auto-optimise-store = true;
     };
     programs.nh = {
         enable = true;
