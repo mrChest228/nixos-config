@@ -1,5 +1,5 @@
 { config, pkgs, vars, ... }:
-{
+{ 
     programs.zsh = {
         enable = true;
         dotDir = "${config.xdg.configHome}/zsh";
