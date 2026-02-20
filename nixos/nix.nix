@@ -49,7 +49,7 @@ in
     
     # Nh auto clean, but with bootloader updating
     systemd = {
-        timers.nh-clean-all = {
+        timers.clean = {
             wantedBy = [ "timers.target" ];
             timerConfig = {
                 OnCalendar = "12:00";
@@ -57,7 +57,7 @@ in
                 RandomizeDelaySec = "10m";
             };
         };
-        services.nh-clean-all = {
+        services.clean = {
             serviceConfig = {
                 Type = "oneshot";
                 User = "root";
