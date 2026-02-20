@@ -17,7 +17,7 @@
                     echo -e "\e[1;31mCommand \"$(printf "%q " "$@")\" FAILED (exit code $?)\e[0m"
                     return $?
                 }
-            ''
+            '';
             update = ''
                 (
                     cd ${vars.configPath} || return 1
