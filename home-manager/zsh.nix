@@ -23,16 +23,21 @@
             update = ''
                 (
                     cd ${vars.configPath} || return 1
-                    nix flake update || return 2
                     git add .
-                    if [[ "$1" ]]; then
-                        git commit -m "$1"
+                    if [[ `git status --porcelain` ]]; then
+                        # Print file changes
+                        git status --porcelain | sed -e 's/^A/\x1b[32m+ /' -e 's/^D/\x1b[31m- /' -e 's/^M/\x1b[33mc /' -e 's/$/\x1b[0m/'
+                        local msg="''${1:-Reconf $(date +'%Y-%m-%d %H:%M')}"
+                        # Commit
+                        silent git commit -m "$msg" && \
+                        # Print commit info
+                        git --no-pager log -1 --oneline && \
+                        # push
+                        silent git push && echo -e "\e[1;32mSuccessful push\e[0m"
                     else
-                        echo "\e[1;32mGit commit name\e[0m: \"Update $(date +'%Y-%m-%d %H:%M')\""
-                        git commit -m "Update $(date +'%Y-%m-%d %H:%M')"
+                        echo -e "\e[1;36mNothing to commit\e[0m"
                     fi
-                    git push
-                    sudo nixos-rebuild switch --flake .#${vars.host} || return 3
+                    sudo nixos-rebuild switch --flake .#${vars.host} || return 2
                     home-manager switch --flake .#${vars.user}
                     # TODO: remove the previous generation
                     sudo gen-clean
@@ -42,14 +47,20 @@
                 (
                     cd ${vars.configPath} || return 1
                     git add .
-                    if [[ "$1" ]]; then
-                        git commit -m "$1"
+                    if [[ `git status --porcelain` ]]; then
+                        # Print file changes
+                        git status --porcelain | sed -e 's/^A/\x1b[32m+ /' -e 's/^D/\x1b[31m- /' -e 's/^M/\x1b[33mc /' -e 's/$/\x1b[0m/'
+                        local msg="''${1:-Reconf $(date +'%Y-%m-%d %H:%M')}"
+                        # Commit
+                        silent git commit -m "$msg" && \
+                        # Print commit info
+                        git --no-pager log -1 --oneline && \
+                        # push
+                        silent git push && echo -e "\e[1;32mSuccessful push\e[0m"
                     else
-                        echo "\e[1;32mGit commit name\e[0m: \"Rebuild $(date +'%Y-%m-%d %H:%M')\""
-                        git commit -m "Rebuild $(date +'%Y-%m-%d %H:%M')"
+                        echo -e "\e[1;36mNothing to commit\e[0m"
                     fi
-                    git push
-                    sudo nixos-rebuild switch --flake .#${vars.host} || return 3
+                    sudo nixos-rebuild switch --flake .#${vars.host} || return 2
                     home-manager switch --flake .#${vars.user}
                     sudo gen-clean
                 )
@@ -63,20 +74,14 @@
                         git status --porcelain | sed -e 's/^A/\x1b[32m+ /' -e 's/^D/\x1b[31m- /' -e 's/^M/\x1b[33mc /' -e 's/$/\x1b[0m/'
                         local msg="''${1:-Reconf $(date +'%Y-%m-%d %H:%M')}"
                         # Commit
-                        silent git commit -m "$msg"
+                        silent git commit -m "$msg" && \
                         # Print commit info
-                        git --no-pager log -1 --oneline
+                        git --no-pager log -1 --oneline && \
                         # push
+                        silent git push && echo -e "\e[1;32mSuccessful push\e[0m"
                     else
                         echo -e "\e[1;36mNothing to commit\e[0m"
                     fi
-                    if [[ "$1" ]]; then
-                        git commit -m "$1"
-                    else
-                        echo "\e[1;32mGit commit name\e[0m: \"Reconf $(date +'%Y-%m-%d %H:%M')\""
-                        git commit -m "Reconf $(date +'%Y-%m-%d %H:%M')"
-                    fi
-                    git push
                     home-manager switch --flake .#${vars.user}
                     # TODO: hm-clean script
                 )
