@@ -64,7 +64,6 @@
                     cd ${vars.configPath} || return 1
                     config-commit "''${1:-Reconf $(date +'%Y-%m-%d %H:%M')}"
                     home-manager switch --flake .#${vars.user}
-                    clean
                 )
             '';
             gen = ''
