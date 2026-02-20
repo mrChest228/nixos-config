@@ -14,8 +14,10 @@
         siteFunctions = {
             silent = ''
                 chronic "$@" || {
-                    echo -e "\e[1;31mCommand \"$(printf "%q " "$@")\" FAILED (exit code $?)\e[0m"
-                    return $?
+                    local code=$?
+                    local command=''${$(printf "%q " "$@")% }
+                    echo -e "\e[1;31mCommand \"$command\" FAILED (exit code $code)\e[0m"
+                    return $code
                 }
             '';
             update = ''
@@ -61,7 +63,7 @@
                         git status --porcelain | sed -e 's/^A/\x1b[32m+ /' -e 's/^D/\x1b[31m- /' -e 's/^M/\x1b[33mc /' -e 's/$/\x1b[0m/'
                         local msg="''${1:-Reconf $(date +'%Y-%m-%d %H:%M')}"
                         # Commit
-                        chronic git commit -m "$msg" || echo -e "\e[1;31mCommand \"\" FAILED (exit code $?)\e[0m"
+                        silent git commit -m "$msg"
                         # Print commit info
                         git --no-pager log -1 --oneline
                         # push
