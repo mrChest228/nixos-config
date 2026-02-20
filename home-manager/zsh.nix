@@ -14,9 +14,9 @@
         siteFunctions = {
             update = ''
                 (
-                    cd ${vars.configPath} && \
-                    nix flake update && \
-                    git add . && \
+                    cd ${vars.configPath} || return 1
+                    nix flake update || return 2
+                    git add .
                     if [[ "$1" ]]; then
                         git commit -m "$1"
                     else
@@ -24,16 +24,16 @@
                         git commit -m "Update $(date +'%Y-%m-%d %H:%M')"
                     fi
                     git push
-                    sudo nixos-rebuild switch --flake .#${vars.host} && \
-                    home-manager switch --flake .#${vars.user} && \
+                    sudo nixos-rebuild switch --flake .#${vars.host} || return 3
+                    home-manager switch --flake .#${vars.user}
                     # TODO: remove the previous generation
                     sudo gen-clean
                 )
             '';
             rebuild = ''
                 (
-                    cd ${vars.configPath} && \
-                    git add . && \
+                    cd ${vars.configPath} || return 1
+                    git add .
                     if [[ "$1" ]]; then
                         git commit -m "$1"
                     else
@@ -41,15 +41,15 @@
                         git commit -m "Rebuild $(date +'%Y-%m-%d %H:%M')"
                     fi
                     git push
-                    sudo nixos-rebuild switch --flake .#${vars.host} && \
-                    home-manager switch --flake .#${vars.user} && \
+                    sudo nixos-rebuild switch --flake .#${vars.host} || return 3
+                    home-manager switch --flake .#${vars.user}
                     sudo gen-clean
                 )
             '';
             reconf = ''
                 (
-                    cd ${vars.configPath} && \
-                    git add . && \
+                    cd ${vars.configPath} || return 1
+                    git add .
                     if [[ "$1" ]]; then
                         git commit -m "$1"
                     else
