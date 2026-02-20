@@ -1,5 +1,5 @@
 { config, pkgs, vars, ... }:
-{ 
+{
     programs.zsh = {
         enable = true;
         dotDir = "${config.xdg.configHome}/zsh";
@@ -28,6 +28,7 @@
                         # Print file changes
                         git status --porcelain | sed -e 's/^A/\x1b[32m+ /' -e 's/^D/\x1b[31m- /' -e 's/^M/\x1b[33mc /' -e 's/$/\x1b[0m/'
                         local msg="''${1:-Commit $(date +'%Y-%m-%d %H:%M')}"
+                        echo "$msg"
                         # Commit
                         silent git commit -m "$msg" && \
                         # Print commit info
