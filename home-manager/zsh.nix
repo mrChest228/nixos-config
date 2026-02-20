@@ -20,16 +20,16 @@
                     return $code
                 }
             '';
-            update = ''
+            config-commit = ''
                 (
                     cd ${vars.configPath} || return 1
                     git add .
                     if [[ `git status --porcelain` ]]; then
                         # Print file changes
-                        git status --porcelain | sed -e 's/^A/\x1b[32m+ /' -e 's/^D/\x1b[31m- /' -e 's/^M/\x1b[33mc /' -e 's/$/\x1b[0m/'
-                        local msg="''${1:-Reconf $(date +'%Y-%m-%d %H:%M')}"
+                        git status --porcelain | sed -e 's/^A/\x1b[32m+ /' -e 's/^D/\x1b[31m- /' -e 's/^M/\x1b[33mc /' -e>
+                        local msg="''${1:-Commit $(date +'%Y-%m-%d %H:%M')}"
                         # Commit
-                        silent git commit -m "$msg" && \
+                        silent git commit -m "$1" && \
                         # Print commit info
                         git --no-pager log -1 --oneline && \
                         # push
@@ -37,59 +37,55 @@
                     else
                         echo -e "\e[1;36mNothing to commit\e[0m"
                     fi
+                )
+            '';
+            # TODO: switch to nh or remove ( cd ... )
+            update = ''
+                (
+                    cd ${vars.configPath} || return 1
+                    config-commit "''${1:-Update $(date +'%Y-%m-%d %H:%M')}"
                     sudo nixos-rebuild switch --flake .#${vars.host} || return 2
                     home-manager switch --flake .#${vars.user}
                     # TODO: remove the previous generation
-                    sudo gen-clean
+                    clean
                 )
             '';
             rebuild = ''
                 (
                     cd ${vars.configPath} || return 1
-                    git add .
-                    if [[ `git status --porcelain` ]]; then
-                        # Print file changes
-                        git status --porcelain | sed -e 's/^A/\x1b[32m+ /' -e 's/^D/\x1b[31m- /' -e 's/^M/\x1b[33mc /' -e 's/$/\x1b[0m/'
-                        local msg="''${1:-Reconf $(date +'%Y-%m-%d %H:%M')}"
-                        # Commit
-                        silent git commit -m "$msg" && \
-                        # Print commit info
-                        git --no-pager log -1 --oneline && \
-                        # push
-                        silent git push && echo -e "\e[1;32mSuccessful push\e[0m"
-                    else
-                        echo -e "\e[1;36mNothing to commit\e[0m"
-                    fi
+                    config-commit "''${1:-Rebuild $(date +'%Y-%m-%d %H:%M')}"
                     sudo nixos-rebuild switch --flake .#${vars.host} || return 2
                     home-manager switch --flake .#${vars.user}
-                    sudo gen-clean
+                    clean
                 )
             '';
             reconf = ''
                 (
                     cd ${vars.configPath} || return 1
-                    git add .
-                    if [[ `git status --porcelain` ]]; then
-                        # Print file changes
-                        git status --porcelain | sed -e 's/^A/\x1b[32m+ /' -e 's/^D/\x1b[31m- /' -e 's/^M/\x1b[33mc /' -e 's/$/\x1b[0m/'
-                        local msg="''${1:-Reconf $(date +'%Y-%m-%d %H:%M')}"
-                        # Commit
-                        silent git commit -m "$msg" && \
-                        # Print commit info
-                        git --no-pager log -1 --oneline && \
-                        # push
-                        silent git push && echo -e "\e[1;32mSuccessful push\e[0m"
-                    else
-                        echo -e "\e[1;36mNothing to commit\e[0m"
-                    fi
+                    config-commit "''${1:-Reconf $(date +'%Y-%m-%d %H:%M')}"
                     home-manager switch --flake .#${vars.user}
-                    # TODO: hm-clean script
+                    clean
                 )
+            '';
+            gen = ''
+                local action=$1
+                local id=$2
+
+                case "$action" in
+                    list)
+                        nh os info
+                    ;;
+                    del)
+                        
+                    ;;
+                    switch)
+
+                    ;;
+                esac
             '';
         };
         shellAliases = {
             tp = "trash-put";
-            gen-list = "nixos-rebuild list-generations";
         };
         
         oh-my-zsh = {

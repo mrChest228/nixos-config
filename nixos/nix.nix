@@ -22,6 +22,12 @@ let
 
         echo "All IDs to die: $ids_to_die"
         nix-env -p $PROFILE --delete-generations $ids_to_die
+        echo "Updating bootloader"
+        sudo /run/current-system/bit/switch-to-configuration boot
+    '';
+    clean = pkgs.writeShellScriptBin ''
+        nh clean all --keep 3 --keep-since 3d
+        sudo /run/current-system/bin/switch-to-configuration boot # Updating bootloader
     '';
 in
 {
@@ -35,45 +41,36 @@ in
     programs.nh = {
         enable = true;
         flake = vars.configPath;
-        clean = {
-            enable = true;
-            extraArgs = "--keep 3 --keep-since 3d";
-            dates = "12:00";
-        };
     };
 
     environment.systemPackages = [
-        gen-clean
+        clean
     ];
     
-    # Automatically deleting generations and cleaning /nix/store
-    # systemd = {
-    #     timers.nix-cg = {
-    #         wantedBy = [ "timers.target" ];
-    #         timerConfig = {
-    #             OnCalendar = "12:00";
-    #             Persistent = true;
-    #             RandomizeDelaySec = "10m";
-    #         };
-    #     };
-    #     services.nix-cg = {
-    #         serviceConfig = {
-    #             Type = "oneshot";
-    #             User = "root";
-    #             CPUSchedulingPolicy = "idle";
-    #             IOSchedulingClass = "idle";
-    #         };
-    #         path = with pkgs; [
-    #             nix
-    #             gen-clean
-    #         ];
-    #         script = ''
-    #             echo "Generations cleaning"
-    #             gen-clean
-    #             echo "Nix-collect-garbage's started"
-    #             nix-collect-garbage
-    #             echo "Done"
-    #         '';
-    #     };
-    # };
+    # Nh auto clean, but with bootloader updating
+    systemd = {
+        timers.nh-clean-all = {
+            wantedBy = [ "timers.target" ];
+            timerConfig = {
+                OnCalendar = "12:00";
+                Persistent = true;
+                RandomizeDelaySec = "10m";
+            };
+        };
+        services.nh-clean-all = {
+            serviceConfig = {
+                Type = "oneshot";
+                User = "root";
+                CPUSchedulingPolicy = "idle";
+                IOSchedulingClass = "idle";
+            };
+            path = with pkgs; [
+                nh
+                clean
+            ];
+            script = ''
+                clean
+            '';
+        };
+    };
 }
