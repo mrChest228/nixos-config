@@ -9,5 +9,6 @@
         steam-run # Executing bin files (for /nix/store libs)
         # Nix-ld
         xorg.libICE
+        icu
     ]);
 }
