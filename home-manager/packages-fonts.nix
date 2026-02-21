@@ -20,6 +20,7 @@
         # CPU
         mprime
         phoronix-test-suite # (ffmpeg, pts/buil2d-kernel, pts/c-ray, pts/cachebench)
+        unzip # For ffmpeg
         xmrig
         # systester # (Pi-number)
         # Fonts
