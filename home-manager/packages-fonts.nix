@@ -16,7 +16,7 @@
         # GPU
         unigine-superposition
         unigine-valley
-        furmark
+        furmark2
         # GPU_burn # (CUDA test)
         # CPU
         mprime
