@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, self, ... }: {
     environment.systemPackages = with pkgs; [
         moreutils # Standart unix utilites needed for bash-scripts
     ] ++ (with pkgs.unstable; [
@@ -10,5 +10,8 @@
         # Nix-ld
         xorg.libICE
         icu
+
+        # OCCT benchmark
+        (pkgs.callPackage ${self}/nixos/occt.nix {})
     ]);
 }
