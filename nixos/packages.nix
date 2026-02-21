@@ -5,5 +5,7 @@
         home-manager # HM command
         nix-output-monitor
         nix-tree
+   
+        steam-run # Executing bin files (for /nix/store libs)
     ]);
 }
