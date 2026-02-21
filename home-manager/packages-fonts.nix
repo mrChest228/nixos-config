@@ -11,6 +11,7 @@
         goverlay
         mangohud
         nvtopPackages.amd
+        nvtopPackages.nvidia
         # psensor
         # system-monitoring-center
         # GPU
