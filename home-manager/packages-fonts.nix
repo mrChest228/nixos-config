@@ -19,7 +19,7 @@
         # CPU
         mprime
         phoronix-test-suite # (ffmpeg, pts/build-kernel, pts/c-ray, pts/cachebench)
-        xmring
+        xmrig
         # systester # (Pi-number)
         # Fonts
         # Google basic fonts for Hieroglyphs and emoji
