@@ -3,7 +3,7 @@
         moreutils # Standart unix utilites needed for bash-scripts
         
         # OCCT benchmark
-        (callPackage ${self}/occt.nix {})
+        (callPackage "${self}/occt.nix" {})
     ] ++ (with pkgs.unstable; [
         home-manager # HM command
         nix-output-monitor
