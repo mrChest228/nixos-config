@@ -10,7 +10,7 @@
         # Sensors
         goverlay
         mangohud
-        nvtop
+        nvtopPackages.amd
         # psensor
         # system-monitoring-center
         # GPU
