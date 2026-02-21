@@ -12,6 +12,6 @@
         icu
 
         # OCCT benchmark
-        (pkgs.callPackage ${self}/nixos/occt.nix {})
+        (pkgs.callPackage ${self}/occt.nix {})
     ]);
 }
