@@ -10,6 +10,7 @@
         # Sensors
         mission-center
         psensor
+        system-monitoring-center
         # GPU
         unigen-superposition
         unigen-valley
