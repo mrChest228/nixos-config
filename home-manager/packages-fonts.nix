@@ -8,9 +8,9 @@
     ] ++ (with pkgs.unstable; [
         # Benchmarks
         # Sensors
-        mission-center
         goverlay
         mangohud
+        nvtop
         # psensor
         # system-monitoring-center
         # GPU
