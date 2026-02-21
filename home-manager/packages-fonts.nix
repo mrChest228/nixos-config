@@ -9,7 +9,7 @@
         # Benchmarks
         # Sensors
         mission-center
-        psensor
+        # psensor
         system-monitoring-center
         # GPU
         unigen-superposition
