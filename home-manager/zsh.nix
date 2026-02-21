@@ -48,7 +48,7 @@
                     home-manager switch --flake .#${vars.user}
                     # TODO: remove the previous generation
 
-                    nh clean all --keep 3 --keep-since 3d --nogc --nogcroots
+                    nh clean all --keep 3 --keep-since 3d --nogc --nogcroots && \
                     sudo /run/current-system/bin/switch-to-configuration boot
                 )
             '';
@@ -59,7 +59,7 @@
                     sudo nixos-rebuild switch --flake .#${vars.host} || return 2
                     home-manager switch --flake .#${vars.user}
 
-                    nh clean all --keep 3 --keep-since 3d --nogc --nogcroot
+                    nh clean all --keep 3 --keep-since 3d --nogc --nogcroots && \
                     sudo /run/current-system/bin/switch-to-configuration boot
                 )
             '';
@@ -69,7 +69,7 @@
                     config-commit "''${1:-Reconf $(date +'%Y-%m-%d %H:%M')}"
                     home-manager switch --flake .#${vars.user}
 
-                    nh clean all --keep 3 --keep-since 3d --nogc --nogcroot
+                    nh clean all --keep 3 --keep-since 3d --nogc --nogcroots && \
                     sudo /run/current-system/bin/switch-to-configuration boot
                 )
             '';
