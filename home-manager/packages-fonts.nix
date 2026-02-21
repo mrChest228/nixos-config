@@ -16,7 +16,7 @@
         # GPU
         unigine-superposition
         unigine-valley
-        opencascade-occt
+        rPackages.occTest
         # GPU_burn # (CUDA test)
         # CPU
         mprime
