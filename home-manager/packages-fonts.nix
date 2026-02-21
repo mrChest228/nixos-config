@@ -10,6 +10,7 @@
         # Sensors
         mission-center
         goverlay
+        mangohud
         # psensor
         # system-monitoring-center
         # GPU
@@ -19,7 +20,7 @@
         # GPU_burn # (CUDA test)
         # CPU
         mprime
-        phoronix-test-suite # (ffmpeg, pts/build-kernel, pts/c-ray, pts/cachebench)
+        phoronix-test-suite # (ffmpeg, pts/buil2d-kernel, pts/c-ray, pts/cachebench)
         xmrig
         # systester # (Pi-number)
         # Fonts
