@@ -6,6 +6,20 @@
         # Trash in terminal
         trash-cli
     ] ++ (with pkgs.unstable; [
+        # Benchmarks
+        # Sensors
+        mission-center
+        psensor
+        # GPU
+        unigen-superposition
+        unigen-valley
+        furmark
+        # GPU_burn # (CUDA test)
+        # CPU
+        mprime
+        phoronix-test-suite # (ffmpeg, pts/build-kernel, pts/c-ray, pts/cachebench)
+        xmring
+        # systester # (Pi-number)
         # Fonts
         # Google basic fonts for Hieroglyphs and emoji
         noto-fonts
