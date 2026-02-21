@@ -12,8 +12,8 @@
         # psensor
         # system-monitoring-center
         # GPU
-        unigen-superposition
-        unigen-valley
+        unigine-superposition
+        unigine-valley
         furmark
         # GPU_burn # (CUDA test)
         # CPU
