@@ -9,6 +9,7 @@
         # Benchmarks
         # Sensors
         mission-center
+        goverlay
         # psensor
         # system-monitoring-center
         # GPU

@@ -19,4 +19,5 @@
     };
     hardware.sensor.lm_sensors.enable = true; # Programs can use sensors now
     services.thermald.enable = true;
+    programs.mangohud.enable = true;
 }
