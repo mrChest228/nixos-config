@@ -1,5 +1,5 @@
 { config, pkgs, vars, ... }:
-{ 
+{
     programs.zsh = {
         enable = true;
         dotDir = "${config.xdg.configHome}/zsh";
@@ -40,7 +40,7 @@
                     fi
                 )
             '';
-            # TODO: switch to nh or remove ( cd ... )
+            # TODO: use nh, remove ( cd ... )
             update = ''
                 (
                     cd ${vars.configPath} || return 1
@@ -48,7 +48,9 @@
                     sudo nixos-rebuild switch --flake .#${vars.host} || return 2
                     home-manager switch --flake .#${vars.user}
                     # TODO: remove the previous generation
-                    clean
+
+                    nh clean all --keep 3 --keep-since 3d --nogc --nogcroots
+                    sudo /run/current-system/bin/switch-to-configuration boot
                 )
             '';
             rebuild = ''
@@ -57,7 +59,9 @@
                     config-commit "''${1:-Rebuild $(date +'%Y-%m-%d %H:%M')}"
                     sudo nixos-rebuild switch --flake .#${vars.host} || return 2
                     home-manager switch --flake .#${vars.user}
-                    clean
+
+                    nh clean all --keep 3 --keep-since 3d --nogc --nogcroot
+                    sudo /run/current-system/bin/switch-to-configuration boot
                 )
             '';
             reconf = ''
@@ -65,6 +69,9 @@
                     cd ${vars.configPath} || return 1
                     config-commit "''${1:-Reconf $(date +'%Y-%m-%d %H:%M')}"
                     home-manager switch --flake .#${vars.user}
+
+                    nh clean all --keep 3 --keep-since 3d --nogc --nogcroot
+                    sudo /run/current-system/bin/switch-to-configuration boot
                 )
             '';
             gen = ''

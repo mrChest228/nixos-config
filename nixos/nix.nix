@@ -26,7 +26,7 @@ let
         sudo /run/current-system/bit/switch-to-configuration boot
     '';
     clean = pkgs.writeShellScriptBin "clean" ''
-        nh clean all --keep 3 --keep-since 3d
+        nh clean all --keep 3 --keep-since 3d --optimize
         sudo /run/current-system/bin/switch-to-configuration boot # Updating bootloader
     '';
 in
