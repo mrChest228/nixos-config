@@ -31,7 +31,7 @@
                         # Commit
                         silent git commit -m "$msg" && \
                         # Print commit info
-                        git --no-pager log -1 --oneline && \
+                        git --no-pager log -1 --oneline --format='%C(magenta)%h%C(auto)%d %s' && \
                         # push
                         silent git push && echo -e "\e[1;32mSuccessful push\e[0m"
                     else
