@@ -34,7 +34,7 @@
                         git --no-pager log -1 --oneline --format='%C(magenta)%h%C(auto)%d %s' && \
                         # push
                         local startTime=$(date +%s.%N)
-                        silent git push && echo -e "\e[1;32mSuccessful push in ${printf "%.2f" $(($(date +$s.$N) - $localTime))}s\e[0m"
+                        silent git push && echo -e "\e[1;32mSuccessful push in ${printf "%.2f" $(($(date +%s.%N) - $localTime))}s\e[0m"
                     else
                         echo -e "\e[1;36mNothing to commit\e[0m"
                     fi
@@ -46,7 +46,7 @@
                     cd ${vars.configPath} || return 1
                     config-commit "''${1:-Update $(date +'%Y-%m-%d %H:%M')}"
                     sudo nixos-rebuild switch --flake .#${vars.host} || return 2
-                    home-manager switch --flake .#${vars.user}
+                    home-manager switch --flake .#${vars.user} || return 3
                     # TODO: remove the previous generation
 
                     nh clean all --keep 3 --keep-since 3d --nogc --nogcroots && \
@@ -58,7 +58,7 @@
                     cd ${vars.configPath} || return 1
                     config-commit "''${1:-Rebuild $(date +'%Y-%m-%d %H:%M')}"
                     sudo nixos-rebuild switch --flake .#${vars.host} || return 2
-                    home-manager switch --flake .#${vars.user}
+                    home-manager switch --flake .#${vars.user} || return 3
 
                     nh clean all --keep 3 --keep-since 3d --nogc --nogcroots && \
                     sudo /run/current-system/bin/switch-to-configuration boot
@@ -68,7 +68,7 @@
                 (
                     cd ${vars.configPath} || return 1
                     config-commit "''${1:-Reconf $(date +'%Y-%m-%d %H:%M')}"
-                    home-manager switch --flake .#${vars.user}
+                    home-manager switch --flake .#${vars.user} || return 3
 
                     nh clean all --keep 3 --keep-since 3d --nogc --nogcroots && \
                     sudo /run/current-system/bin/switch-to-configuration boot
