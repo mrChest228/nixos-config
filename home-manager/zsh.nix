@@ -35,7 +35,7 @@
                         git --no-pager log -1 --oneline --format='%C(magenta)%h%C(auto)%d %s' && \
                         # push
                         local startTime=$(date +%s.%N)
-                        silent git push && echo -e "\e[1;32mSuccessful push in $(printf "%.2f" $(($(date +%s.%N) - \$localTime)))s\e[0m"
+                        silent git push && echo -e "\e[1;32mSuccessful push in $(printf "%.2f" $(($(date +%s.%N) - ''$localTime)))s\e[0m"
                     else
                         echo -e "\e[1;36mNothing to commit\e[0m"
                     fi
