@@ -40,7 +40,7 @@
                     fi
                 )
             '';
-            # TODO: use nh, remove ( cd ... )
+            # TODO: use nh, remove ( cd ... ) 
             update = ''
                 (
                     cd ${vars.configPath} || return 1
