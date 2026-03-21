@@ -9,7 +9,7 @@
             };
             default_session = {
                 user = vars.user;
-                command = "zsh";
+                command = "nu";
             };
         };
     };
