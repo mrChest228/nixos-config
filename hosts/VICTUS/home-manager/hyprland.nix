@@ -1,14 +1,14 @@
 { pkgs, vars, ... }:
 {
-    # wayland.windowManager.hyprland = {
-    #     enable = true;
-    #     systemd.enable = true;
-    #     settings = {
-    #         bind = [
-    #             "SUPER, Q, exec, kitty"
-    #         ];
-    #     };
-    # };
+    wayland.windowManager.hyprland = {
+        enable = true;
+        systemd.enable = true;
+        settings = {
+            bind = [
+                "SUPER, Q, exec, ghostty"
+            ];
+        };
+    };
     # gtk = {
     #     emable = true;
     #     theme = {

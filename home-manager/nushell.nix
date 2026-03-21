@@ -6,6 +6,7 @@
             show_banner = false;
         };
         extraConfig = ''
+            
             def config-commit [message: string] {
                 cd ${vars.configPath} || return 1
             }
