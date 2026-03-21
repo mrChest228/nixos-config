@@ -17,7 +17,7 @@
         networkmanagerapplet # For NetManag in a tray (hz)
         # Apps
         thunar
-        kitty
+        ghostty
         firefox
         btop
     ]);
