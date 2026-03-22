@@ -43,6 +43,7 @@
                             let reply = (input "Do you want to rename the last commit? [Y/n]: " | str downcase)
                             if ($reply == "" or $reply == "y" or $reply == "ye" or $reply == "yes") {
                                 git commit --amend -m $"($message)"
+                                git --no-pager log -1 --oneline --format="%C(magenta)%h%C(auto)%d %s"
                                 true
                             }
                             else { false }
