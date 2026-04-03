@@ -19,8 +19,7 @@
                            print $"($res.stdout)\n(ansi red)($res.stderr)\n(ansi red_bold)Command ($src) FAILED \(exit code ($code)\)(ansi rst)"
                         }
                         $code
-                    }
-                    catch { |e|
+                    } catch { |e|
                         print ($e.rendered? | default $e)
                         1
                     }
