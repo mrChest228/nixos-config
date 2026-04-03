@@ -9,7 +9,7 @@
             def returnCode [code: int] {
                 run-external "nu" "-c" $"exit ($code)"
             }
-            def silent [action: closure] {
+            def --env silent [action: closure] {
                 let src = (view source $action)
                 returnCode (
                     try {
@@ -19,8 +19,7 @@
                            print $"($res.stdout)\n(ansi red)($res.stderr)\n(ansi red_bold)Command ($src) FAILED \(exit code ($code)\)(ansi rst)"
                         }
                         $code
-                    }
-                    catch { |e|
+                    } catch { |e|
                         print ($e.rendered? | default $e)
                         1
                     }
@@ -37,8 +36,7 @@
                         silent { git commit -m $"($msg)" }
                         git --no-pager log -1 --oneline --format="%C(magenta)%h%C(auto)%d %s"
                         true
-                    }
-                    else {
+                    } else {
                         print $"(ansi cyan)Nothing to commit(ansi rst)"
                         if not ($message | is-empty) {
                             let reply = (input "Do you want to rename the last commit? [Y/n]: " | str downcase)
@@ -46,10 +44,8 @@
                                 git commit --amend -m $"($message)"
                                 git --no-pager log -1 --oneline --format="%C(magenta)%h%C(auto)%d %s"
                                 true
-                            }
-                            else { false }
-                        }
-                        else { false }
+                            } else { false }
+                        } else { false }
                     }
                 )
                 if $push {
