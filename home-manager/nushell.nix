@@ -47,7 +47,7 @@
                     }
                 )
                 if $push {
-                    git --no-pager log -1 --oneline --format "%C(magenta)%h%C(auto)%d %s"
+                    git --no-pager log -1 --oneline --format="%C(magenta)%h%C(auto)%d %s"
                     let start = (date now)
                     silent { git push --force-with-lease }
                     print $"(ansi green_bold)Successful push in ((date now) - $start)(ansi rst)"
