@@ -34,21 +34,20 @@
                         git status -s
                         let msg = if ($message | is-empty) { $"Commit (date now | format date '%Y-%m-%d %H:%M:%S %:z')" } else { $message }
                         silent { git commit -m $"($msg)" }
-                        git --no-pager log -1 --oneline --format="%C(magenta)%h%C(auto)%d %s"
                         true
                     } else {
                         print $"(ansi cyan)Nothing to commit(ansi rst)"
-                        if not ($message | is-empty) {
+                        if (not ($message | is-empty) and ($message != (git log -1 --format=%s))) {
                             let reply = (input "Do you want to rename the last commit? [Y/n]: " | str downcase)
                             if ($reply == "" or $reply == "y" or $reply == "ye" or $reply == "yes") {
-                                git commit --amend -m $"($message)"
-                                git --no-pager log -1 --oneline --format="%C(magenta)%h%C(auto)%d %s"
+                                silent { git commit --amend -m $"($message)" }
                                 true
                             } else { false }
                         } else { false }
                     }
                 )
                 if $push {
+                    git --no-pager log -1 --oneline --format "%C(magenta)%h%C(auto)%d %s"
                     let start = (date now)
                     silent { git push --force-with-lease }
                     print $"(ansi green_bold)Successful push in ((date now) - $start)(ansi rst)"
