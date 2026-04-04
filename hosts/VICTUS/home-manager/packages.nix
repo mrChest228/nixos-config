@@ -1,13 +1,13 @@
 { config, libs, lib, pkgs, vars, self, ... }:
 {
     imports = [
-        (self + /home-manager/packages-fonts.nix) # Import the default HM packages (like git, trash-cli, etc.)
+        (self + /home-manager/packages-fonts.nix) # Import the default HM packages (like fonts, etc.)
     ];
     home.packages = with pkgs; [
     ] ++ (with pkgs.unstable; [
         # Desktop
         waybar
-        swww # Wallpappers
+        awww # Wallpappers
         mako # Notifications
         wl-clipboard # Clipboard
         rofi
@@ -19,6 +19,5 @@
         thunar
         ghostty
         firefox
-        btop
     ]);
 }

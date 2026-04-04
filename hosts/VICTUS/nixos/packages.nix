@@ -2,8 +2,6 @@
     environment.systemPackages = with pkgs; [
         cudaPackages.cudatoolkit
     ] ++ (with pkgs.unstable; [
-        kitty
-
         #dmidecode # Gets BIOS and firmware drivers/microcodes info
         #acpica-tools # Tool for fixing bootloading ACPI-bug
         #dracut # Tool to see initrd imported modules
@@ -22,6 +20,12 @@
         
         # GTK themes for thunar
         adw-gtk3
+
+        # Terminal utilities
+        btop
+        nvtopPackages.full
+        git
+        trash-cli
     ]);
     fonts.packages = with pkgs.unstable; [
     ];

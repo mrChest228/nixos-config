@@ -2,15 +2,12 @@
 {
     fonts.fontconfig.enable = true;
     home.packages = with pkgs; [
-        git
-        # Trash in terminal
-        trash-cli
     ] ++ (with pkgs.unstable; [
+        fastfetch
         # Benchmarks
         # Sensors
         goverlay
         mangohud
-        nvtopPackages.full
         # psensor
         # system-monitoring-center
         # GPU
