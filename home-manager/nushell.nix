@@ -6,6 +6,11 @@
             show_banner = false;
         };
         extraConfig = ''
+            # Datetime format
+            $env.config.datetime_format = {
+                table: '%Y-%m-%d %H:%M:%S'
+            }
+
             def returnCode [code: int] {
                 run-external "nu" "-c" $"exit ($code)"
             }
@@ -72,14 +77,14 @@
             def update [message?: string] {
                 cd ${vars.configPath}
                 nix flake update
-                if (not ((git status -s) | is-empty) or not ($message is-empty)) {
+                if (not ((git status -s) | is-empty) or not ($message | is-empty)) {
                     try { config-commit (if ($message | is-empty) { $"Update (date now | format date '%Y-%m-%d %H:%M:%S %:z')" } else { $message }) }
                 }
                 rebuild
             }
             def rebuild [message?: string] {
                 cd ${vars.configPath}
-                if (not ((git status -s) | is-empty) or not ($message is-empty)) {
+                if (not ((git status -s) | is-empty) or not ($message | is-empty)) {
                     try { config-commit (if ($message | is-empty) { $"Rebuild (date now | format date '%Y-%m-%d %H:%M:%S %:z')" } else { $message }) }
                 }
 
@@ -101,8 +106,8 @@
             }
             def reconf [message?: string] {
                 cd ${vars.configPath}
-                if (not ((git status -s) | is-empty) or not ($message is-empty)) {
-                    try { config-commit (if ($message | is-empty) { $"Reconf (date now | format date '%Y-%m-%d %H:%M:%S %:z')" }>
+                if (not ((git status -s) | is-empty) or not ($message | is-empty)) {
+                    try { config-commit (if ($message | is-empty) { $"Reconf (date now | format date '%Y-%m-%d %H:%M:%S %:z')" } else { $message }) }
                 }
                 nh home switch
 
@@ -116,11 +121,14 @@
             def "gen switch" [id: any] {
                 sudo $"/nix/var/nix/profiles/system-($id)-link/bin/switch-to-configuration" switch
             }
+            def "gen clean" [] {
+                nh clean all --keep 3 --keep-since 3d --nogc --nogcroots
+                sudo /run/current-system/bin/switch-to-configuration boot
+            }
         '';
         shellAliases = {
             tp = "trash-put";
 
-            "gen clean" = "nh clean all --keep 3 --keep-since 3d --nogc --nogcroots; sudo /run/current-system/bin/switch-to-configuration boot";
             "gen list" = "nh os info";
             "gen-ls" = "nixos-rebuild list-generations";
         };

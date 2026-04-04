@@ -7,7 +7,9 @@
     ] ++ (with pkgs.unstable; [
         # Desktop
         waybar
-        awww # Wallpappers
+        # Wallpapers
+        awww
+        mpvpaper
         mako # Notifications
         wl-clipboard # Clipboard
         rofi
