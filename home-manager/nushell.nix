@@ -79,7 +79,7 @@
                                 let pths = ($line | str substring 3.. | split row (char nul))
                                 let pthFrom = ($pths | first)
                                 $pth = ($pths | get 1)
-                                $out = "hi" #$"(if ($pthFrom | str contains " ") { '"' + $pthFrom + '"' } else { $pthFrom }) -> (if ($pth | str contains " ") { '"' + $pth + '"' } else { $pth })"
+                                $out = ((if ($pthFrom | str contains " ") { '"' + $pthFrom + '"' } else { $pthFrom }) + " -> " + (if ($pth | str contains " ") { '"' + $pth + '"' } else { $pth }))
                             } else {
                                 $pth = ($line | str substring 3..)
                                 $out = if ($pth | str contains " ") { '"' + $pth + '"' } else { $pth }
@@ -89,7 +89,7 @@
                                 $time = (ls -D $pth | get 0 | get modified | format date '%Y-%m-%d %H:%M:%')
                             }
 
-                            print $"($color)($x)  $out(ansi rst) ($time)"
+                            print $"($color)($x)  ($out)(ansi rst) ($time)"
                         }
                         let msg = if ($message | is-empty) { $"Commit (date now | format date '%Y-%m-%d %H:%M:%S %:z')" } else { $message }
                         silent { git commit -m $"($msg)" }
