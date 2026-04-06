@@ -81,14 +81,14 @@
                                 $pth = ($pths | get 1)
                                 $out = ((if ($pthFrom | str contains " ") { '"' + $pthFrom + '"' } else { $pthFrom }) + " -> " + (if ($pth | str contains " ") { '"' + $pth + '"' } else { $pth }))
                             } else {
-                                $pth = ($line | str substring 3..)
+                                $pth = ($line | str substring 3.. | str replace (char nul) "")
                                 $out = if ($pth | str contains " ") { '"' + $pth + '"' } else { $pth }
                             }
                             print $pth
                             print ($pth | path exists)
                             mut time = "?"
                             if ($pth | path exists) {
-                                $time = (ls -D $pth | get 0 | get modified | format date '%Y-%m-%d %H:%M:%')
+                                $time = (ls -D $pth | get 0 | get modified | format date '%Y-%m-%d %H:%M:%S')
                             }
 
                             print $"($color)($x)  ($out)(ansi rst) ($time)"
