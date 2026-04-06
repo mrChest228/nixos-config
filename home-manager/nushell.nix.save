@@ -58,38 +58,34 @@
                     if not ((git status -s) | is-empty) {
                         echo "File changes:"
  
-                        # Changes with time printing
+                        # File changes with time printing
                         let colors = [
-                            { code: "?", color: (ansi dark_gray) }
-                            { code: "!", color: (ansi dark_gray) }
+                            { code: "?", color: (ansi blue) }
+                            { code: "!", color: (ansi blue) }
                             { code: "A", color: (ansi green) }
                             { code: "M", color: (ansi yellow) }
                             { code: "D", color: (ansi red) }
                             { code: "R", color: (ansi cyan) }
-                            { code: "C", color: (ansi magenta) }
-                            { code: "T", color: (ansi blue) }
+                            { code: "C", color: (ansi cyan) }
+                            { code: "T", color: (ansi magenta) }
                             { code: "U", color: (ansi red) }
                         ]
                         git status --porcelain=v1 -z | lines | each { |line|
                             let x = ($line | str substring 0..0)
-                            let color = ($colors | where code == $x | if ($in | length) != 1 { ansi red } else { $in | first | get color })
-                            mut out = ($line | str substring 3..)
+                            let rest = ($line | str substring 3..)
+                            let color = ($colors | where code $x | first | get color)
+                            mut out = ""
                             mut pth = ""
                             if ($x == "R" or $x == "C") {
-                                let pths = ($line | str substring 3.. | split row (char nul))
-                                let pthFrom = ($pths | first)
-                                $pth = ($pths | get 1)
-                                $out = "hi" #$"(if ($pthFrom | str contains " ") { '"' + $pthFrom + '"' } else { $pthFrom }) -> (if ($pth | str contains " ") { '"' + $pth + '"' } else { $pth })"
+                                $out = ($line | str substring 3.. | str replace "\0" " -> ")
+                                $pth = $line | str substring 3.. | split row "\0" | get 1)
                             } else {
-                                $pth = ($line | str substring 3..)
-                                $out = if ($pth | str contains " ") { '"' + $pth + '"' } else { $pth }
+                                $out = ($line | str substring 3..)
+                                $pth = $out
                             }
-                            mut time = "?"
-                            if ($pth | path exists) {
-                                $time = (ls -D $pth | get 0 | get modified | format date '%Y-%m-%d %H:%M:%')
-                            }
-
-                            print $"($color)($x)  $out(ansi rst) ($time)"
+                            let time = if ($pth | path exists) { ls -D $pth | first | get modified | format date '%Y-%m-%d %H:%M:%S' } else { "?" }
+                            
+                            print $"($color)($x)  ($out)(ansi rst) ($time)"
                         }
                         let msg = if ($message | is-empty) { $"Commit (date now | format date '%Y-%m-%d %H:%M:%S %:z')" } else { $message }
                         silent { git commit -m $"($msg)" }
