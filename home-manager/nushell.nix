@@ -70,26 +70,35 @@
                             { code: "T", color: (ansi blue) }
                             { code: "U", color: (ansi red) }
                         ]
-                        git status --porcelain=v1 -z | lines | each { |line|
+                        let changesGit = (git status --porcelain=v1 -z | split row (char nul))
+                        mut changes = []
+                        mut i = 0
+                        loop {
+                            if $i >= ($changesGit | length) {
+                                break
+                            }
+                            let line = ($changesGit | get $i)
                             let x = ($line | str substring 0..0)
                             let color = ($colors | where code == $x | if ($in | length) != 1 { ansi red } else { $in | first | get color })
-                            mut out = ($line | str substring 3..)
-                            mut pth = ""
+                            mut pths = [($line | str substring 3..)]
                             if ($x == "R" or $x == "C") {
-                                let pths = ($line | str substring 3.. | split row (char nul))
-                                let pthFrom = ($pths | first)
-                                $pth = ($pths | get 1)
-                                $out = ((if ($pthFrom | str contains " ") { '"' + $pthFrom + '"' } else { $pthFrom }) + " -> " + (if ($pth | str contains " ") { '"' + $pth + '"' } else { $pth }))
-                            } else {
-                                $pth = ($line | str substring 3.. | str replace (char nul) "")
-                                $out = if ($pth | str contains " ") { '"' + $pth + '"' } else { $pth }
+                                $i = $i + 1
+                                $pths = ($pths | append ($changesGit | get $i))
                             }
-                            mut time = "?"
-                            if ($pth | path exists) {
-                                $time = (ls -D $pth | get 0 | get modified | format date '%Y-%m-%d %H:%M:%S')
+                            print $pths
+                            let pth = ($pths | last)
+                            let time = if ($pth | path exists) { ls -D $pth | get 0 | get modified | format date '%Y-%m-%d %H:%M:%S' } else { "?" }
+
+                            if ($pths | get 0 | str contains " ") {
+                                $pths = ($pths | upsert 0 { |pth| $"\"($pth)\"" })
+                            }
+                            if (($pths | length) == 2 and ($pths | get 1 | str contains " ")) {
+                                $pths = ($pths | upsert 1 { |pth| $"\"($pth)\"" })
                             }
 
-                            print $"($color)($x)  ($out)(ansi rst) ($time)"
+                            let pthTo = if ($pths | length) == 2 { $" -> ($pths | get 1)" } else { "" }
+                            print $"($color)($x)  ($pths | get 0)($pthTo)(ansi rst) ($time)"
+                            $i = $i + 1
                         }
                         let msg = if ($message | is-empty) { $"Commit (date now | format date '%Y-%m-%d %H:%M:%S %:z')" } else { $message }
                         silent { git commit -m $"($msg)" }

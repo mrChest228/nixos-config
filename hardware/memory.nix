@@ -36,7 +36,11 @@
         device = "/dev/disk/by-uuid/${vars.UUIDs.swap}";
     }];
     boot = {
-        kernel.sysctl."vm.swappiness" = 20; # Count of swap using (0..100 value)
+        kernel.sysctl = {
+            "vm.swappiness" = 20; # Count of swap using (0..100 value)
+            "vm.overcommit_memory" = 2; # Don't allocate more memory, than RAM + Swap are
+            "vm.overcommit_ratio" = 95; # Accept allocate almost all the available RAM
+        };
         kernelParams = [ "resume=UUID=${vars.UUIDs.swap}" ];
     };
 

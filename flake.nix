@@ -4,7 +4,7 @@
         nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
         home-manager = {
             url = "github:nix-community/home-manager";
-            # inputs.nixpkgs.follows = "nixpkgs";
+            inputs.nixpkgs.follows = "nixpkgs-unstable";
         };
         # Libs
         import-tree.url = "github:vic/import-tree";
