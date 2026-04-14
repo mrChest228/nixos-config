@@ -1,6 +1,11 @@
-{ config, libs, lib, pkgs, vars, self, ... }:
+{ config, lib, libs, pkgs, vars, self, ... }:
 {
-    imports = [ ( libs.import-tree (self + /nixos) ) ];
+    imports = [
+        ( libs.import-tree (self + /nixos) )
+        ( libs.import-tree ./nixos )
+        ( libs.import-tree ./hardware )
+        libs.determinate.nixosModules.default
+    ];
     
     users.users.${vars.user} = {
         isNormalUser = true;

@@ -31,12 +31,17 @@ let
     '';
 in
 {
-    nix.settings = {
-        http-connections = 20; # Number of parallel downloads
-        max-jobs = 3;          # Number of parallel compilations (TODO: increase this value if needs)
-        experimental-features = [ "nix-command" "flakes" ];
-        use-xdg-base-directories = true;
-        auto-optimise-store = true;
+    nix = {
+        channel.enable = false;
+        settings = {
+            http-connections = 20; # Number of parallel downloads
+            max-jobs = 14;          # Number of parallel compilations
+            # experimental-features = [ "nix-command" "flakes" ]; # Enabled by default in Determinate-nix
+            use-xdg-base-directories = true;
+            # Determinate
+            lazy-trees = true;
+            eval-cores = 0;
+        };
     };
     programs.nh = {
         enable = true;

@@ -85,7 +85,6 @@
                                 $i = $i + 1
                                 $pths = ($pths | append ($changesGit | get $i))
                             }
-                            print $pths
                             let pth = ($pths | last)
                             let time = if ($pth | path exists) { ls -D $pth | get 0 | get modified | format date '%Y-%m-%d %H:%M:%S' } else { "?" }
 
