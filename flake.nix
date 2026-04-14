@@ -1,6 +1,6 @@
 {
     inputs = {
-        nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05"; # It must match the systemVersion
+        nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05-pre"; # It must match the systemVersion
         nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
         home-manager = {
             url = "github:nix-community/home-manager";
