@@ -39,6 +39,7 @@ in
             # experimental-features = [ "nix-command" "flakes" ]; # Enabled by default in Determinate-nix
             use-xdg-base-directories = true;
             # Determinate
+            auto-optimise-store = false; # Nh do it itself
             lazy-trees = true;
             eval-cores = 0;
         };

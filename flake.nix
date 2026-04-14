@@ -7,7 +7,7 @@
             inputs.nixpkgs.follows = "nixpkgs-unstable";
         };
         # Fast nix-eval
-        determinate.url = "https://flakehub.com/DeterminateSystems/determinate/*";
+        determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
         # Libs
         import-tree.url = "github:vic/import-tree";
     };
