@@ -5,4 +5,5 @@
         "amd-integrated.nix"
         "nvidia-prime.nix"
     ];
+    system.stateVersion = "25.11";
 }
