@@ -9,10 +9,8 @@
         ];
         networkmanager = {
             enable = true;
-            connectionConfig = { # Don't use default dns from my router
-                "ipv4.ignore-auto-dns" = "yes";
-                "ipv6.ignore-auto-dns" = "yes";
-            };
+            dns = "none"; # Don't manage /etc/resolv.conf
         };
+        resolvconf.enable = false; # Don't use default dns from my router. Only my own dns
     };
 }
