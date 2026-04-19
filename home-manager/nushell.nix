@@ -70,7 +70,7 @@
                             { code: "T", color: (ansi blue) }
                             { code: "U", color: (ansi red) }
                         ]
-                        let changesGit = (git status --porcelain=v1 -z | split row (char nul))
+                        let changesGit = (git status --porcelain=v1 -z | split row (char nul) | drop)
                         mut changes = []
                         mut i = 0
                         loop {
