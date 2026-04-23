@@ -14,8 +14,7 @@
     outputs = inputs@{ self, nixpkgs-stable, nixpkgs-unstable, home-manager, ... }:
         let
             host = "VICTUS";
-            systemVersion = "26.05"; # System version. Do not change, if you don't read release notes. All version variables (nixpkgs-stable version, systemVersion) must be declared in flake.nix, not variables.nix
-            vars = (import ./hosts/${host}/vars.nix) // { inherit host systemVersion; }; # Imports my variables and adds system version variable into vars
+            vars = (import ./hosts/${host}/vars.nix) // { inherit host; }; # Imports my variables and adds host variable into vars
             pkgsConfig = {
                 system = vars.arch;
                 hostPlatform = vars.arch;
