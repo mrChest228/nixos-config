@@ -13,6 +13,12 @@
     };
     outputs = inputs@{ self, nixpkgs-stable, nixpkgs-unstable, home-manager, ... }:
         let
+            lib = nixpkgs-unstable.lib;
+            hosts = builtins.attrNames (
+                lib.filterAttrs
+                    (name: type: type == "directory")
+                    (builtins.readDir ./hosts)
+            );
             host = "VICTUS";
             vars = (import ./hosts/${host}/vars.nix) // { inherit host; }; # Imports my variables and adds host variable into vars
             pkgsConfig = {

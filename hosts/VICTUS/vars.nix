@@ -7,6 +7,11 @@ rec { # For using attrs that was created in this file
         swap = "41e22e4c-9572-47da-aebd-c908ce7c1250";
     };
     
+    users = [
+        "mrchest"
+    ];
+    configPath1 = "/etc/nixos";
+
     user = "mrchest";
     configPath = "/home/${user}/config";
     
