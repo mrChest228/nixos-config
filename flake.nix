@@ -14,7 +14,7 @@
     outputs = inputs@{ self, nixpkgs-stable, nixpkgs-unstable, home-manager, ... }:
         let
             lib = nixpkgs-unstable.lib;
-            hosts = builtins.attrNames (
+            hosts = builtins.attrNames ( # Get only dirs from ./hosts
                 lib.filterAttrs
                     (name: type: type == "directory")
                     (builtins.readDir ./hosts)
@@ -33,9 +33,26 @@
             pkgs = (import nixpkgs-stable pkgsConfig).appendOverlays [(final: prev: {
                 unstable = import nixpkgs-unstable pkgsConfig;
             })];
+
+            mkSys = host: nixpkgs-stable.lib.nixosSystem {
+                inherit lib pkgs;
+                specialArgs = {
+                    libs = inputs;
+                    inherit vars self; # Pass vars and path to flake into all imported modules
+                };
+                modules = [ ./hosts/${host}/config.nix ];
+            };
+            mkHome = host: home-manager.lib.homeManagerConfiguration { # TODO: multiuser
+                inherit lib pkgs;
+                specialArgs = {
+                    libs = inputs;
+                    inherit vars self; # Pass vars and path to flake into all imported modules
+                };
+                modules = [ ./hosts/${host}/home.nix ];
+            };
         in {
             nixosConfigurations.${vars.host} = nixpkgs-stable.lib.nixosSystem {
-                inherit pkgs;
+                inherit lib pkgs;
                 specialArgs = {
                     libs = inputs;
                     inherit vars self; # Pass vars and path to flake into all imported modules
@@ -43,7 +60,7 @@
                 modules = [ ./hosts/${vars.host}/config.nix ];
             };
             homeConfigurations.${vars.user} = home-manager.lib.homeManagerConfiguration {
-                inherit pkgs;
+                inherit lib pkgs;
                 extraSpecialArgs = {
                     libs = inputs;
                     inherit vars self; # Pass vars and path to flake into all imported modules
