@@ -85,7 +85,7 @@
                                 $i = $i + 1
                                 $pths = ($pths | append ($changesGit | get $i))
                             }
-                            let pth = ($pths | last)
+                            let pth = ($pths | get 0)
                             let time = if ($pth | path exists) { ls -D $pth | get 0 | get modified | format date '%Y-%m-%d %H:%M:%S' } else { "?" }
 
                             if ($pths | get 0 | str contains " ") {
@@ -95,8 +95,8 @@
                                 $pths = ($pths | upsert 1 { |pth| $"\"($pth)\"" })
                             }
 
-                            let pthTo = if ($pths | length) == 2 { $" -> ($pths | get 1)" } else { "" }
-                            print $"($color)($x)  ($pths | get 0)($pthTo)(ansi rst) ($time)"
+                            let pthTo = if ($pths | length) == 2 { $" -> ($pths | get 0)" } else { "" }
+                            print $"($color)($x)  ($pths | last)($pthTo)(ansi rst) ($time)"
                             $i = $i + 1
                         }
                         let msg = if ($message | is-empty) { $"Commit (date now | format date '%Y-%m-%d %H:%M:%S %:z')" } else { $message }
