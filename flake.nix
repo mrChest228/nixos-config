@@ -19,8 +19,7 @@
                     (name: type: type == "directory")
                     (builtins.readDir ./hosts)
             );
-            host = "VICTUS";
-            vars = (import ./hosts/${host}/vars.nix) // { inherit host; }; # Imports my variables and adds host variable into vars
+
             pkgsConfig = {
                 system = vars.arch;
                 hostPlatform = vars.arch;
@@ -34,38 +33,32 @@
                 unstable = import nixpkgs-unstable pkgsConfig;
             })];
 
-            mkSys = host: nixpkgs-stable.lib.nixosSystem {
+            mkSys = (host: nixpkgs-stable.lib.nixosSystem {
                 inherit lib pkgs;
                 specialArgs = {
                     libs = inputs;
-                    inherit vars self; # Pass vars and path to flake into all imported modules
+                    vars = (import ./hosts/${host}/vars.nix) // { inherit host; };
+                    inherit self; # Push path to flake into all imported modules
                 };
                 modules = [ ./hosts/${host}/config.nix ];
-            };
-            mkHome = host: home-manager.lib.homeManagerConfiguration { # TODO: multiuser
+            });
+            mkHome = (host: user: vars: home-manager.lib.homeManagerConfiguration { # TODO: multiuser
                 inherit lib pkgs;
                 specialArgs = {
                     libs = inputs;
-                    inherit vars self; # Pass vars and path to flake into all imported modules
+                    inherit self vars; # Push vars and path to flake into all imported modules
                 };
                 modules = [ ./hosts/${host}/home.nix ];
-            };
+            });
         in {
-            nixosConfigurations.${vars.host} = nixpkgs-stable.lib.nixosSystem {
-                inherit lib pkgs;
-                specialArgs = {
-                    libs = inputs;
-                    inherit vars self; # Pass vars and path to flake into all imported modules
-                };
-                modules = [ ./hosts/${vars.host}/config.nix ];
-            };
-            homeConfigurations.${vars.user} = home-manager.lib.homeManagerConfiguration {
-                inherit lib pkgs;
-                extraSpecialArgs = {
-                    libs = inputs;
-                    inherit vars self; # Pass vars and path to flake into all imported modules
-                };
-                modules = [ ./hosts/${vars.host}/home.nix ];
-            };
+            nixosConfigurations = lib.genAttrs hosts mkSys;
+            homeConfigurations = lib.mergeAttrsList (builtins.concatMap (host: # Merge list of lists of dictionaries into a simple list of dicts and then merge them into a single dict
+                let
+                    vars = (import ./hosts/${host}/vars.nix) // { inherit host; };
+                in
+                    builtins.map (user: {
+                        "${user}@${host}" = (mkHome host user (vars // { inherit user; }));
+                    }) vars.users; # Return a list of dicts
+            ) hosts);
         };
 }

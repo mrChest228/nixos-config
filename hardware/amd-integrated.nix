@@ -1,6 +1,10 @@
 { config, lib, pkgs, vars, ... }:
 {
-    hardware.amdgpu.initrd.enable = true;
+    hardware = {
+        amdgpu.initrd.enable = true;
+        cpu.amd.updateMicrocode = true;
+        enableRedistributableFirmware = true;
+    };
     boot = {
         initrd = {
             # Drivers preloading
