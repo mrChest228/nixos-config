@@ -1,6 +1,7 @@
 { config, lib, pkgs, vars, self, ... }:
 {
     fileSystems = {
+        # Partitions
         "/" = {
             device = "/dev/disk/by-uuid/${vars.UUIDs.root}";
             fsType = "btrfs";
@@ -17,17 +18,26 @@
             device = "/dev/disk/by-uuid/${vars.UUIDs.esp}";
             fsType = "vfat";
         };
-        # Bind-mounts
+        # Bind-mounts (X-mount.mkdir option to create the target folder)
         "${vars.configPath}/host" = {
             device = "${vars.configPath}/hosts/${vars.host}";
             fsType = "none";
-            options = [ "bind" ];
+            options = [ "bind" "X-mount.mkdir" ];
         };
-    };
+    } // (lib.mergeAttrsList (builtins.map (user:
+        if lib.hasPrefix "/home/${user}" vars.flakePath then
+            {}
+        else {
+            "/home/${user}/cfg" = {
+                device = "${vars.configPath}";
+                fsType = "none";
+                options = [ "bind" "X-mount.mkdir" ];
+            };
+        }
+    ) vars.users));
 
     systemd.tmpfiles.rules = [
-        "d ${self}/host 0755 ${vars.user} ${vars.user} - -"
-        # "d /home/${vars.user}/.local/share/Trash 0700 ${vars.user} ${vars.user} - -"
+        # "d /home/${user}/.local/share/Trash 0700 ${user} ${user} - -"
     ];
     # TODO: trash big compression
     
@@ -38,7 +48,7 @@
     boot = {
         kernel.sysctl = {
             "vm.swappiness" = 20; # Count of swap using (0..100 value)
-            "vm.overcommit_memory" = 2; # Don't allocate more memory, than RAM + Swap are
+            "vm.overcommit_memory" = 2; # Don't allocate more memory than RAM + Swap are
             "vm.overcommit_ratio" = 95; # Accept allocate almost all the available RAM
         };
         kernelParams = [ "resume=UUID=${vars.UUIDs.swap}" ];
@@ -52,8 +62,8 @@
             interval = "monthly";
         };
     };
-    zramSwap = {
-        enable = true; # Compress unactive RAM (zstd)
+    zramSwap = { # Compress unactive RAM (zstd)
+        enable = true;
         memoryPercent = 100;
         priority = 999;
     };
