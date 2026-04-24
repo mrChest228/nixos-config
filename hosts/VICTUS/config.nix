@@ -14,6 +14,8 @@
     };
     # services.getty.autologinUser = vars.user;
 
+    networking.hostName = vars.host;
+
     time.timeZone = vars.timeZone;
     
     i18n.defaultLocale = "en_US.UTF-8"; # Programs language

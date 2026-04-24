@@ -1,7 +1,6 @@
 { config, lib, libs, pkgs, vars, self, ... }:
 {
     networking = {
-        hostName = vars.host;
         nameservers = [
             "1.1.1.1"
             "8.8.8.8"
