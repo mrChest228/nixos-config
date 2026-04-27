@@ -10,10 +10,7 @@ rec { # For using attrs that was created in this file
     users = [
         "mrchest"
     ];
-    configPath1 = "/etc/nixos";
-
-    user = "mrchest";
-    configPath = "/home/${user}/config";
+    configPath = "/etc/nixos";
     
     timeZone = "Europe/Minsk";
 }
