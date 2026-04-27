@@ -19,4 +19,5 @@
             '';
         };
     };
+    users.users.root.hashedPassword = null; # I can't login to root user. Only @wheel
 }

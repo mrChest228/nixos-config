@@ -1,13 +1,13 @@
 { config, lib, libs, pkgs, vars, self, ... }:
 {
     imports = [
-        ( libs.import-tree (self + /nixos) )
-        ( libs.import-tree ./nixos )
-        ( libs.import-tree ./hardware )
+        ( libs.import-tree ./sys/hardware )
+        ( libs.import-tree (self + /sys) )
+        ( libs.import-tree ./sys )
         libs.determinate.nixosModules.default
     ];
     
-    users.users.${vars.user} = {
+    users.users."mrchest" = {
         isNormalUser = true;
         extraGroups = [ "wheel" "networkmanager" ];
         initialHashedPassword = "";
