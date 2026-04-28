@@ -1,8 +1,8 @@
-{ config, libs, lib, pkgs, vars, self, ... }:
+{ config, lib, pkgs, vars, self, ... }:
 {
     imports = [
-        ( libs.import-tree (self + /hm) )
-        ( libs.import-tree ./modules )
+        ( lib.importTree (self + /hm) )
+        ( lib.importTopLevel .. )
     ];
     home = {
         username = vars.user;

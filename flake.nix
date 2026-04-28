@@ -13,7 +13,10 @@
     };
     outputs = inputs@{ self, nixpkgs-stable, nixpkgs-unstable, home-manager, ... }:
         let
-            lib = nixpkgs-unstable.lib;
+            lib = nixpkgs-unstable.lib // { # Standart lib + my own functions
+                importTree = inputs.import-tree;
+                importTopLevel = dir: (inputs.import-tree.match "^[^/]+\\.nix$" dir)
+            };
             hosts = builtins.attrNames ( # Get only dirs from ./hosts
                 lib.filterAttrs
                     (name: type: type == "directory")
@@ -36,7 +39,6 @@
             mkSys = (host: nixpkgs-stable.lib.nixosSystem {
                 inherit lib pkgs;
                 specialArgs = {
-                    libs = inputs;
                     vars = (import ./hosts/${host}/vars.nix) // { inherit host; };
                     inherit self; # Push path to flake into all imported modules
                 };
@@ -45,10 +47,9 @@
             mkHome = (host: user: vars: home-manager.lib.homeManagerConfiguration { # TODO: multiuser
                 inherit lib pkgs;
                 specialArgs = {
-                    libs = inputs;
                     inherit self vars; # Push vars and path to flake into all imported modules
                 };
-                modules = [ ./hosts/${host}/home.nix ];
+                modules = [ (inputs.import-tree ./hosts/${host}/hm/${user}) ];
             });
         in {
             nixosConfigurations = lib.genAttrs hosts mkSys;
