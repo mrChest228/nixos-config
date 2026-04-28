@@ -15,7 +15,7 @@
         let
             lib = nixpkgs-unstable.lib // { # Standart lib + my own functions
                 importTree = inputs.import-tree;
-                importTopLevel = dir: (inputs.import-tree.match "^[^/]+\\.nix$" dir)
+                importTopLevel = dir: (inputs.import-tree.match "^[^/]+\\.nix$" dir);
             };
             hosts = builtins.attrNames ( # Get only dirs from ./hosts
                 lib.filterAttrs
