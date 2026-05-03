@@ -1,7 +1,8 @@
 { config, lib, pkgs, vars, self, ... }:
 {
     imports = [
-        ( lib.importTree (self + /hm) )
+        ( lib.importTopLevel (self + /hm) )
+        ( lib.importTopLevel (self + /hm/${vars.user}) )
         ( lib.importTopLevel .. )
     ];
     home = {
