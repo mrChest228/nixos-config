@@ -53,7 +53,7 @@
             mkHome = (vars: home-manager.lib.homeManagerConfiguration {
                 inherit lib;
                 pkgs = mkPkgs vars.arch;
-                specialArgs = {
+                extraSpecialArgs = {
                     inherit self vars; # Push vars and path to flake into all imported modules
                 };
                 modules = [ (lib.importTopLevel ./hosts/${vars.host}/hm/${vars.user}) ];
