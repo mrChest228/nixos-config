@@ -38,7 +38,7 @@
                 })]
             );
 
-            mkSys = (host: nixpkgs-stable.lib.nixosSystem
+            mkSys = (host: nixpkgs-stable.lib.nixosSystem (
                 let
                     vars = (import ./hosts/${host}/vars.nix) // { inherit host; };
                 in {
@@ -48,10 +48,11 @@
                         inherit self vars; # Push path to flake and vars into all imported modules
                     };
                     modules = [ ./hosts/${host}/config.nix ];
-                }
+                })
             );
             mkHome = (vars: home-manager.lib.homeManagerConfiguration {
-                inherit lib pkgs;
+                inherit lib;
+                pkgs = mkPkgs vars.arch;
                 specialArgs = {
                     inherit self vars; # Push vars and path to flake into all imported modules
                 };
