@@ -3,7 +3,7 @@
     imports = [
         ( lib.importTopLevel (self + /hm) )
         ( lib.importTopLevel (self + /hm/${vars.user}) )
-        ( lib.importTopLevel .. )
+        ( lib.importTopLevel .. ) # host/hm
     ];
     home = {
         username = vars.user;
