@@ -13,7 +13,8 @@
     };
     outputs = inputs@{ self, nixpkgs-stable, nixpkgs-unstable, home-manager, ... }:
         let
-            lib = nixpkgs-unstable.lib // { # Standart lib + my own functions
+            lib = nixpkgs-unstable.lib;
+            myLib = {
                 importTree = inputs.import-tree;
                 importTopLevel = dir: (inputs.import-tree.match "^/[^/]+\\.nix$" dir);
             };
@@ -44,7 +45,8 @@
                 in {
                     pkgs = mkPkgs vars.arch;
                     specialArgs = {
-                        inherit lib vars self; # self is a path to the flake
+                        lib = lib // myLib;
+                        inherit vars self; # self is a path to the flake
                     };
                     modules = [
                         inputs.determinate.nixosModules.default # To make Determinate.nix works
@@ -55,7 +57,8 @@
             mkHome = (vars: home-manager.lib.homeManagerConfiguration {
                 pkgs = mkPkgs vars.arch;
                 extraSpecialArgs = {
-                    inherit lib vars self; # self is a path to the flake
+                    lib = home-manager.lib // myLib;
+                    inherit vars self; # self is a path to the flake
                 };
                 modules = [ ./hosts/${vars.host}/hm/${vars.user}/_home.nix ]; # _ so as not to import with import-tree
             });
