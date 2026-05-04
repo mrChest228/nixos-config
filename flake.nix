@@ -57,7 +57,7 @@
                 extraSpecialArgs = {
                     inherit lib vars self; # self is a path to the flake
                 };
-                modules = [ ./hosts/${vars.host}/hm/${vars.user}/home.nix ]; # _ so as not to import with import-tree
+                modules = [ ./hosts/${vars.host}/hm/${vars.user}/_home.nix ]; # _ so as not to import with import-tree
             });
         in {
             nixosConfigurations = lib.genAttrs hosts mkSys;

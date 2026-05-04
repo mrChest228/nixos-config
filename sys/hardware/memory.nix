@@ -25,7 +25,7 @@
             options = [ "bind" "X-mount.mkdir" ];
         };
     } // (lib.mergeAttrsList (builtins.map (user:
-        if lib.hasPrefix "/home/${user}" vars.flakePath then
+        if lib.hasPrefix "/home/${user}" vars.configPath then
             {}
         else {
             "/home/${user}/cfg" = {

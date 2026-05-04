@@ -15,7 +15,7 @@
             enable = true;
             extraConfig = ''
                 # Enable sudo without password for mrchest
-                ${vars.user} ALL=(ALL) NOPASSWD: ALL
+                "mrchest" ALL=(ALL) NOPASSWD: ALL
             '';
         };
     };
