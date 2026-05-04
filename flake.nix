@@ -42,21 +42,22 @@
                 let
                     vars = (import ./hosts/${host}/vars.nix) // { inherit host; };
                 in {
-                    inherit lib;
                     pkgs = mkPkgs vars.arch;
                     specialArgs = {
-                        inherit self vars; # Push path to flake and vars into all imported modules
+                        inherit lib vars self; # self is a path to the flake
                     };
-                    modules = [ ./hosts/${host}/config.nix ];
+                    modules = [
+                        inputs.determinate.nixosModules.default # To make Determinate.nix works
+                        ./hosts/${host}/sys/_config.nix         # _ so as not to import with import-tree
+                    ];
                 })
             );
             mkHome = (vars: home-manager.lib.homeManagerConfiguration {
-                inherit lib;
                 pkgs = mkPkgs vars.arch;
                 extraSpecialArgs = {
-                    inherit self vars; # Push vars and path to flake into all imported modules
+                    inherit lib vars self; # self is a path to the flake
                 };
-                modules = [ ./hosts/${vars.host}/hm/${vars.user}/home.nix ];
+                modules = [ ./hosts/${vars.host}/hm/${vars.user}/home.nix ]; # _ so as not to import with import-tree
             });
         in {
             nixosConfigurations = lib.genAttrs hosts mkSys;

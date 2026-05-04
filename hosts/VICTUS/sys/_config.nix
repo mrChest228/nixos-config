@@ -1,10 +1,9 @@
 { config, lib, pkgs, vars, self, ... }:
 {
     imports = [
-        libs.determinate.nixosModules.default
-        ( libs.importTopLevel (self + /sys) )
-        ( libs.importTopLevel ./hardware )
-        ( libs.importTopLevel . )
+        ( lib.importTopLevel (self + /sys) )
+        ( lib.importTopLevel ./hardware )
+        ( lib.importTopLevel ./. )
     ];
     
     users.users."mrchest" = {
