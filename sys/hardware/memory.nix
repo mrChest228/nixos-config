@@ -62,9 +62,4 @@
             interval = "monthly";
         };
     };
-    zramSwap = { # Compress unactive RAM (zstd)
-        enable = true;
-        memoryPercent = 100;
-        priority = 999;
-    };
 }
