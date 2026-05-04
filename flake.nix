@@ -56,7 +56,7 @@
                 extraSpecialArgs = {
                     inherit self vars; # Push vars and path to flake into all imported modules
                 };
-                modules = [ (lib.importTopLevel ./hosts/${vars.host}/hm/${vars.user}) ];
+                modules = [ ./hosts/${vars.host}/hm/${vars.user}/home.nix ];
             });
         in {
             nixosConfigurations = lib.genAttrs hosts mkSys;
