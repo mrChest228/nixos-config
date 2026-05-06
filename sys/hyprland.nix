@@ -2,7 +2,7 @@
 {
     programs.hyprland = {
         enable = true;
-        package = pkgs.unstable.hyprland;
+        package = pkgs.hyprland;
         withUWSM = true;
     };
 }

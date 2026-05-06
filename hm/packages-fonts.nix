@@ -2,7 +2,6 @@
 {
     fonts.fontconfig.enable = true;
     home.packages = with pkgs; [
-    ] ++ (with pkgs.unstable; [
         fastfetch
         # Benchmarks
         # Sensors
@@ -36,5 +35,6 @@
         nerd-fonts.jetbrains-mono
 
         font-awesome
+    ] ++ (with pkgs.unstable; [
     ]);
 }

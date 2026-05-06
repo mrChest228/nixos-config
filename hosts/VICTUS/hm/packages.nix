@@ -4,7 +4,6 @@
         (self + /hm/packages-fonts.nix) # Import the default HM packages (like fonts, etc.)
     ];
     home.packages = with pkgs; [
-    ] ++ (with pkgs.unstable; [
         # Desktop
         waybar
         # Wallpapers
@@ -22,5 +21,6 @@
         ghostty
         wezterm
         firefox
+    ] ++ (with pkgs.stable; [
     ]);
 }
