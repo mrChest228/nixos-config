@@ -13,11 +13,10 @@
     };
     outputs = inputs@{ self, nixpkgs-stable, nixpkgs-unstable, home-manager, ... }:
         let
-            lib = nixpkgs-unstable.lib;
-            myLib = {
+            lib = nixpkgs-unstable.lib.extend (final: prev: (home-manager.lib // {
                 importTree = inputs.import-tree;
                 importTopLevel = dir: (inputs.import-tree.match "^/[^/]+\\.nix$" dir);
-            };
+            }));
             hosts = builtins.attrNames ( # Get only dirs from ./hosts
                 lib.filterAttrs
                     (name: type: type == "directory")
@@ -34,8 +33,8 @@
                 };
             });
             mkPkgs = (arch:
-                (import nixpkgs-stable (pkgsConfig arch)).appendOverlays [(final: prev: {
-                    unstable = import nixpkgs-unstable (pkgsConfig arch);
+                (import nixpkgs-unstable (pkgsConfig arch)).appendOverlays [(final: prev: {
+                    stable = import nixpkgs-stable (pkgsConfig arch);
                 })]
             );
 
@@ -43,10 +42,9 @@
                 let
                     vars = (import ./hosts/${host}/vars.nix) // { inherit host; };
                 in {
-                    pkgs = mkPkgs vars.arch;
                     specialArgs = {
-                        lib = lib // myLib;
-                        inherit vars self; # self is a path to the flake
+                        myPkgs = mkPkgs vars.arch;
+                        inherit lib vars self; # self is a path to the flake
                     };
                     modules = [
                         inputs.determinate.nixosModules.default # To make Determinate.nix works
@@ -57,8 +55,7 @@
             mkHome = (vars: home-manager.lib.homeManagerConfiguration {
                 pkgs = mkPkgs vars.arch;
                 extraSpecialArgs = {
-                    lib = home-manager.lib // myLib;
-                    inherit vars self; # self is a path to the flake
+                    inherit lib vars self; # self is a path to the flake
                 };
                 modules = [ ./hosts/${vars.host}/hm/${vars.user}/_home.nix ]; # _ so as not to import with import-tree
             });
