@@ -1,4 +1,4 @@
-{ config, lib, pkgs, vars, self, ... }:
+{ config, lib, myPkgs, vars, self, ... }:
 {
     imports = [
         ( lib.importTopLevel (self + /sys) )

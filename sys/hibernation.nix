@@ -8,11 +8,12 @@
         HandleLidSwitch = "suspend-then-hibernate"; # Suspend first, then hibernate when the lid is closed
     };
     # Define extra configs for hibernation
-    systemd.sleep.extraConfig = '' 
-        HibernateMode=shutdown
-        HibernateDelaySec=30m
-        HibernateState=disk
-        SuspendState=mem
-    '';
+    # TODO
+    # systemd.sleep.extraConfig = '' 
+    #     HibernateMode=shutdown
+    #     HibernateDelaySec=30m
+    #     HibernateState=disk
+    #     SuspendState=mem
+    # '';
     boot.kernelParams = [ "mem_sleep_default=deep" ];
 }

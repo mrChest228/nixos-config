@@ -31,6 +31,9 @@
                     cuda.acceptLicense = true;
                     permittedInsecurePackages = []; # Clever people use this
                 };
+                overlays = [(final: prev: {
+                    inherit lib;
+                })];
             });
             mkPkgs = (arch:
                 (import nixpkgs-unstable (pkgsConfig arch)).appendOverlays [(final: prev: {
@@ -38,12 +41,12 @@
                 })]
             );
 
-            mkSys = (host: nixpkgs-stable.lib.nixosSystem (
+            mkSys = (host: nixpkgs-unstable.lib.nixosSystem (
                 let
                     vars = (import ./hosts/${host}/vars.nix) // { inherit host; };
                 in {
+                    pkgs = mkPkgs vars.arch;
                     specialArgs = {
-                        myPkgs = mkPkgs vars.arch;
                         inherit lib vars self; # self is a path to the flake
                     };
                     modules = [
