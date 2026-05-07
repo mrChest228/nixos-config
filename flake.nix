@@ -13,10 +13,12 @@
     };
     outputs = inputs@{ self, nixpkgs-stable, nixpkgs-unstable, home-manager, ... }:
         let
-            lib = nixpkgs-unstable.lib.extend (final: prev: (home-manager.lib // {
+            mkLib = (pkgs: pkgs.lib.extend (final: prev: (home-manager.lib // {
                 importTree = inputs.import-tree;
                 importTopLevel = dir: (inputs.import-tree.match "^/[^/]+\\.nix$" dir);
-            }));
+            })));
+            lib = mkLib nixpkgs-unstable;
+
             hosts = builtins.attrNames ( # Get only dirs from ./hosts
                 lib.filterAttrs
                     (name: type: type == "directory")
@@ -31,13 +33,15 @@
                     cuda.acceptLicense = true;
                     permittedInsecurePackages = []; # Clever people use this
                 };
-                overlays = [(final: prev: {
-                    inherit lib;
-                })];
             });
+            mkPkgsLib = (pkgs: arch:
+                (import pkgs (pkgsConfig arch)).appendOverlays [(final: prev: {
+                    lib = mkLib pkgs;
+                })]
+            );
             mkPkgs = (arch:
-                (import nixpkgs-unstable (pkgsConfig arch)).appendOverlays [(final: prev: {
-                    stable = import nixpkgs-stable (pkgsConfig arch);
+                (mkPkgsLib nixpkgs-unstable arch).appendOverlays [(final: prev: {
+                    stable = (mkPkgsLib nixpkgs-stable arch);
                 })]
             );
 
