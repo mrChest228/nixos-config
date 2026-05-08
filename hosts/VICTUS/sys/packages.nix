@@ -1,7 +1,6 @@
 { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
         cudaPackages.cudatoolkit
-    ] ++ (with pkgs.unstable; [
         #dmidecode # Gets BIOS and firmware drivers/microcodes info
         #acpica-tools # Tool for fixing bootloading ACPI-bug
         #dracut # Tool to see initrd imported modules
@@ -24,8 +23,9 @@
         # Terminal utilities
         btop
         nvtopPackages.full
-        git
+        # git
         trash-cli
+    ] ++ (with pkgs.stable; [
     ]);
     fonts.packages = with pkgs.unstable; [
     ];

@@ -4,7 +4,7 @@
         graphics = {
             enable = true;
             enable32Bit = true;
-            extraPackages = with pkgs; [
+            extraPackages = with pkgs.stable; [
                 # Diagnostic utilities
                 vulkan-tools
                 # Driver for hardware video acceleraion
@@ -14,12 +14,14 @@
             ];
         };
         nvidia = {
+            package = pkgs.linuxPackages_latest.nvidiaPackages.stable;
             modesetting.enable = true;
             open = false;
             powerManagement = {
                 enable = true;
                 finegrained = true;
             };
+            dynamicBoost.enable = true;
             prime = { # Starts GPU by nvidia-offload command
                 offload = {
                     enable = true;

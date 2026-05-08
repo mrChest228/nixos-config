@@ -47,9 +47,9 @@
     }];
     boot = {
         kernel.sysctl = {
-            "vm.swappiness" = 20; # Count of swap using (0..100 value)
+            "vm.swappiness" = 50      ; # Count of swap using (0..100 value) and zram compressing start time (50 is about 80% of RAM)
             "vm.overcommit_memory" = 2; # Don't allocate more memory than RAM + Swap are
-            "vm.overcommit_ratio" = 95; # Accept allocate almost all the available RAM
+            "vm.overcommit_ratio" = 95; # Accept to allocate almost all the available RAM
         };
         kernelParams = [ "resume=UUID=${vars.UUIDs.swap}" ];
     };

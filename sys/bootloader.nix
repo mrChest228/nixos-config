@@ -10,7 +10,7 @@
                 enable = true;
                 editor = false; # For security
             };
-            timeout = 3; # Loader pause
+            timeout = 3; # Gens selecting pause
         };
         initrd = {
             systemd.enable = true; # Speeds up boot

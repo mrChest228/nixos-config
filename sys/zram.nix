@@ -3,7 +3,8 @@
     # RAM compress (zstd)
     zramSwap = { # TODO: lib.mkDefault 100% & 16GB max
         enable = true;
-        memoryPercent = 100;
+        algorithm = "zstd";
+        memoryPercent = 50;
         priority = 999;
     };
 }
