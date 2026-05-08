@@ -4,7 +4,7 @@
         graphics = {
             enable = true;
             enable32Bit = true;
-            extraPackages = with pkgs.stable; [
+            extraPackages = with pkgs; [
                 # Diagnostic utilities
                 vulkan-tools
                 # Driver for hardware video acceleraion
