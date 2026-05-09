@@ -8,15 +8,13 @@
             options = [
                 "noatime"
                 "compress=zstd:1" # Fast compression
-                "ssd"             # SSD optimizations
                 "discard=async"   # Async TRIM (hz)
-                "space_cache=v2"  # Effectieve caching
-                "autodefrag"
             ];
         };
         "/boot" = { # ESP
-            device = "/dev/disk/by-uuid/${vars.UUIDs.esp}";
+            device = "/dev/disk/by-id/nvme-SAMSUNG_MZVL2512HCJQ-00BH1_S63ZNX0T444254-part1"; # The first part of my disk (I can change its uuid however I want). See in ls -l /dev/disk/by-id
             fsType = "vfat";
+            options = [ "umask=0077" ]; # For security (hz)
         };
         # Bind-mounts (X-mount.mkdir option to create the target folder)
         "${vars.configPath}/host" = {
@@ -51,7 +49,7 @@
             "vm.overcommit_memory" = 2; # Don't allocate more memory than RAM + Swap are
             "vm.overcommit_ratio" = 95; # Accept to allocate almost all the available RAM
         };
-        kernelParams = [ "resume=UUID=${vars.UUIDs.swap}" ];
+        kernelParams = [ "resume=UUID=${vars.UUIDs.swap}" ]; # TODO: migrate to boot.resumeDevice
     };
 
     # Optimizations
