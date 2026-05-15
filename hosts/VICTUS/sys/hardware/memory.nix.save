@@ -11,11 +11,11 @@
                 "discard=async"   # Async TRIM (hz)
             ];
         };
-        # "/boot" = { # ESP
-        #     device = "/dev/disk/by-id/nvme-SAMSUNG_MZVL2512HCJQ-00BH1_S63ZNX0T444254-part1"; # The first part of my disk (I can change its uuid however I want). See in ls -l /dev/disk/by-id
-        #     fsType = "vfat";
-        #     options = [ "umask=0077" ]; # For security (hz)
-        # };
+        "/boot" = { # ESP
+            device = "/dev/disk/by-id/nvme-SAMSUNG_MZVL2512HCJQ-00BH1_S63ZNX0T444254-part1"; # The first part of my disk (I can change its uuid however I want). See in ls -l /dev/disk/by-id
+            fsType = "vfat";
+            options = [ "umask=0077" ]; # For security (hz)
+        };
         # Bind-mounts (X-mount.mkdir option to create the target folder)
         "${vars.configPath}/host" = {
             device = "${vars.configPath}/hosts/${vars.host}";
@@ -39,10 +39,7 @@
     ];
     # TODO: trash big compression
     
-    # Swap partition
-    swapDevices = [{
-        device = "/dev/disk/by-uuid/${vars.UUIDs.swap}";
-    }];
+    # Swap partition for hibernation
     boot = {
         kernel.sysctl = {
             "vm.swappiness" = 50      ; # Count of swap using (0..100 value) and zram compressing start time (50 is about 80% of RAM)

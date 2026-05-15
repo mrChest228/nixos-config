@@ -13,8 +13,10 @@
             timeout = 3; # Gens selecting pause
         };
         initrd = {
-            systemd.enable = true; # Speeds up boot
+            systemd.enable = true;
+            # Compress the images
             compressor = "zstd";
+            compressorArgs = [ "-15" "-T0" ]; # zstd 15 level, use all CPU cores
         };
         kernel.sysctl = {
             
