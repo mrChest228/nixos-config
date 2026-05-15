@@ -22,7 +22,7 @@
         script = let
             od = "${pkgs.coreutils}/bin/od";
             tr = "${pkgs.coreutils}/bin/tr";
-            mount = "${pkgs.util-linix}/bin/mount";
+            mount = "${pkgs.util-linux}/bin/mount";
             mountpoint = "${pkgs.util-linux}/bin/mountpoint";
         in ''
             # Fast exit if we are booting not in the UEFI-mode or /boot is already mounted
