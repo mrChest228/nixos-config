@@ -2,11 +2,12 @@
     boot.initrd.systemd.services.smart-boot-mount = {
         description = "Mount /boot based on UEFI BootCurrent/Boot000X variables only";
         # After the /dev/* and efivarfs
-        wants = [ "systemd-udev-settle.service" ];
+        wants = [ "systemd-udev-settle.service" ]; # Run udev-settle if it doesn't run
         after = [
             "systemd-udev-settle.service"
             "modprobe@fivarfs.service"
         ];
+        wantedBy = [ "initrd-fs.target" ]; # Run me when initrd-fs ends
         # Before root switching
         before = [
             "local-fs-pre.target"
