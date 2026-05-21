@@ -34,10 +34,7 @@
     ];
     # TODO: trash big compression
     
-    # Swap partition
-    swapDevices = [{
-        device = "/dev/disk/by-partlabel/${vars.host}-swap";
-    }];
+    # Swap partition is in sys/zswap.nix (todo)
     boot = {
         kernel.sysctl = {
             "vm.swappiness" = 50      ; # Count of swap using (0..100 value) and zram compressing start time (50 is about 80% of RAM)

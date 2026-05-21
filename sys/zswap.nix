@@ -1,6 +1,6 @@
 { config, lib, pkgs, vars, self, ... }: {
     swapDevices = [{
-        device = "/dev/disk/by-uuid/${vars.UUIDs.swap}";
+        device = "/dev/disk/by-partlabel/${vars.host}-swap";
     }];
     boot.zswap = {
         enable = true;
