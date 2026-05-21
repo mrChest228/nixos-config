@@ -3,7 +3,7 @@
     fileSystems = {
         # Partitions
         "/" = {
-            device = "/dev/disk/by-uuid/${vars.UUIDs.root}";
+            device = "/dev/disk/by-partuuid/${vars.host}-root";
             fsType = "btrfs";
             options = [
                 "noatime"
@@ -11,11 +11,6 @@
                 "discard=async"   # Async TRIM (hz)
             ];
         };
-        # "/boot" = { # ESP
-        #     device = "/dev/disk/by-id/nvme-SAMSUNG_MZVL2512HCJQ-00BH1_S63ZNX0T444254-part1"; # The first part of my disk (I can change its uuid however I want). See in ls -l /dev/disk/by-id
-        #     fsType = "vfat";
-        #     options = [ "umask=0077" ]; # For security (hz)
-        # };
         # Bind-mounts (X-mount.mkdir option to create the target folder)
         "${vars.configPath}/host" = {
             device = "${vars.configPath}/hosts/${vars.host}";
@@ -41,7 +36,7 @@
     
     # Swap partition
     swapDevices = [{
-        device = "/dev/disk/by-uuid/${vars.UUIDs.swap}";
+        device = "/dev/disk/by-partlabel/${vars.host}-swap";
     }];
     boot = {
         kernel.sysctl = {
@@ -49,7 +44,7 @@
             "vm.overcommit_memory" = 2; # Don't allocate more memory than RAM + Swap are
             "vm.overcommit_ratio" = 95; # Accept to allocate almost all the available RAM
         };
-        kernelParams = [ "resume=UUID=${vars.UUIDs.swap}" ]; # TODO: migrate to boot.resumeDevice
+        resumeDevice = "/dev/disk/by-partlabel/${vars.host}-swap";
     };
 
     # Optimizations
