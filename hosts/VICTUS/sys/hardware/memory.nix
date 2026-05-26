@@ -3,7 +3,7 @@
     fileSystems = {
         # Partitions
         "/" = {
-            device = "/dev/disk/by-partuuid/${vars.host}-root";
+            device = "/dev/disk/by-partlabel/${vars.host}-root";
             fsType = "btrfs";
             options = [
                 "noatime"
@@ -34,7 +34,7 @@
     ];
     # TODO: trash big compression
     
-    # Swap partition is in sys/zswap.nix (todo)
+    # Swap partition is in sys/zswap.nix (todo + let swapPath = "/dev/disk..." and use in swapDevices and boot.resumeDevice)
     boot = {
         kernel.sysctl = {
             "vm.swappiness" = 50      ; # Count of swap using (0..100 value) and zram compressing start time (50 is about 80% of RAM)
