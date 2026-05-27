@@ -14,7 +14,7 @@
             ];
         };
         nvidia = {
-            package = pkgs.linuxPackages_latest.nvidiaPackages.stable;
+            branch = "bleeding_edge";
             modesetting.enable = true;
             open = false;
             powerManagement = {
@@ -41,7 +41,7 @@
         initrd.availableKernelModules = [ "nvidia" ];
         kernelParams =  [ "nvidia-drm.modeset=1" ];
         blacklistedKernelModules = [ "nouveau" ]; # Disable not proprietary nvidia driver for boot's speeding up
-        extraModulePackages = [ config.boot.kernelPackages.nvidiaPackages.production ];
+        extraModulePackages = [ config.hardware.nvidia.package ];
     };
 
     environment.sessionVariables = {
