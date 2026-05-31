@@ -10,6 +10,10 @@
         determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
         # Libs
         import-tree.url = "github:vic/import-tree";
+        nix-index-database = { # Needs for nix-index and comma fast search/index
+            url = "github:nix-community/nix-index-database";
+            inputs.nixpkgs.follows = "nixpkgs-unstable";
+        };
     };
     outputs = inputs@{ self, nixpkgs-stable, nixpkgs-unstable, home-manager, ... }:
         let
@@ -55,6 +59,7 @@
                     };
                     modules = [
                         inputs.determinate.nixosModules.default # To make Determinate.nix works
+                        inputs.nix-index-database.nixosModules.nix-index
                         ./hosts/${host}/sys/_config.nix         # _ so as not to import with import-tree
                     ];
                 })

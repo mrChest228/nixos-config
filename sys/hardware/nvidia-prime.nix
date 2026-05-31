@@ -14,7 +14,7 @@
             ];
         };
         nvidia = {
-            branch = "bleeding_edge";
+            package = pkgs.linuxPackages_latest.nvidiaPackages.stable;
             modesetting.enable = true;
             open = false;
             powerManagement = {
