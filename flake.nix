@@ -59,8 +59,7 @@
                     };
                     modules = [
                         inputs.determinate.nixosModules.default # To make Determinate.nix works
-                        inputs.nix-index-database.nixosModules.nix-index
-                        ./hosts/${host}/sys/_config.nix         # _ so as not to import with import-tree
+                        ./hosts/${host}/sys/_config.nix         # _ needs to protect the import with import-tree
                     ];
                 })
             );
@@ -69,7 +68,10 @@
                 extraSpecialArgs = {
                     inherit lib vars self; # self is a path to the flake
                 };
-                modules = [ ./hosts/${vars.host}/hm/${vars.user}/_home.nix ]; # _ so as not to import with import-tree
+                modules = [
+                    inputs.nix-index-database.hmModules.nix-index
+                    ./hosts/${vars.host}/hm/${vars.user}/_home.nix # _ needs to protect the import with import-tree
+                ];
             });
         in {
             nixosConfigurations = lib.genAttrs hosts mkSys;
