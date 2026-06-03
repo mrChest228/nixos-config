@@ -1,5 +1,4 @@
-{ config, lib, pkgs, vars, self, ... }:
-{
+{ config, lib, pkgs, vars, self, ... }: {
     imports = [
         ( lib.importTopLevel (self + /sys) )
         ( lib.importTopLevel ./hardware )

@@ -5,7 +5,7 @@
         systemd.enable = true;
         settings = {
             bind = [
-                "SUPER, Q, exec, ghostty"
+                "SUPER, Q, exec, wezterm"
                 "SUPER, C, killactive"
             ];
         };

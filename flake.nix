@@ -8,6 +8,11 @@
         };
         # Fast nix-eval
         determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
+        # Niri
+        niri = {
+            url = "github:sodiboo/niri-flake";
+            inputs.nixpkgs.follows = "nixpkgs-unstable";
+        };
         # Libs
         import-tree.url = "github:vic/import-tree";
         nix-index-database = { # Needs for nix-index and comma fast search/index
@@ -69,7 +74,8 @@
                     inherit lib vars self; # self is a path to the flake
                 };
                 modules = [
-                    inputs.nix-index-database.hmModules.nix-index
+                    inputs.nix-index-database.homeModules.nix-index
+                    inputs.niri.homeModules.niri
                     ./hosts/${vars.host}/hm/${vars.user}/_home.nix # _ needs to protect the import with import-tree
                 ];
             });
