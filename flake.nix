@@ -65,6 +65,7 @@
                     };
                     modules = [
                         inputs.determinate.nixosModules.default # To make Determinate.nix works
+                        inputs.nix-index-database.nixosModules.nix-index
                         ./hosts/${host}/sys/_config.nix         # _ needs to protect the import with import-tree
                     ];
                 })
@@ -75,7 +76,6 @@
                     inherit lib vars self; # self is a path to the flake
                 };
                 modules = [
-                    inputs.nix-index-database.homeModules.nix-index
                     inputs.niri.homeModules.niri
                     ./hosts/${vars.host}/hm/${vars.user}/_home.nix # _ needs to protect the import with import-tree
                 ];
