@@ -43,14 +43,15 @@
                     permittedInsecurePackages = []; # Clever people use this
                 };
             });
-            mkPkgsLib = (pkgs: arch:
-                (import pkgs (pkgsConfig arch)).appendOverlays [(final: prev: {
-                    lib = mkLib pkgs;
-                })]
+            mkPkgsOverlays = (pkgs: arch:
+                (import pkgs (pkgsConfig arch)).appendOverlays [
+                    (final: prev: { lib = mkLib pkgs; }) # Normal lib everywhere
+                    # (final: prev: { comma-with-db = prev.comma-with-db.override { nix = final.nix } }) # Removes warning "unknown setting 'eval-cores' and 'lazy-trees'" from determinate nix config
+                ]
             );
             mkPkgs = (arch:
-                (mkPkgsLib nixpkgs-unstable arch).appendOverlays [(final: prev: {
-                    stable = (mkPkgsLib nixpkgs-stable arch);
+                (mkPkgsOverlays nixpkgs-unstable arch).appendOverlays [(final: prev: {
+                    stable = (mkPkgsOverlays nixpkgs-stable arch);
                 })]
             );
 
