@@ -22,7 +22,7 @@
                 finegrained = true;
             };
             dynamicBoost.enable = true;
-            nvidiaPersistent = false; # It uses too much energy on battery
+            nvidiaPersistenced = false; # It uses too much energy on battery
             prime = { # Starts GPU by nvidia-offload command
                 offload = {
                     enable = true;
