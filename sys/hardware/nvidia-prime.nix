@@ -22,6 +22,7 @@
                 finegrained = true;
             };
             dynamicBoost.enable = true;
+            nvidiaPersistenced = true;
             prime = { # Starts GPU by nvidia-offload command
                 offload = {
                     enable = true;
@@ -39,7 +40,10 @@
 
     boot = {
         initrd.availableKernelModules = [ "nvidia" ];
-        kernelParams =  [ "nvidia-drm.modeset=1" ];
+        kernelParams =  [
+            "nvidia-drm.modeset=1"
+            "pcie_aspm=force" # Ignore BIOS prohibition to sleep the unactive PCIe lines (useful for battery power save)
+        ];
         blacklistedKernelModules = [ "nouveau" ]; # Disable not proprietary nvidia driver for boot's speeding up
         extraModulePackages = [ config.hardware.nvidia.package ];
     };

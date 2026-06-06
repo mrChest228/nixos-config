@@ -27,8 +27,8 @@
             # "quiet"                     # Minimize kernel output (speeds up)
             # "initcall_debug=n"          # Disables debug calls (speeds up)
             # "systemd.show_status=0"     # Hide loading status (speeds up)
-            "loglevel=3"                # Shows only critical errors
-            "pcie_aspm=off"             # Removes lags
+            "loglevel=3"                  # Shows only critical errors
+            "pcie=noaer"                  # Disable PCIe error logging
         ];
     };
     systemd.services = {

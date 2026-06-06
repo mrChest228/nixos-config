@@ -1,8 +1,0 @@
-{ config, lib, pkgs, vars, self, ... }: {
-    nixpkgs.overlays = [(final: prev: {
-        comma = prev.comma.override { nix = config.nix.package; }; # 
-        Prevent warning "unknown settings 'eval-cores' and 'lazy-trees'" 
-        from determinate nix config
-   })];
-    programs.nix-index-database.comma.enable = true;
-}

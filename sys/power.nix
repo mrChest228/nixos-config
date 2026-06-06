@@ -1,4 +1,5 @@
 { config, lib, pkgs, vars, ... }: {
+    powerManagement.powertop.enable = true; # Automatically optimize machine energy consumption (for longer life on battery)
     services = {
         power-profiles-daemon.enable = false; # TLP is better
         tlp = {
@@ -15,6 +16,7 @@
 
                 WIFI_PWR_ON_BAT = "on";
                 SOUND_POWER_SAVE_ON_BAT = "on";
+                PCIE_ASPM_ON_BAT = "powersave";
                 USB_AUTOSUSPEND = 1;
                 # Doesn't work on VICTUS :(
                 START_CHARGE_THRESH_BAT0 = 85;
