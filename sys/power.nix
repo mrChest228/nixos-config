@@ -6,9 +6,11 @@
             enable = true;
             settings = {
                 # Alternating current
+                PLATFORM_PROFILE_ON_AC = "performance";
                 CPU_ENERGY_PERF_POLICY_ON_AC = "perfomance";
                 AMD_ENERGE_PERF_POLICY_ON_AC = "balance_perfomace";
                 # Battery
+                PLATFORM_PROFILE_ON_BAT = "quiet";
                 CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
                 AMD_ENERGY_PERF_POLICY_ON_BAT = "power"; # TODO: move specific settings to ./hardware/amd
 
