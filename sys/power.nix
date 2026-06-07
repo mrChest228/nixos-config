@@ -7,11 +7,9 @@
             settings = {
                 # Alternating current
                 CPU_ENERGY_PERF_POLICY_ON_AC = "perfomance";
-                CPU_SCALING_GOVERNOR_ON_AC = "perfomance"; # amd_pstate is the main one
                 AMD_ENERGE_PERF_POLICY_ON_AC = "balance_perfomace";
                 # Battery
                 CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
-                CPU_SCALING_GOVERNOR_ON_BAT = "powersave"; # amd_pstate is the main one
                 AMD_ENERGY_PERF_POLICY_ON_BAT = "power"; # TODO: move specific settings to ./hardware/amd
 
                 WIFI_PWR_ON_BAT = "on";
