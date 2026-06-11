@@ -8,4 +8,7 @@
             fi
         '';
     };
+    systemd.services."getty@tty1".serviceConfig = {
+        TTYVTDisallocate = "no"; # Disable tty1 flashing before niri run
+    };
 }
