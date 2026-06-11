@@ -8,7 +8,11 @@
             fi
         '';
     };
-    systemd.services."getty@tty1".serviceConfig = {
-        TTYVTDisallocate = "no"; # Disable tty1 flashing before niri run
+    systemd.services."getty@tty1" = {
+        overrideStrategy = "asDropin";
+        serviceConfig.ExecStart = [
+            ""
+            "-${pkgs.util-linux}/bin/agetty --noclear --skip-login%I $TERM --login-program ${config.programs.niri.package}/bin/niri-session -- -l"
+        ];
     };
 }
