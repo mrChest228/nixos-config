@@ -10,9 +10,10 @@
     };
     systemd.services."getty@tty1" = {
         overrideStrategy = "asDropin";
+        serviceConfig.TTYVTDisallocate = "no";
         serviceConfig.ExecStart = [
             ""
-            "-${pkgs.util-linux}/bin/agetty --noclear --skip-login%I $TERM --login-program ${config.programs.niri.package}/bin/niri-session -- -l"
+            "-${pkgs.util-linux}/bin/agetty --noclear --skip-login --login-options \"-f ${config.services.getty.autologinUser}\" %I $TERM"
         ];
     };
 }
