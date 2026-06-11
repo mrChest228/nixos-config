@@ -10,7 +10,7 @@
         extraGroups = [ "wheel" "networkmanager" ];
         initialHashedPassword = "";
     };
-    # services.getty.autologinUser = vars.user;
+    services.getty.autologinUser = "mrchest";
 
     networking.hostName = vars.host;
 
