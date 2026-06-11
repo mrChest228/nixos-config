@@ -12,7 +12,7 @@
             # Type = "oneshot";
             # RemainAfterExit = true;
             Type = "simple";
-            Restart = "always";
+            # Restart = "always";
         };
 
         path = with pkgs; [
@@ -23,12 +23,12 @@
             if [ -f ${ACPath}/online ] && [ "$(cat ${ACPath}/online)" == "1" ]; then
                 while true; do
                     ryzenadj --fast-limit=65000 --slow-limit=54000 --stapm-limit=65000 --tctl-temp=100
-                    sleep 2
+                    sleep 3
                 done
             else
                 while true; do
                     ryzenadj --fast-limit=35000 --slow-limit=20000 --stapm-limit=35000 --tctl-temp=75
-                    sleep 2
+                    sleep 3
                 done
             fi
         '';
