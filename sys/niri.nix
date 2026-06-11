@@ -10,7 +10,7 @@
     };
     systemd.services."getty@tty1" = {
         overrideStrategy = "asDropin";
-        serviceConfig.TTYVTDisallocate = "no";
+        serviceConfig.TTYVTDisallocate = "no"; # No console clearing on load for tty1
         serviceConfig.ExecStart = [
             ""
             "-${pkgs.util-linux}/bin/agetty --noclear --skip-login --login-options \"-f ${config.services.getty.autologinUser}\" %I $TERM"

@@ -9,8 +9,10 @@
         wantedBy = [ "multi-user.target" ];
 
         serviceConfig = {
-            Type = "oneshot";
-            RemainAfterExit = true;
+            # Type = "oneshot";
+            # RemainAfterExit = true;
+            Type = "simple";
+            Restart = "always";
         };
 
         path = with pkgs; [
@@ -19,9 +21,15 @@
 
         script = ''
             if [ -f ${ACPath}/online ] && [ "$(cat ${ACPath}/online)" == "1" ]; then
-                ryzenadj --fast-limit=65000 --slow-limit=54000 --stapm-limit=65000 --tctl-temp=100
+                while true; do
+                    ryzenadj --fast-limit=65000 --slow-limit=54000 --stapm-limit=65000 --tctl-temp=100
+                    sleep 2
+                done
             else
-                ryzenadj --fast-limit=20000 --slow-limit=15000 --stapm-limit=15000 --tctl-temp=75
+                while true; do
+                    ryzenadj --fast-limit=35000 --slow-limit=20000 --stapm-limit=35000 --tctl-temp=75
+                    sleep 2
+                done
             fi
         '';
     };
