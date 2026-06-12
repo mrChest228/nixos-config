@@ -6,7 +6,7 @@
             enable = true;
             createDirectories = true;
 
-            download = "${config.home.homeDirectory}/dwn";
+            download = "${config.home.homeDirectory}/dwl";
             pictures = "${config.home.homeDirectory}/img";
 
             # Other files will go to ~

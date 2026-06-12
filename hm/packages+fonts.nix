@@ -37,4 +37,5 @@
         font-awesome
     ] ++ (with pkgs.unstable; [
     ]);
+    programs.coolercontrol.enable = true; # Good HWMonitor linux analog
 }
