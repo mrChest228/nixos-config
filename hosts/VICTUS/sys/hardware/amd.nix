@@ -12,28 +12,26 @@
             # Type = "oneshot";
             # RemainAfterExit = true;
             Type = "simple";
-            # Restart = "always";
+            Restart = "always";
         };
 
         path = with pkgs; [
             ryzenadj
         ];
 
+        # TODO: slow and stapm limits 65W on AC?
         script = ''
-            if [ -f ${ACPath}/online ] && [ "$(cat ${ACPath}/online)" == "1" ]; then
-                while true; do
-                    ryzenadj --fast-limit=65000 --slow-limit=54000 --stapm-limit=65000 --tctl-temp=100
-                    sleep 3
-                done
-            else
-                while true; do
-                    ryzenadj --fast-limit=35000 --slow-limit=20000 --stapm-limit=35000 --tctl-temp=75
-                    sleep 3
-                done
-            fi
+            while true; do
+                if [ -f ${ACPath}/online ] && [ "$(cat ${ACPath}/online)" == "1" ]; then
+                    ryzenadj --fast-limit=65000 --slow-limit=54000 --stapm-limit=65000 --tctl-temp=97
+                else
+                    ryzenadj --fast-limit=30000 --slow-limit=30000 --stapm-limit=30000 --tctl-temp=80
+                fi
+                sleep 3
+            done
         '';
     };
-    services.udev.extraRules = ''
-        SUBSYSTEM=="power_supply", ACTION=="change", RUN+="${pkgs.systemd}/bin/systemctl restart cpu-power-limits"
-    '';
+    # services.udev.extraRules = ''
+    #     SUBSYSTEM=="power_supply", ACTION=="change", RUN+="${pkgs.systemd}/bin/systemctl restart cpu-power-limits"
+    # '';
 }

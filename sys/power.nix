@@ -22,7 +22,6 @@
                 STOP_CHARGE_THRESH_BAT0 = 98;
             };
         };
-        thermald.enable = true; # Temperature and power control. Prevents overheating
         upower.enable = true; # Power (battery, AC) info
     };
     # TODO: move lm_sensors here
