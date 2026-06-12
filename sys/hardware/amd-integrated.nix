@@ -16,11 +16,9 @@
             "random.trust_cpu=1" # Disable using the entripy (the loading will speed up)
         ];
         # New amd-sensors module instead of built-in k10temp
-        boot = {
-            blacklistedKernelModules = [ "k10temp" ];
-            extraModulePackages = [ config.boot.kernelPackages.zenpower ];
-            kernelModules = [ "zenpower" ];
-        };
+        blacklistedKernelModules = [ "k10temp" ];
+        extraModulePackages = [ config.boot.kernelPackages.zenpower ];
+        kernelModules = [ "zenpower" ];
     };
 
     services.xserver.videoDrivers = [ "amdgpu" ];
