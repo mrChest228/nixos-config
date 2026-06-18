@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }: let
     cfg = config.services.nbfc-linux;
 in {
+    # TODO: move to sys/options/services/nbfc-linux
     options.services.nbfs-linux = {
         enable = lib.mkEnableOption "NoteBook FanControl service";
         package = lib.mkPackageOption pkgs "nbfc-linux" {};

@@ -9,8 +9,9 @@
                 PLATFORM_PROFILE_ON_AC = "performance";
                 CPU_ENERGY_PERF_POLICY_ON_AC = "perfomance";
                 AMD_ENERGE_PERF_POLICY_ON_AC = "balance_perfomace";
+
                 # Battery
-                PLATFORM_PROFILE_ON_BAT = "cool";
+                PLATFORM_PROFILE_ON_BAT = "quiet"; # TODO: move to ./host
                 CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
                 AMD_ENERGY_PERF_POLICY_ON_BAT = "power"; # TODO: move specific settings to ./hardware/amd
 
@@ -20,6 +21,8 @@
                 # Doesn't work on VICTUS :(
                 START_CHARGE_THRESH_BAT0 = 85;
                 STOP_CHARGE_THRESH_BAT0 = 98;
+
+                RUNTIME_PM_DRIVER_DENYLIST = "nouveau nvidia";
             };
         };
         upower.enable = true; # Power (battery, AC) info

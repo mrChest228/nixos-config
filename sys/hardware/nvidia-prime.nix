@@ -21,8 +21,8 @@
                 enable = true;
                 finegrained = true;
             };
-            dynamicBoost.enable = true;
-            nvidiaPersistenced = false; # It uses too much energy on battery
+            dynamicBoost.enable = true; # They
+            nvidiaPersistenced  = true;  #     use too much energy on battery, I disable them in host/sys/hardware/power.nix
             prime = { # Starts GPU by nvidia-offload command
                 offload = {
                     enable = true;
