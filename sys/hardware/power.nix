@@ -1,6 +1,4 @@
 { config, lib, pkgs, vars, ... }: {
-    # powerManagement.powertop.enable = true; # Automatically optimize machine energy consumption (for longer life on battery)
-    environment.systemPackages = [ pkgs.tlp ];
     services = {
         power-profiles-daemon.enable = false; # TLP is better
         tlp = {
@@ -9,7 +7,7 @@
                 # Alternating current
                 PLATFORM_PROFILE_ON_AC = "performance";
                 # CPU_ENERGY_PERF_POLICY_ON_AC = "balance_perfomance"; # For intel
-                AMD_ENERGE_PERF_POLICY_ON_AC = "balance_perfomace";
+                AMD_ENERGE_PERF_POLICY_ON_AC = "balance_performace";
 
                 RUNTIME_PM_ON_AC = "on";
                 MAX_LOST_WORK_SECS_ON_AC = 20;
