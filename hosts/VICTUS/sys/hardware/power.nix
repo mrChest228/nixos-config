@@ -44,6 +44,6 @@
         '';
     };
     services.udev.extraRules = ''
-        SUBSYSTEM=="power_supply", ACTION=="change", DEVPATH=="/devices/platform/*/power_supply/AC*", POWER_SUPPLY_ONLINE=="0|1", RUN+="${pkgs.systemd}/bin/systemctl --no-block restart power-manager"
+        SUBSYSTEM=="power_supply", ACTION=="change", DEVPATH=="/devices/platform/*/power_supply/AC*", ENV{POWER_SUPPLY_ONLINE}=="0|1", RUN+="${pkgs.systemd}/bin/systemctl --no-block restart power-manager"
     '';
 }
