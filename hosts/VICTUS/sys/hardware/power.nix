@@ -8,8 +8,6 @@
         after = [ "multi-user.target" ];
         wantedBy = [ "multi-user.target" ];
 
-        unitConfig.StartLimitIntervalSec = 0; # Restart the service as often as I plug the AC-adapter
-
         serviceConfig = {
             Type = "simple";
             Restart = "on-failure";
@@ -46,6 +44,6 @@
         '';
     };
     services.udev.extraRules = ''
-        SUBSYSTEM=="power_supply", KERNEL=="AC*", ACTION=="change", RUN+="${pkgs.systemd}/bin/systemctl --no-block restart power-manager"
+        SUBSYSTEM=="power_supply", ACTION=="change", DEVPATH=="/devices/platform/*/power_supply/AC*", POWER_SUPPLY_ONLINE=="0|1", RUN+="${pkgs.systemd}/bin/systemctl --no-block restart power-manager"
     '';
 }
