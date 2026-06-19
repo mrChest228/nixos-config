@@ -23,7 +23,6 @@
 
         # TODO: slow and stapm limits 65W on AC?
         script = ''
-            printenv POWER_SUPPLY_ONLINE || true
             if [ -f ${ACPath}/online ] && [ "$(cat ${ACPath}/online)" == "1" ]; then
                 systemctl unmask nvidia-persistenced.service || true # Unblock nvidia-persistenced enabling
                 systemctl start nvidia-persistenced.service nvidia-powerd.service || true
