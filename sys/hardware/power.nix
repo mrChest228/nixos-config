@@ -7,7 +7,7 @@
             settings = {
                 # Alternating current
                 PLATFORM_PROFILE_ON_AC = "performance";
-                # CPU_ENERGY_PERF_POLICY_ON_AC = "perfomance"; # For intel
+                # CPU_ENERGY_PERF_POLICY_ON_AC = "balance_perfomance"; # For intel
                 AMD_ENERGE_PERF_POLICY_ON_AC = "balance_perfomace";
 
                 # Battery
@@ -22,7 +22,7 @@
                 START_CHARGE_THRESH_BAT0 = 85;
                 STOP_CHARGE_THRESH_BAT0 = 98;
 
-                RUNTIME_PM_DRIVER_DENYLIST = "nouveau nvidia";
+                # RUNTIME_PM_DRIVER_DENYLIST = "nouveau nvidia";
             };
         };
         upower.enable = true; # Power (battery, AC) info
