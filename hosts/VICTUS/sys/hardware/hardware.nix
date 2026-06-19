@@ -3,6 +3,7 @@
         # "memory.nix" # TODO
         "amd-integrated.nix"
         "nvidia-prime.nix"
+        "power.nix"
     ];
     system.stateVersion = "25.11";
     # Motherboard drivers

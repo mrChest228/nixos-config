@@ -24,14 +24,16 @@
         # TODO: slow and stapm limits 65W on AC?
         script = ''
             if [ -f ${ACPath}/online ] && [ "$(cat ${ACPath}/online)" == "1" ]; then
-                systemctl start nvidia-powerd.service || true
+                systemctl unmask nvidia-persistenced.service || true # Unblock nvidia-persistenced enabling
+                systemctl start nvidia-persistenced.service nvidia-powerd.service || true
 
                 while true; do
                     ryzenadj --fast-limit=65000 --slow-limit=54000 --stapm-limit=65000 --tctl-temp=97
                     sleep 3
                 done
             else
-                systemctl stop nvidia-powerd.service || true
+                systemctl stop nvidia-persistenced.service nvidia-powerd.service || true
+                systemctl mask nvidia-persistenced.service || true # Block nvidia-persistenced enabling
 
                 while true; do
                     ryzenadj --fast-limit=30000 --slow-limit=30000 --stapm-limit=30000 --tctl-temp=80
