@@ -8,9 +8,15 @@
         after = [
             "multi-user.target"
             "nvidia-powerd.service"
-            "nvidia-persistenced.service"
         ];
-        wantedBy = [ "multi-user.target" ];
+        required = [
+            "multi-user.target"
+            "nvidia-powerd.service"
+        ];
+        wantedBy = [
+            "multi-user.target"
+            "nvidia-powerd.service"
+        ];
 
         serviceConfig = {
             Type = "simple";
