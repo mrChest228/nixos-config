@@ -12,7 +12,7 @@
 
         serviceConfig = {
             Type = "simple";
-            Restart = "no";
+            Restart = "on-failure";
             RestartSec = "10s";
             KillMode = "mixed"; # Kill the bash-script without waiting to his sleep end
             TimeoutStopSec = "1s"; # Kill the process in 1 sec without waiting to himself killing after receiving the SIGTERM signal
@@ -25,6 +25,7 @@
 
         # TODO: slow and stapm limits 65W on AC?
         script = ''
+            printenv POWER_SUPPLY_ONLINE || true
             if [ -f ${ACPath}/online ] && [ "$(cat ${ACPath}/online)" == "1" ]; then
                 systemctl unmask nvidia-persistenced.service || true # Unblock nvidia-persistenced enabling
                 systemctl start nvidia-persistenced.service nvidia-powerd.service || true
@@ -45,6 +46,6 @@
         '';
     };
     services.udev.extraRules = ''
-        SUBSYSTEM=="power_supply", ACTION=="change", RUN+="${pkgs.systemd}/bin/systemctl --no-block restart power-manager"
+        SUBSYSTEM=="power_supply", KERNEL=="AC*", ACTION=="change", RUN+="${pkgs.systemd}/bin/systemctl --no-block restart power-manager"
     '';
 }
