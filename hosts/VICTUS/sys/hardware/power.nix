@@ -8,11 +8,11 @@
         after = [ "multi-user.target" ];
         wantedBy = [ "multi-user.target" ];
 
-        unitConfig.StartLimitIntervalSec = 0; # Restart the service as often as I plug AC-adapter
+        unitConfig.StartLimitIntervalSec = 0; # Restart the service as often as I plug the AC-adapter
 
         serviceConfig = {
             Type = "simple";
-            Restart = "on-failure";
+            Restart = "no";
             RestartSec = "10s";
             KillMode = "mixed"; # Kill the bash-script without waiting to his sleep end
             TimeoutStopSec = "1s"; # Kill the process in 1 sec without waiting to himself killing after receiving the SIGTERM signal
