@@ -1,5 +1,6 @@
 { config, lib, pkgs, vars, ... }: {
     # powerManagement.powertop.enable = true; # Automatically optimize machine energy consumption (for longer life on battery)
+    environment.systemPackages = [ pkgs.tlp ];
     services = {
         power-profiles-daemon.enable = false; # TLP is better
         tlp = {
