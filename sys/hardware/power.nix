@@ -28,8 +28,6 @@
                 # Doesn't work on VICTUS :(
                 START_CHARGE_THRESH_BAT0 = 85;
                 STOP_CHARGE_THRESH_BAT0 = 98;
-
-                RUNTIME_PM_DRIVER_DENYLIST = "nouveau nvidia";
             };
         };
         upower.enable = true; # Power (battery, AC) info
