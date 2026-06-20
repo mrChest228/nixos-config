@@ -1,5 +1,4 @@
-{ config, lib, pkgs, vars, ... }:
-{
+{ config, lib, pkgs, vars, ... }: {
     hardware = {
         graphics = {
             enable = true;
@@ -21,7 +20,7 @@
                 enable = true;
                 finegrained = true;
             };
-            dynamicBoost.enable = true; # It uses too much CPU time on battery, so I disable it in host/sys/hardware/power.nix
+            dynamicBoost.enable = true; # It uses too much CPU time on battery, but it needs for correct PCI sleep
             prime = { # Starts GPU by nvidia-offload command
                 offload = {
                     enable = true;
@@ -35,6 +34,11 @@
     services = {
         xserver.videoDrivers = [ "nvidia" ];
         tlp.settings.RUNTIME_PM_BLACKLIST = "01:00:0"; # Remove discrete GPU from tlp power-management control
+    };
+    systemd.services.nvidia-powerd.serviceConfig = { # The most eco service preset
+        Nice = 19;
+        CPUQuota = "2%";
+        CPUSchedulingPolicy = "idle";
     };
 
     boot = {

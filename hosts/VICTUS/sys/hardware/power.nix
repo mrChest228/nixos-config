@@ -5,18 +5,8 @@
         ACPath = "/sys/class/power_supply/ACAD";
     in {
         description = "Manage power limits, enabled services and system settings based on AC connection";
-        after = [
-            "multi-user.target"
-            "nvidia-powerd.service"
-        ];
-        required = [
-            "multi-user.target"
-            "nvidia-powerd.service"
-        ];
-        wantedBy = [
-            "multi-user.target"
-            "nvidia-powerd.service"
-        ];
+        after = [ "multi-user.target" ];
+        wantedBy = [ "multi-user.target" ];
 
         serviceConfig = {
             Type = "simple";
@@ -34,15 +24,11 @@
         # TODO: slow and stapm limits 65W on AC?
         script = ''
             if [ -f ${ACPath}/online ] && [ "$(cat ${ACPath}/online)" == "1" ]; then
-                systemctl start nvidia-powerd.service || true
-
                 while true; do
                     ryzenadj --fast-limit=65000 --slow-limit=54000 --stapm-limit=65000 --tctl-temp=97
                     sleep 3
                 done
             else
-                systemctl stop nvidia-powerd.service || true
-
                 while true; do
                     ryzenadj --fast-limit=30000 --slow-limit=30000 --stapm-limit=30000 --tctl-temp=80
                     sleep 3
