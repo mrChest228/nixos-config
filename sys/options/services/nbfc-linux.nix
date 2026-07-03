@@ -51,8 +51,10 @@ in {
         };
     };
 
-    config = lib.mkIf cfg.enable {
-        environment.etc."nbfc/nbfc.json".source = pkgs.writeText "nbfc-config.json" (builtins.toJSON { SelectedConfigId = cfg.settings.profile; });
+    config = lib.mkIf cfg.enable let
+        configJson = pkgs.writeText "nbfc-config.json" (builtins.toJSON { SelectedConfigId = "/etc/nixos/host/sys/hardware/nbfc-VICTUS.json" /*cfg.settings.profile*/; });
+    in {
+        environment.etc."nbfc/nbfc.json".source = configJson;
 
         environment.systemPackages = [ pkgs.nbfc-linux ];
         systemd.services.nbfc = {
@@ -65,6 +67,7 @@ in {
                 Type = "simple";
                 Restart = "on-failure";
             };
+            restartTriggers = [ "${configJson}" ];
 
             path = with pkgs; [
                 nbfc-linux
