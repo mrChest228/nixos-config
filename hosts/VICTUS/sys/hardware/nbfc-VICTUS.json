@@ -1,10 +1,10 @@
 {
-   "NotebookModel": "HP Victus 15-fb0xxx",
-   "Author": "mrChest228",
-   "EcPollInterval": 1500,
-   "ReadWriteWords": false,
-   "CriticalTemperature": 93,
-   "FanConfigurations": [
+    "NotebookModel": "HP Victus 15-fb0xxx",
+    "Author": "mrChest228",
+    "EcPollInterval": 1000,
+    "ReadWriteWords": false,
+    "CriticalTemperature": 97,
+    "FanConfigurations": [
       {
        "ReadRegister": 179,
        "WriteRegister": 45,
@@ -21,26 +21,26 @@
        "TemperatureThresholds": [
            {
             "DownThreshold": 0,
-            "UpThreshold": 59,
+            "UpThreshold": 61,
             "FanSpeed": 0.0
            },
            {
-            "DownThreshold": 56,
-            "UpThreshold": 61,
-            "FanSpeed": 9.0
-           },
-           {
             "DownThreshold": 59,
-            "UpThreshold": 64,
-            "FanSpeed": 17.0
+            "UpThreshold": 63,
+            "FanSpeed": 10.0
            },
            {
-            "DownThreshold": 61,
-            "UpThreshold": 66,
-            "FanSpeed": 30.0
+               "DownThreshold": 61,
+               "UpThreshold": 65,
+               "FanSpeed": 30.0
            },
            {
             "DownThreshold": 63,
+            "UpThreshold": 67,
+            "FanSpeed": 20.0
+           },
+           {
+            "DownThreshold": 65,
             "UpThreshold": 69,
             "FanSpeed": 40.0
            },
@@ -51,22 +51,22 @@
            },
            {
             "DownThreshold": 73,
-            "UpThreshold": 83,
+            "UpThreshold": 84,
             "FanSpeed": 70.0
            },
            {
-            "DownThreshold": 77,
+            "DownThreshold": 78,
             "UpThreshold": 89,
             "FanSpeed": 80.0
            },
            {
-            "DownThreshold": 87,
-            "UpThreshold": 93,
+            "DownThreshold": 89,
+            "UpThreshold": 95,
             "FanSpeed": 90.0
            }
            {
             "DownThreshold": 93,
-            "UpThreshold": 98,
+            "UpThreshold": 97,
             "FanSpeed": 100.0
            }
        ]
@@ -82,17 +82,17 @@
        "ResetRequired": true,
        "FanSpeedResetValue": 255,
        "FanDisplayName": "Fan2",
-       "Sensors": ["@GPU"],
-       "TemperatureAlgorithmType": "Max",
+       "Sensors": ["@CPU", "@GPU"],
+       "TemperatureAlgorithmType": "Average",
        "TemperatureThresholds": [
            {
             "DownThreshold": 0,
-            "UpThreshold": 55,
+            "UpThreshold": 58,
             "FanSpeed": 0.0
            },
            {
-            "DownThreshold": 55,
-            "UpThreshold": 61,
+            "DownThreshold": 56,
+            "UpThreshold": 62,
             "FanSpeed": 10.0
            },
            {
@@ -131,12 +131,12 @@
             "FanSpeed": 90.0
            }
            {
-            "DownThreshold": 80,
-            "UpThreshold": 93,
+            "DownThreshold": 78,
+            "UpThreshold": 97,
             "FanSpeed": 100.0
            }
        ]
       }
-   ],
-   "RegisterWriteConfigurations": []
-  }
+    ],
+    "RegisterWriteConfigurations": []
+}

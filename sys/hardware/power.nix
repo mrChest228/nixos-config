@@ -4,7 +4,7 @@
         tlp = {
             enable = true;
             settings = {
-                # Alternating current
+                # Alternating Current
                 PLATFORM_PROFILE_ON_AC = "performance";
                 # CPU_ENERGY_PERF_POLICY_ON_AC = "balance_perfomance"; # For intel
                 AMD_ENERGE_PERF_POLICY_ON_AC = "balance_performace";

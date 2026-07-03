@@ -1,5 +1,5 @@
 { config, lib, pkgs, vars, self, ... }: {
-    # CPU power limit 65W on AC and 15W on battery and nvidia-powerd/nvidia-persisteced disabling on BAT
+    # CPU power limit 65W on AC and 30W on battery and nvidia-powerd/nvidia-persisteced disabling on BAT
     environment.systemPackages = [ pkgs.ryzenadj ];
     systemd.services.power-manager = let
         ACPath = "/sys/class/power_supply/ACAD";
@@ -25,12 +25,12 @@
         script = ''
             if [ -f ${ACPath}/online ] && [ "$(cat ${ACPath}/online)" == "1" ]; then
                 while true; do
-                    ryzenadj --fast-limit=65000 --slow-limit=54000 --stapm-limit=65000 --tctl-temp=97
+                    ryzenadj --fast-limit=65000 --slow-limit=54000 --stapm-limit=65000 --tctl-temp=97 --apu-skin-temp=100
                     sleep 3
                 done
             else
                 while true; do
-                    ryzenadj --fast-limit=30000 --slow-limit=30000 --stapm-limit=30000 --tctl-temp=80
+                    ryzenadj --fast-limit=30000 --slow-limit=30000 --stapm-limit=30000 --tctl-temp=80 --apu-skin-temp=100
                     sleep 3
                 done
             fi

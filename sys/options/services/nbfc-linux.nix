@@ -51,8 +51,8 @@ in {
         };
     };
 
-    config = lib.mkIf cfg.enable let
-        configJson = pkgs.writeText "nbfc-config.json" (builtins.toJSON { SelectedConfigId = "/etc/nixos/host/sys/hardware/nbfc-VICTUS.json" /*cfg.settings.profile*/; });
+    config = lib.mkIf cfg.enable (let
+        configJson = pkgs.writeText "nbfc-config.json" (builtins.toJSON { SelectedConfigId = "/home/mrchest/config/host/sys/hardware/nbfc-VICTUS.json" /*cfg.settings.profile*/; });
     in {
         environment.etc."nbfc/nbfc.json".source = configJson;
 
@@ -76,5 +76,5 @@ in {
 
             script = "${pkgs.nbfc-linux}/bin/nbfc_service --config-file /etc/nbfc/nbfc.json";
         };
-    };
+    });
 }
