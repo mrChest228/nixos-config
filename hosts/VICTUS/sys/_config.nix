@@ -1,5 +1,6 @@
 { config, lib, pkgs, vars, self, ... }: {
     imports = [
+        ( lib.importTree (self + /sys/options) )
         ( lib.importTopLevel (self + /sys) )
         ( lib.importTopLevel ./hardware )
         ( lib.importTopLevel ./. )
