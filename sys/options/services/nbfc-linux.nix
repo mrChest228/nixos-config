@@ -4,7 +4,7 @@ let
     jsonFormat = pkgs.formats.json {};
 in {
     # TODO: move to sys/options/services/nbfc-linux
-    options.services.nbfs-linux = {
+    options.services.nbfc-linux = {
         enable = lib.mkEnableOption "NoteBook FanControl service";
 
         package = lib.mkPackageOption pkgs "nbfc-linux" {};
@@ -17,11 +17,11 @@ in {
                 example = "ASUS VivoBook X505ZA_X505ZA";
             };
             extraProfiles = lib.mkOption {
-                type = lib.types.attrsOf (lib.types.oneOf with lib.types; [
+                type = lib.types.attrsOf (lib.types.oneOf (with lib.types; [
                     path
                     str
                     jsonFormat.type
-                ]);
+                ]));
                 default = {};
                 description = "An attribute set of additional nbfc profiles. It can be either path to nix/json file or just a nix attr list";
                 example = lib.literalExpression ''
@@ -52,7 +52,7 @@ in {
     };
 
     config = lib.mkIf cfg.enable {
-        environment.etc."nbfc/nbfc.json".source = pkgs.writeText "nbfc-config.json" (builtins.toJSON { SelectedConfigId = cfg.settings.profile });
+        environment.etc."nbfc/nbfc.json".source = pkgs.writeText "nbfc-config.json" (builtins.toJSON { SelectedConfigId = cfg.settings.profile; });
 
         environment.systemPackages = [ pkgs.nbfc-linux ];
         systemd.services.nbfc = {
