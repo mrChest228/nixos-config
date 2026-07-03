@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }: 
 let
     cfg = config.services.nbfc-linux;
     jsonFormat = pkgs.formats.json {};
@@ -13,7 +13,7 @@ in {
             profile = lib.mkOption {
                 type = lib.types.str;
                 default = null;
-                description = "Name of built-in profile to use. Find your notebook model in https://github.com/nbfc-linux/nbfc-linux/tree/main/share/nbfc/configs (without \".json\" filename extension).";
+                description = "Name of built-in profile to use. Find your notebook model in https://github.com/nbfc-linux/nbfc-linux/tree/main/share/nbfc/configs (without \".json\").";
                 example = "ASUS VivoBook X505ZA_X505ZA";
             };
             extraProfiles = lib.mkOption {
@@ -35,38 +35,43 @@ in {
                     }
                 '';
             };
-            extraProfileSettings = lib.mkOption {
-                type = jsonFormat.type;
+            profileSettingsOverrides = lib.mkOption {
+                type = lib.types.listOf (lib.types.functionTo jsonFormat.type);
                 default = {};
                 description = "A set of settings which will be added and overrided in selected profile";
                 example = lib.literalExpression ''
-                    {
-                        CriticalTemperature = 90;
-                        FanConfigurations = [];
-                    }
+                    [
+                        (prev: {
+                            CriticalTemperature = 90;
+                            FanConfigurations = []; # TODO
+                        })
+                    ]
                 '';
             };
         };
     };
-    environment.etc."nbfc/nbfc.json"
 
-    environment.systemPackages = [ pkgs.nbfc-linux ];
-    systemd.services.nbfc = {
-        enable = true;
-        description = "NoteBook FanControl service";
+    config = lib.mkIf cfg.enable {
+        environment.etc."nbfc/nbfc.json".source = pkgs.writeText "nbfc-config.json" (builtins.toJSON { SelectedConfigId = cfg.settings.profile });
 
-        wantedBy = [ "multi-user.target" ];
+        environment.systemPackages = [ pkgs.nbfc-linux ];
+        systemd.services.nbfc = {
+            enable = true;
+            description = "NoteBook FanControl service";
 
-        serviceConfig = {
-            Type = "simple";
-            Restart = "always";
+            wantedBy = [ "multi-user.target" ];
+
+            serviceConfig = {
+                Type = "simple";
+                Restart = "on-failure";
+            };
+
+            path = with pkgs; [
+                nbfc-linux
+                kmod
+            ];
+
+            script = "${pkgs.nbfc-linux}/bin/nbfc_service --config-file /etc/nbfc/nbfc.json";
         };
-
-        path = with pkgs; [
-            nbfc-linux
-            kmod
-        ];
-        
-        script = "${pkgs.nbfc-linux}/bin/nbfc_service --config-file TODO";
     };
 }
