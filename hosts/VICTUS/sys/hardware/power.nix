@@ -1,6 +1,10 @@
 { config, lib, pkgs, vars, self, ... }: {
     # CPU power limit 65W on AC and 30W on battery and nvidia-powerd/nvidia-persisteced disabling on BAT
     environment.systemPackages = [ pkgs.ryzenadj ];
+    boot = {
+        extraModulePackages = [ config.boot.kernelPackages.ryzen-smu ];
+        kernelModules = [ "ryzen_smu" ];
+    };
     systemd.services.power-manager = let
         ACPath = "/sys/class/power_supply/ACAD";
     in {
