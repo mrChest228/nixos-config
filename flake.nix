@@ -39,7 +39,6 @@
                 hostPlatform = arch;
                 config = {
                     allowUnfree = true;
-                    # nvidia.acceptLicense = true;
                     cudaSupport = true;
                 };
             });

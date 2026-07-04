@@ -21,8 +21,8 @@
         ghostty
         wezterm
         firefox
-        # Stress-tests
-        gpu-burn # CUDA
+        
+        telegram-desktop
     ] ++ (with pkgs.stable; [
     ]);
 }

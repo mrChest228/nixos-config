@@ -12,7 +12,6 @@
         # GPU
         unigine-superposition
         unigine-valley
-        # GPU_burn # (CUDA test)
         # CPU
         mprime
         phoronix-test-suite # (ffmpeg, pts/buil2d-kernel, pts/c-ray, pts/cachebench)
