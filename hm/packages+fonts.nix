@@ -37,5 +37,5 @@
         font-awesome
     ] ++ (with pkgs.unstable; [
     ]);
-    programs.coolercontrol.enable = true; # Good HWMonitor linux analog
+    # programs.coolercontrol.enable = true; # Good HWMonitor linux analog # TODO: move to sys packages
 }
