@@ -21,42 +21,42 @@
        "TemperatureThresholds": [
            {
             "DownThreshold": 0,
-            "UpThreshold": 61,
+            "UpThreshold": 65,
             "FanSpeed": 0.0
            },
            {
-            "DownThreshold": 59,
-            "UpThreshold": 63,
+            "DownThreshold": 60,
+            "UpThreshold": 67,
             "FanSpeed": 10.0
            },
            {
-               "DownThreshold": 61,
-               "UpThreshold": 65,
-               "FanSpeed": 30.0
+               "DownThreshold": 63,
+               "UpThreshold": 70,
+               "FanSpeed": 20.0
            },
            {
-            "DownThreshold": 63,
-            "UpThreshold": 67,
-            "FanSpeed": 20.0
-           },
-           {
-            "DownThreshold": 65,
-            "UpThreshold": 69,
+            "DownThreshold": 68,
+            "UpThreshold": 78,
             "FanSpeed": 40.0
            },
            {
-            "DownThreshold": 66,
-            "UpThreshold": 79,
-            "FanSpeed": 60.0
-           },
-           {
-            "DownThreshold": 76,
-            "UpThreshold": 84,
-            "FanSpeed": 70.0
+            "DownThreshold": 75,
+            "UpThreshold": 80,
+            "FanSpeed": 50.0
            },
            {
             "DownThreshold": 78,
-            "UpThreshold": 89,
+            "UpThreshold": 82,
+            "FanSpeed": 60.0
+           },
+           {
+            "DownThreshold": 80,
+            "UpThreshold": 87,
+            "FanSpeed": 70.0
+           },
+           {
+            "DownThreshold": 85,
+            "UpThreshold": 90,
             "FanSpeed": 80.0
            },
            {
