@@ -39,10 +39,9 @@
                 hostPlatform = arch;
                 config = {
                     allowUnfree = true;
-                    #enableParallelBuildingByDefault = true;
-                    #cudaSupport = true;
-                    cuda.acceptLicense = true;
-                    permittedInsecurePackages = []; # Clever people use this
+                    nvidia.acceptLicense = true;
+                    enableParallelBuildingByDefault = true;
+                    # cudaSupport = true;
                 };
             });
             mkPkgsOverlays = (pkgs: arch:
