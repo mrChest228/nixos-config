@@ -39,15 +39,15 @@
                 hostPlatform = arch;
                 config = {
                     allowUnfree = true;
+                    enableParallelBuildingByDefault = true;
                     # nvidia.acceptLicense = true;
-                    # enableParallelBuildingByDefault = true;
                     # cudaSupport = true;
                 };
             });
             mkPkgsOverlays = (pkgs: arch:
                 (import pkgs (pkgsConfig arch)).appendOverlays [
                     (final: prev: { lib = mkLib pkgs; }) # Normal lib everywhere
-                    # (final: prev: { comma-with-db = prev.comma-with-db.override { nix = final.nix } }) # Removes warning "unknown setting 'eval-cores' and 'lazy-trees'" from determinate nix config
+                    
                 ]
             );
             mkPkgs = (arch:

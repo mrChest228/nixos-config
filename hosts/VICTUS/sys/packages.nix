@@ -1,6 +1,5 @@
 { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
-        cudaPackages.cudatoolkit
         #dmidecode # Gets BIOS and firmware drivers/microcodes info
         #acpica-tools # Tool for fixing bootloading ACPI-bug
         #dracut # Tool to see initrd imported modules
@@ -12,8 +11,6 @@
         #linuxPackages.cpupower
         lm_sensors # Sensors
         alsa-utils
-        # Nvidia drivers
-        mesa-demos # Diagnostic tool
         # Security
         #lxqt.lxqt-policykit
         

@@ -33,7 +33,7 @@
     };
     services = {
         xserver.videoDrivers = [ "nvidia" ];
-        tlp.settings.RUNTIME_PM_BLACKLIST = "01:00:0"; # Remove discrete GPU from tlp power-management control
+        tlp.settings.RUNTIME_PM_BLACKLIST = config.hardware.nvidia.prime.nvidiaBusId; # Remove discrete GPU from tlp power-management control
     };
     systemd.services.nvidia-powerd.serviceConfig = { # The most eco service preset
         Nice = 19;
@@ -41,11 +41,23 @@
         CPUSchedulingPolicy = "idle";
     };
 
+    nix.settings = {
+        substituters = [ "https://cache.nixos-cuda.org" ];
+        trusted-public-keys = [ "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=" ];
+    };
+    environment.systemPackages = with pkgs; [
+        mesa-demos # Diagnostic tool
+        cudaPackages.cudatoolkit
+        cudaPackages.cudn
+        cudaPackages.nccl
+        cudaPackages.tensorrt
+    ];
+
     boot = {
         initrd.availableKernelModules = [ "nvidia" ];
         kernelParams =  [
             "nvidia-drm.modeset=1"
-            "pcie_aspm=force" # Ignore BIOS prohibition to sleep the unactive PCIe lines (useful for battery power save)
+            "pcie_aspm=force" # Ignore BIOS prohibition to sleep the unactive PCIe lines (useful for battery energy save)
         ];
         blacklistedKernelModules = [ "nouveau" ]; # Disable not proprietary nvidia driver for boot's speeding up
         extraModulePackages = [ config.hardware.nvidia.package ];

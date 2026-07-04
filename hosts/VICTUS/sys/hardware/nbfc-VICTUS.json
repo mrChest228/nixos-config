@@ -1,7 +1,7 @@
 {
-    "NotebookModel": "HP Victus 15-fb0xxx",
+    "NotebookModel": "HP Victus 15-fb0028nr",
     "Author": "mrChest228",
-    "EcPollInterval": 2000,
+    "EcPollInterval": 1000,
     "ReadWriteWords": false,
     "CriticalTemperature": 97,
     "FanConfigurations": [
@@ -93,7 +93,7 @@
            {
             "DownThreshold": 56,
             "UpThreshold": 62,
-            "FanSpeed": 10.0
+            "FanSpeed": 9.0
            },
            {
             "DownThreshold": 59,
