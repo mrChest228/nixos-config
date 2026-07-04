@@ -47,6 +47,7 @@
     };
     environment.systemPackages = with pkgs; [
         mesa-demos # Diagnostic tool
+        gpu-burn # Stress test (comment after some days)
         cudaPackages.cudatoolkit
         # cudaPackages.cudnn
         # cudaPackages.nccl
