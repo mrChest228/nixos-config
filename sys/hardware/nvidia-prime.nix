@@ -48,9 +48,9 @@
     environment.systemPackages = with pkgs; [
         mesa-demos # Diagnostic tool
         cudaPackages.cudatoolkit
-        cudaPackages.cudn
-        cudaPackages.nccl
-        cudaPackages.tensorrt
+        # cudaPackages.cudnn
+        # cudaPackages.nccl
+        # cudaPackages.tensorrt
     ];
 
     boot = {
