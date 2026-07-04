@@ -21,7 +21,7 @@
         kernel.sysctl = {
             
         };
-        kernelPackages = pkgs.stable.linuxPackages_latest; # The latest stable kernel
+        kernelPackages = pkgs.linuxPackages_latest;
         kernelParams = [
             # Optimizations
             # "quiet"                     # Minimize kernel output (speeds up)
