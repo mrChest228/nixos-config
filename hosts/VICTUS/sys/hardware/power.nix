@@ -29,12 +29,12 @@
         script = ''
             if [ -f ${ACPath}/online ] && [ "$(cat ${ACPath}/online)" == "1" ]; then
                 while true; do
-                    ryzenadj --fast-limit=65000 --slow-limit=54000 --stapm-limit=65000 --tctl-temp=97 --apu-skin-temp=999 --dgpu-skin-temp=999
+                    ryzenadj --fast-limit=65000 --slow-limit=54000 --stapm-limit=65000 --tctl-temp=97 --apu-skin-temp=231 --dgpu-skin-temp=231
                     sleep 3
                 done
             else
                 while true; do
-                    ryzenadj --fast-limit=30000 --slow-limit=30000 --stapm-limit=30000 --tctl-temp=80 --apu-skin-temp=999 --dgpu-skin-temp=999
+                    ryzenadj --fast-limit=30000 --slow-limit=30000 --stapm-limit=30000 --tctl-temp=80 --apu-skin-temp=231 --dgpu-skin-temp=231
                     sleep 3
                 done
             fi

@@ -1,7 +1,7 @@
 {
     "NotebookModel": "HP Victus 15-fb0xxx",
     "Author": "mrChest228",
-    "EcPollInterval": 1000,
+    "EcPollInterval": 2000,
     "ReadWriteWords": false,
     "CriticalTemperature": 97,
     "FanConfigurations": [
