@@ -21,6 +21,8 @@
         ghostty
         wezterm
         firefox
+        # Stress-tests
+        gpu-burn # CUDA
     ] ++ (with pkgs.stable; [
     ]);
 }
