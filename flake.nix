@@ -39,8 +39,8 @@
                 hostPlatform = arch;
                 config = {
                     allowUnfree = true;
-                    nvidia.acceptLicense = true;
-                    enableParallelBuildingByDefault = true;
+                    # nvidia.acceptLicense = true;
+                    # enableParallelBuildingByDefault = true;
                     # cudaSupport = true;
                 };
             });
