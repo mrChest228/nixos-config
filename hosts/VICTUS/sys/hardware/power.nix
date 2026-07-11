@@ -1,10 +1,5 @@
 { config, lib, pkgs, vars, self, ... }: {
     # CPU power limit 65W on AC and 30W on battery and nvidia-powerd/nvidia-persisteced disabling on BAT
-    environment.systemPackages = [ pkgs.ryzenadj ];
-    boot = {
-        extraModulePackages = [ config.boot.kernelPackages.ryzen-smu ];
-        kernelModules = [ "ryzen_smu" ];
-    };
     systemd.services.power-manager = let
         ACPath = "/sys/class/power_supply/ACAD";
     in {
@@ -25,7 +20,6 @@
             systemd
         ];
 
-        # TODO: slow and stapm limits 65W on AC?
         script = ''
             if [ -f ${ACPath}/online ] && [ "$(cat ${ACPath}/online)" == "1" ]; then
                 while true; do
@@ -43,4 +37,8 @@
     services.udev.extraRules = ''
         SUBSYSTEM=="power_supply", ACTION=="change", DEVPATH=="/devices/platform/*/power_supply/AC*", ENV{POWER_SUPPLY_ONLINE}=="0|1", RUN+="${pkgs.systemd}/bin/systemctl --no-block restart power-manager"
     '';
+    services.tlp.settings = {
+        PLATFORM_PROFILE_ON_AC = "performance";
+        PLATFORM_PROFILE_ON_BAT = "quiet";
+    };
 }

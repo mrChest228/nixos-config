@@ -3,7 +3,6 @@ let
     cfg = config.services.nbfc-linux;
     jsonFormat = pkgs.formats.json {};
 in {
-    # TODO: move to sys/options/services/nbfc-linux
     options.services.nbfc-linux = {
         enable = lib.mkEnableOption "NoteBook FanControl service";
 

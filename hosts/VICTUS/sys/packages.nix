@@ -6,9 +6,7 @@
         #pciutils # lspci command
 
         # testing
-        # acpi # Battery status
         #linuxPackages.cpupower
-        lm_sensors # Sensors
         alsa-utils
         # Security
         #lxqt.lxqt-policykit
@@ -17,7 +15,7 @@
         adw-gtk3
 
         # Terminal utilities
-        btop
+        btop-cuda
         nvtopPackages.full
         # git
         trash-cli

@@ -17,9 +17,22 @@
         ];
         # New amd-sensors module instead of built-in k10temp
         blacklistedKernelModules = [ "k10temp" ];
-        extraModulePackages = [ config.boot.kernelPackages.zenpower ];
-        kernelModules = [ "zenpower" ];
+        extraModulePackages = with config.boot.kernelPackages; [
+            zenpower
+            ryzen-smu
+        ];
+        kernelModules = [
+            "zenpower"
+            "ryzen_smu"
+        ];
     };
+    environment.systemPackages = [ pkgs.ryzenadj ];
 
-    services.xserver.videoDrivers = [ "amdgpu" ];
+    services = {
+        xserver.videoDrivers = [ "amdgpu" ];
+        tlp.settings = {
+            AMD_ENERGE_PERF_POLICY_ON_AC = "balance_performace";
+            AMD_ENERGY_PERF_POLICY_ON_BAT = "power";
+        };
+    };
 }

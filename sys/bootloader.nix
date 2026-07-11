@@ -28,7 +28,7 @@
             # "systemd.show_status=0"     # Hide loading status (speeds up)
             "loglevel=3"                  # Shows only critical errors
             "pcie=noaer"                  # Disable PCIe error logging
-            "zstd.zstd_workers=6" # TODO: make it bigger or lower, move to host
+            "zstd.zstd_workers=6" # TODO: make it bigger or lower
         ];
     };
     systemd.services = {
