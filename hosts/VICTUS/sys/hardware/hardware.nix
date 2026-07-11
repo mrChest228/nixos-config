@@ -5,7 +5,7 @@
         "nvidia-prime.nix"
         "power.nix"
     ];
-    system.stateVersion = "25.11";
+    system.stateVersion = "26.05";
     # Motherboard drivers
     boot.kernelModules = [ "hp_wmi" "wmi_bmof" ];
 }

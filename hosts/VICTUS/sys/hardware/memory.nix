@@ -4,7 +4,7 @@
         # Partitions
         "/" = {
             device = "/dev/disk/by-partlabel/${vars.host}-root";
-            fsType = "btrfs";
+            fsType = "bcachefs";
             options = [
                 "noatime"
                 "compress=zstd:1" # Fast compression
