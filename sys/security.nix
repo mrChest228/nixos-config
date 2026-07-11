@@ -14,10 +14,9 @@
         sudo = {
             enable = true;
             extraConfig = ''
-                # Enable sudo without password for mrchest
-                "mrchest" ALL=(ALL) NOPASSWD: ALL
+                # Enable sudo without password for mrChest
+                "mrChest" ALL=(ALL) NOPASSWD: ALL
             '';
         };
     };
-    users.users.root.hashedPassword = null; # I can't login to root user. Only @wheel
 }

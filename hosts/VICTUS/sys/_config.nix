@@ -6,12 +6,19 @@
         ( lib.importTopLevel ./. )
     ];
     
-    users.users."mrchest" = {
-        isNormalUser = true;
-        extraGroups = [ "wheel" "networkmanager" ];
-        initialHashedPassword = "";
+    users = {
+        mutableUsers = false; # Disable passwd command and PAM crashing after the disk fully filled
+        users = {
+            "mrChest" = {
+                isNormalUser = true;
+                createHome = true;
+                extraGroups = [ "wheel" "networkmanager" ];
+                initialHashedPassword = ""; #TODO: hashed password file
+            };
+            root.hashedPassword = "!"; # I can't login to root user. Only @wheel
+        };
     };
-    services.getty.autologinUser = "mrchest";
+    services.getty.autologinUser = "mrChest";
 
     networking.hostName = vars.host;
 

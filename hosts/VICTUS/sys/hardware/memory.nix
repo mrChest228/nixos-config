@@ -8,6 +8,7 @@
                 "noatime"
                 "compression=zstd:1" # Fast compression
                 "discard"   # Async TRIM
+                "root_reserve_percent=1" # Reserve 1% of partition for root services
             ];
         };
         # Bind-mounts (X-mount.mkdir option to create the target folder)
