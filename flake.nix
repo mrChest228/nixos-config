@@ -39,7 +39,6 @@
                 hostPlatform = arch;
                 config = {
                     allowUnfree = true;
-                    cudaSupport = true;
                 };
             });
             mkPkgsOverlays = (pkgs: arch:
