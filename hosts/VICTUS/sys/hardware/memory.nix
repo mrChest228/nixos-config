@@ -9,6 +9,7 @@
                 "noatime"
                 "compress=zstd:1" # Fast compression
                 "discard=async"   # Async TRIM (hz)
+                "thread_pool=6"   # TODO: make bigger or lower and move to /host
             ];
         };
         # Bind-mounts (X-mount.mkdir option to create the target folder)
