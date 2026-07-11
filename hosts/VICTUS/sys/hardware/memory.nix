@@ -7,8 +7,8 @@
             fsType = "bcachefs";
             options = [
                 "noatime"
-                "compress=zstd:1" # Fast compression
-                "discard=async"   # Async TRIM (hz)
+                "compression=zstd:1" # Fast compression
+                "discard"   # Async TRIM
                 "thread_pool=6"   # TODO: make bigger or lower and move to /host
             ];
         };
@@ -46,11 +46,10 @@
     };
 
     # Optimizations
-    services = {
-        fstrim.enable = true;
-        btrfs.autoScrub = {
-            enable = true;
-            interval = "monthly";
-        };
-    };
+    services.fstrim.enable = false;
+    environment.systemPackages = with pkgs; [
+        bcachefs-tools
+        btrfs-progs
+        smartmontool # TODO: check. For watching the disk health
+    ];
 }

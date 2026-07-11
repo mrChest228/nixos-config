@@ -5,7 +5,6 @@
         #dracut # Tool to see initrd imported modules
         #pciutils # lspci command
 
-        btrfs-progs # Utility for my FS
         # testing
         # acpi # Battery status
         #linuxPackages.cpupower

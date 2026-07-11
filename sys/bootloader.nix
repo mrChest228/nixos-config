@@ -16,10 +16,10 @@
             systemd.enable = true;
             # Compress the images
             compressor = "zstd";
-            compressorArgs = [ "-15" "-T0" ]; # zstd 15 level, use all CPU cores
+            compressorArgs = [ "-10" "-T0" ]; # zstd 10 level, use all CPU cores
         };
+        supportedFilesystems = [ "bcachefs" ];
         kernel.sysctl = {
-            
         };
         kernelPackages = pkgs.linuxPackages_latest;
         kernelParams = [
