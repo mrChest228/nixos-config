@@ -29,10 +29,9 @@
     ) vars.users));
 
     systemd.tmpfiles.rules = [
-        "e /home/%U/.local/share/Trash 0700 ${user} ${user} 180d -" # Folder crafting and auto-deleting
-        "A+ /home/${user}/.local/share/Trash - - - - bcachefs.background_compression=zstd:19"
+        "d /home/%U/.local/share/Trash 0700 ${user} ${user} 180d -" # Folder crafting and auto-deleting
+        "h /home/%U/.local/share/Trash - - - - bcachefs.background_compression=zstd:19"
     ];
-    # TODO: trash big compression
     
     # Swap partition is in sys/zswap.nix (todo + let swapPath = "/dev/disk..." and use in swapDevices and boot.resumeDevice)
     boot = {
