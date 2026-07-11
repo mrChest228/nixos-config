@@ -16,7 +16,7 @@
             systemd.enable = true;
             # Compress the images
             compressor = "zstd";
-            compressorArgs = [ "-13" "-T0" ]; # zstd 13 level, use all CPU cores
+            compressorArgs = [ "-15" "-T0" ]; # zstd 15 level, use all CPU cores
         };
         kernel.sysctl = {
         };

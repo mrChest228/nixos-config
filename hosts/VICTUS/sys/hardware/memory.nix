@@ -1,5 +1,4 @@
-{ config, lib, pkgs, vars, self, ... }:
-{
+{ config, lib, pkgs, vars, self, ... }: {
     fileSystems = {
         # Partitions
         "/" = {
@@ -9,7 +8,6 @@
                 "noatime"
                 "compression=zstd:1" # Fast compression
                 "discard"   # Async TRIM
-                "thread_pool=6"   # TODO: make bigger or lower and move to /host
             ];
         };
         # Bind-mounts (X-mount.mkdir option to create the target folder)
@@ -31,7 +29,8 @@
     ) vars.users));
 
     systemd.tmpfiles.rules = [
-        # "d /home/${user}/.local/share/Trash 0700 ${user} ${user} - -"
+        "e /home/%U/.local/share/Trash 0700 ${user} ${user} 180d -" # Folder crafting and auto-deleting
+        "A+ /home/${user}/.local/share/Trash - - - - bcachefs.background_compression=zstd:19"
     ];
     # TODO: trash big compression
     

@@ -63,7 +63,7 @@
                         inherit lib vars self; # self is a path to the flake
                     };
                     modules = [
-                        inputs.determinate.nixosModules.default # To make Determinate.nix works
+                        inputs.determinate.nixosModules.default
                         inputs.nix-index-database.nixosModules.nix-index
                         ./hosts/${host}/sys/_config.nix         # _ needs to protect the import with import-tree
                     ];
@@ -87,7 +87,7 @@
                 in
                     builtins.map (user: {
                         "${user}@${host}" = (mkHome (vars // { inherit user; }));
-                    }) vars.users # Return a list of dicts
+                    }) vars.users # Returns a list of dicts
             ) hosts);
         };
 }

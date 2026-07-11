@@ -1,6 +1,5 @@
 { config, lib, pkgs, vars, self, ... }: {
     imports = map (name: self + "/sys/hardware/${name}") [
-        # "memory.nix" # TODO
         "amd-integrated.nix"
         "nvidia-prime.nix"
         "power.nix"
