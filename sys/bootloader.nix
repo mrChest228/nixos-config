@@ -16,9 +16,8 @@
             systemd.enable = true;
             # Compress the images
             compressor = "zstd";
-            compressorArgs = [ "-10" "-T0" ]; # zstd 10 level, use all CPU cores
+            compressorArgs = [ "-13" "-T0" ]; # zstd 13 level, use all CPU cores
         };
-        supportedFilesystems = [ "bcachefs" ];
         kernel.sysctl = {
         };
         kernelPackages = pkgs.linuxPackages_latest;
@@ -34,5 +33,14 @@
     };
     systemd.services = {
         NetworkManager-wait-online.enable = false; # Don't wait, before NetworkManager find a network - continue bootloading and connect in parallel
+    };
+    # Bcachefs
+    boot = {
+        supportedFilesystems = [ "bcachefs" ];
+        initrd.availableKernelModules = [
+            "crc32c" # Fast hashing
+            "six"    # Locks mechanic
+        ];
+        kernelModules = [ "bcachefs" ];
     };
 }

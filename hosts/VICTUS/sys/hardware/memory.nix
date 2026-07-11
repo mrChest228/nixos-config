@@ -46,7 +46,18 @@
     };
 
     # Optimizations
-    services.fstrim.enable = false;
+    services = {
+        fstrim.enable = false;
+        bcachefs.autoScrub = {
+            enable = true;
+            interval = "weekly";
+            fileSystems = [ "/" ];
+        };
+        # btrfs.autoScrub = {
+        #     enable = true;
+        #     interval = "monthly";
+        # };
+    };
     environment.systemPackages = with pkgs; [
         bcachefs-tools
         btrfs-progs
