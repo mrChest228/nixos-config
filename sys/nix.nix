@@ -59,7 +59,7 @@
                 CPUSchedulingPolicy = "idle";
                 IOSchedulingClass = "idle";
             };
-            postStop = "-/run/current-system/bin/switch-to-configuration boot";
+            postStop = "/run/current-system/bin/switch-to-configuration boot || true";
         };
     };
 }
