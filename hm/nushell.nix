@@ -14,7 +14,7 @@
                 header_on_separator = true;
             };
         };
-        envFile = ""; # Create the .env file
+        envFile = ''''; # Create the .env file
         extraConfig = ''
             def returnCode [code: int] {
                 run-external "nu" "-c" $"exit ($code)"
