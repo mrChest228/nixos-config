@@ -121,7 +121,22 @@
                 if (not ((git status -s) | is-empty) or not ($message | is-empty)) {
                     try { nudo config-commit (if ($message | is-empty) { $"Update (date now | format date '%Y-%m-%d %H:%M:%S %:z')" } else { $message }) }
                 }
-                rebuild
+
+                let bootedGen = (readlink -f /run/current-system)
+                let prvGen = (readlink -f /nix/var/nix/profiles/system)
+
+                nh os switch
+                nh home switch
+
+                let newGen = (readlink -f /nix/var/nix/profiles/system)
+                if (($prvGen != $bootedGen) and ($prvGen != $newGen)) {
+                    let prvLinks = ((nudo ls -l /nix/var/nix/profiles/system-*-link) | where target == $prvGen)
+                    if (($prvLinks | length) == 1) {
+                        gen del ($prvLinks.0.name | str replace -a -r '\D' ''')
+                    }
+                }
+
+                gen clean
             }
             def rebuild [message?: string] {
                 cd ${vars.configPath}
@@ -133,7 +148,6 @@
                 let prvGen = (readlink -f /nix/var/nix/profiles/system)
 
                 nh os switch
-                nh home switch
 
                 let newGen = (readlink -f /nix/var/nix/profiles/system)
                 if (($prvGen != $bootedGen) and ($prvGen != $newGen)) {
@@ -156,7 +170,7 @@
             }
 
             def "gen del" [...ids: string] {
-                nudo nix-env --profile /nix/var/nix/profiles/system --delete-generations ($ids | str join " ")
+                nudo nix-env --profile /nix/var/nix/profiles/system --delete-generations ...$ids
                 nudo /run/current-system/bin/switch-to-configuration boot
             }
             def "gen switch" [id: any] {
