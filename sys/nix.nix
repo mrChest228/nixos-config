@@ -56,7 +56,10 @@
                 CPUSchedulingPolicy = "idle";
                 IOSchedulingClass = "idle";
             };
-            path = with pkgs; [ nh ];
+            path = with pkgs; [
+                nh
+                nix
+            ];
             script = ''
                 nh clean all --keep 3 --keep-since 3d --optimise
                 /run/current-system/bin/switch-to-configuration boot # Update bootloader
