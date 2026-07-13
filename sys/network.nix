@@ -12,7 +12,7 @@
         ];
         networkmanager = {
             enable = true;
-            dns = "none"; # Don't use default dns from my router. Only my own dns
+            dns = lib.mkForce "none"; # Don't use default dns from my router. Only my own dns
             connectionConfig = {
                 "ipv6.ip6-privacy" = 2;        # Use random-generated IP-adresses (static IP continue working)
             };
