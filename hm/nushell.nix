@@ -36,20 +36,10 @@
             }
             def --wrapped nudo [...rest: string] {
                 if ($rest | is-empty) { return }
-                
-                mut nwRest = ($rest | each { |s|
-                    if ($s | str contains " ") { $"\"($s)\"" } else { $s }
-                })
-                $nwRest.0 = ($nwRest.0 | str replace '^"|"$' ''') # Remove " from the start and the end of command name
 
-                let cmd = ($rest | str join " ")
+                let cmd = ($rest | each { |s| $s | to nuon } | str join " ") # Adds ' if arguments contain spaces. Joins them all into a single string
 
                 sudo nu --config /home/${vars.user}/.config/nushell/config.nu --env-config /home/${vars.user}/.config/nushell/env.nu -c $cmd
-                # if $res.exit_code != 0 {
-                #     $"($res.stdout)\n(ansi red)($res.stderr)\n(ansi red_bold)Command ($cmd) FAILED \(exit code ($res.exit_code)\)(ansi rst)"
-                # } else {
-                #     $res.stdout | from nuon)
-                # }
             }
             def config-commit [message?: string] {
                 cd ${vars.configPath}
@@ -122,7 +112,7 @@
             }
             def update [message?: string] {
                 cd ${vars.configPath}
-                sudo nix flake update
+                nudo nix flake update
                 if (not ((git status -s) | is-empty) or not ($message | is-empty)) {
                     try { nudo config-commit (if ($message | is-empty) { $"Update (date now | format date '%Y-%m-%d %H:%M:%S %:z')" } else { $message }) }
                 }
@@ -161,15 +151,19 @@
             }
 
             def "gen del" [...ids: string] {
-                sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations ($ids | str join " ")
-                sudo /run/current-system/bin/switch-to-configuration boot
+                nudo nix-env --profile /nix/var/nix/profiles/system --delete-generations ($ids | str join " ")
+                nudo /run/current-system/bin/switch-to-configuration boot
             }
             def "gen switch" [id: any] {
-                sudo $"/nix/var/nix/profiles/system-($id)-link/bin/switch-to-configuration" switch
+                nudo $"/nix/var/nix/profiles/system-($id)-link/bin/switch-to-configuration" switch
             }
             def "gen clean" [] {
                 nh clean all --keep 3 --keep-since 3d --nogc --nogcroots
-                sudo /run/current-system/bin/switch-to-configuration boot
+                nudo /run/current-system/bin/switch-to-configuration boot
+            }
+            def clean [] {
+                nh clean all --keep 3 --keep-since 3d --optimise
+                sudo /run/current-system/bin/switch-to-configuration boot # Update bootloade
             }
         '';
         shellAliases = {

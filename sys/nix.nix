@@ -1,36 +1,4 @@
-{ config, lib, pkgs, vars, ... }:
-let
-    # gen-clean command, that deletes all gens except at least 3 and at least 3 days
-    gen-clean = pkgs.writeShellScriptBin "gen-clean" ''
-        #!/bin/sh
-        PROFILE="/nix/var/nix/profiles/system"
-        KEEP_GENS=3
-        KEEP_DAYS=3
-
-        CUTOFF=$(date -d "-$KEEP_DAYS days" +%s)
-        echo "CUTOFF: $CUTOFF"
-
-        ids_to_die=""
-
-        while read -r id date time misc; do
-            gen_ts=$(date -d "$date $time" +%s)
-            if [[ $gen_ts -lt $CUTOFF && -z $misc ]]; then
-                ids_to_die="$ids_to_die $id"
-                echo "Gen to die: id: $id  time: $date $time ($gen_ts)"
-            fi
-        done < <(nix-env -p "$PROFILE" --list-generations | head -n -$KEEP_GENS)
-
-        echo "All IDs to die: $ids_to_die"
-        nix-env -p $PROFILE --delete-generations $ids_to_die
-        echo "Updating bootloader"
-        sudo /run/current-system/bit/switch-to-configuration boot
-    '';
-    clean = pkgs.writeShellScriptBin "clean" ''
-        nh clean all --keep 3 --keep-since 3d --optimise
-        sudo /run/current-system/bin/switch-to-configuration boot # Updating bootloader
-    '';
-in
-{
+{ config, lib, pkgs, vars, self, ... }: {
     nix = {
         channel.enable = false;
         settings = {
@@ -68,34 +36,30 @@ in
         enable = true;
         flake = vars.configPath;
     };
-
-    environment.systemPackages = [
-        clean
-    ];
     
     # Nh auto clean, but with bootloader updating
     systemd = {
-        timers.clean = {
+        timers.store-clean = {
             wantedBy = [ "timers.target" ];
             timerConfig = {
-                OnCalendar = "12:00";
+                OnCalendar = "02:00"; # For servers. Notebooks run it after the turning on. They don't need to wait the 12 PM
                 Persistent = true;
-                RandomizeDelaySec = "10m";
+                RandomizedDelaySec = "15m";
+                AccuracySec = "1m"; # Wait at most 1 minute to group service with other. It needs for battery saving
             };
         };
-        services.clean = {
+        services.store-clean = {
             serviceConfig = {
                 Type = "oneshot";
                 User = "root";
+                RemainAfterExit = false; # Necessary for correct restart
                 CPUSchedulingPolicy = "idle";
                 IOSchedulingClass = "idle";
             };
-            path = with pkgs; [
-                nh
-                clean
-            ];
+            path = with pkgs; [ nh ];
             script = ''
-                clean
+                nh clean all --keep 3 --keep-since 3d --optimise
+                /run/current-system/bin/switch-to-configuration boot # Update bootloader
             '';
         };
     };
