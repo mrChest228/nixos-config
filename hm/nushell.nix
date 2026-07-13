@@ -1,5 +1,4 @@
-{ config, pkgs, vars, ... }:
-{
+{ config, lib, pkgs, vars, self, ... }: {
     programs.nushell = {
         enable = true;
         settings = {
@@ -15,6 +14,7 @@
                 header_on_separator = true;
             };
         };
+        envFile = ""; # Create the .env file
         extraConfig = ''
             def returnCode [code: int] {
                 run-external "nu" "-c" $"exit ($code)"
@@ -44,7 +44,7 @@
 
                 let cmd = ($rest | str join " ")
 
-                let res = (sudo nu --config /home/${vars.user}/.config/nushell/config.nu -c $"($cmd) | to nuon" | complete)
+                let res = (sudo nu --config /home/${vars.user}/.config/nushell/config.nu --env-config /home/${vars.user}/.config/nushell/env.nu -c $"($cmd) | to nuon" | complete)
                 if $res.exit_code != 0 {
                     $"($res.stdout)\n(ansi red)($res.stderr)\n(ansi red_bold)Command ($cmd) FAILED \(exit code ($res.exit_code)\)(ansi rst)"
                 } else {
