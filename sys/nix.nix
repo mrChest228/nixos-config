@@ -38,7 +38,7 @@
         clean = {
             enable = true;
             dates = "02:00"; # For servers. Notebooks run it after the turning on. They don't need to wait the 12 PM
-            extraArgs = "--keep 3 --keep-since 3d"
+            extraArgs = "--keep 3 --keep-since 3d";
         };
     };
 
