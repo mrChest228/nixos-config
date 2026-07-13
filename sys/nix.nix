@@ -55,11 +55,20 @@
                 RemainAfterExit = false; # Necessary for correct restart
                 CPUSchedulingPolicy = "idle";
                 IOSchedulingClass = "idle";
+
+                StandardInput = "null";
+                StandardOutput = "journal";
+                StandardError = "journal";
             };
             path = with pkgs; [
                 nh
-                nix
+                config.nix.package
             ];
+            environment = {
+                NIX_REMOTE = "daemon";
+                NO_COLOR = "1";
+                NH_NO_TTY = "1";
+            };
             script = ''
                 nh clean all --keep 3 --keep-since 3d --optimise
                 /run/current-system/bin/switch-to-configuration boot # Update bootloader
