@@ -35,6 +35,7 @@ in
         channel.enable = false;
         settings = {
             http-connections = 20; # Number of parallel downloads
+            download-attempts = 3;
             max-jobs = 14;         # Number of parallel compilations
             # experimental-features = [ "nix-command" "flakes" ]; # Enabled by default in Determinate-nix
             use-xdg-base-directories = true;

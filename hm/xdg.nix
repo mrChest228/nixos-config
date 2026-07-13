@@ -16,6 +16,7 @@
             videos      = "${config.home.homeDirectory}";
             templates   = "${config.home.homeDirectory}";
             publicShare = "${config.home.homeDirectory}";
+            projects    = "${config.home.homeDirectory}";
         };
     };
 }
