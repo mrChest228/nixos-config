@@ -30,7 +30,7 @@
     ) vars.users));
 
     systemd.tmpfiles.rules = [
-        "d /home/%U/.local/share/Trash 0700 ${user} ${user} 180d -" # Folder crafting and auto-deleting
+        "d /home/%U/.local/share/Trash 0700 %U %U 180d -" # Folder crafting and auto-deleting
         "h /home/%U/.local/share/Trash - - - - bcachefs.background_compression=zstd:19"
     ];
     
@@ -59,6 +59,6 @@
     environment.systemPackages = with pkgs; [
         bcachefs-tools
         btrfs-progs
-        smartmontool # TODO: check. For watching the disk health
+        # smartmontool # TODO: check. For watching the disk health
     ];
 }

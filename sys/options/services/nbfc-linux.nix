@@ -51,7 +51,7 @@ in {
     };
 
     config = lib.mkIf cfg.enable (let
-        configJson = pkgs.writeText "nbfc-config.json" (builtins.toJSON { SelectedConfigId = "${vars.configPath}/host/sys/hardware/nbfc-VICTUS.json" /*cfg.settings.profile*/; });
+        configJson = pkgs.writeText "nbfc-config.json" (builtins.toJSON { SelectedConfigId = "/etc/nixos/host/sys/hardware/nbfc-VICTUS.json" /*cfg.settings.profile*/; });
     in {
         environment.etc."nbfc/nbfc.json".source = configJson;
 

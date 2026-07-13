@@ -37,10 +37,7 @@
     # Bcachefs
     boot = {
         supportedFilesystems = [ "bcachefs" ];
-        initrd.availableKernelModules = [
-            "crc32c" # Fast hashing
-            "six"    # Locks mechanic
-        ];
+        initrd.availableKernelModules = [ "crc32c" ]; # Fast hashing
         kernelModules = [ "bcachefs" ];
     };
 }

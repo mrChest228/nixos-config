@@ -47,7 +47,7 @@
     };
     environment.systemPackages = with pkgs; [
         mesa-demos # Diagnostic tool
-        gpu-burn # Coolr termal stress test (run gpu_burn <time in seconds>)
+        (gpu-burn.override { config.cudaSupport = true; }) # Coolr termal stress test (run gpu_burn <time in seconds>)
         cudaPackages.cudatoolkit
         # cudaPackages.cudnn
         # cudaPackages.nccl
