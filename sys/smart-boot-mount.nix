@@ -14,6 +14,7 @@
             Type = "oneshot";
             RemainAfterExit = true;
         };
+        unitConfig.DefaultDependencies = false;
 
         path = with pkgs; [
             coreutils
