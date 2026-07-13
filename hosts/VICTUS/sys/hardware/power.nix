@@ -41,4 +41,5 @@
         PLATFORM_PROFILE_ON_AC = "performance";
         PLATFORM_PROFILE_ON_BAT = "quiet";
     };
+    boot.kernelParams = [ "amd_pmf=off" ];
 }

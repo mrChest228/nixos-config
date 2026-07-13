@@ -1,5 +1,4 @@
-{ config, lib, pkgs, vars, ... }:
-{
+{ config, lib, pkgs, vars, self, ... }: {
     environment = {
         systemPackages = [ pkgs.nushell ];
         shells = [ pkgs.nushell ];
