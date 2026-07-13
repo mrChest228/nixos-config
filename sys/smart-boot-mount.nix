@@ -46,7 +46,8 @@
             ESP_UUID="''${RAW_UUID:6:2}''${RAW_UUID:4:2}''${RAW_UUID:2:2}''${RAW_UUID:0:2}-''${RAW_UUID:10:2}''${RAW_UUID:8:2}-''${RAW_UUID:14:2}''${RAW_UUID:12:2}-''${RAW_UUID:16:4}-''${RAW_UUID:20:12}"
             echo "ESP_UUID: $ESP_UUID"
 
-            mount PARTUUID="$ESP_UUID" ${config.boot.loader.efi.efiSysMountPoint} || exit 5
+            # vfat partitions only. Patch the string for other types
+            mount -t vfat -o dmask=0077,fmask=0177 PARTUUID="$ESP_UUID" ${config.boot.loader.efi.efiSysMountPoint} || exit 5
         '';
     };
 }
