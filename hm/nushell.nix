@@ -39,10 +39,10 @@
 
                 print $rest
 
-                let nwRest = ($rest | each { |s|
+                mut nwRest = ($rest | each { |s|
                     if ($s | str contains " ") { $"\"($s)\"" } else { $s } # Adds " if argument contains spaces
                 })
-                # $nwRest.0 = ($nwRest.0 | str replace '^"|"$' ''') # Remove " from the start and the end of command name
+                $nwRest.0 = ($nwRest.0 | str replace '^"|"$' ''') # Remove " from the start and the end of command ("ls | to nuon", for example)
                 print $nwRest
 
                 let cmd = ($nwRest | str join " ")
