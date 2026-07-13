@@ -13,7 +13,9 @@
         networkmanager = {
             enable = true;
             dns = lib.mkForce "none"; # Don't use default dns from my router. Only my own dns
-            settings.systemd-resolved = false;
+            settings = {
+                systemd-resolved = false;
+            };
             connectionConfig = {
                 "ipv6.ip6-privacy" = 2;        # Use random-generated IP-adresses (static IP continue working)
             };
