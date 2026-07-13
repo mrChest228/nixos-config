@@ -29,10 +29,10 @@
         }
     ) vars.users));
 
-    systemd.tmpfiles.rules = [
-        "d /home/%U/.local/share/Trash 0700 %U %U 180d -" # Folder crafting and auto-deleting
-        "h /home/%U/.local/share/Trash - - - - bcachefs.background_compression=zstd:19"
-    ];
+    systemd.tmpfiles.rules = (builtins.concatMap (user: [
+        "d /home/${user}/.local/share/Trash 0700 ${user} ${user} 180d -" # Folder crafting and auto-deleting
+        "h /home/${user}/.local/share/Trash - - - - bcachefs.background_compression=zstd:19"
+    ]) vars.users);
     
     boot = {
         kernel.sysctl = {

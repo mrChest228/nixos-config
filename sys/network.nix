@@ -12,10 +12,8 @@
         ];
         networkmanager = {
             enable = true;
-            dns = "systemd-resolved";
+            dns = "none"; # Don't use default dns from my router. Only my own dns
             connectionConfig = {
-                "ipv4.ignore-auto-dns" = true; # Don't use default dns from my router. Only my own dns
-                "ipv6.ignore-auto-dns" = true;
                 "ipv6.ip6-privacy" = 2;        # Use random-generated IP-adresses (static IP continue working)
             };
         };
