@@ -35,44 +35,32 @@
     programs.nh = {
         enable = true;
         flake = vars.configPath;
+        clean = {
+            enable = true;
+            dates = "02:00"; # For servers. Notebooks run it after the turning on. They don't need to wait the 12 PM
+            extraArgs = "--keep 3 --keep-since 3d"
+        };
+    };
+
+    nix = { # Disable store optimise. It break the bcachefs and its builtin optimisations
+        settings.auto-optimise-store = false;
+        optimise.automatic = false;
+        gc.automatic = false;
     };
     
-    # Nh auto clean, but with bootloader updating
+    # Nh auto clean + bootloader updating
     systemd = {
-        timers.store-clean = {
-            wantedBy = [ "timers.target" ];
-            timerConfig = {
-                OnCalendar = "02:00"; # For servers. Notebooks run it after the turning on. They don't need to wait the 12 PM
-                Persistent = true;
-                RandomizedDelaySec = "15m";
-                AccuracySec = "1m"; # Wait at most 1 minute to group service with other. It needs for battery saving
-            };
+        timers.nh-clean.timerConfig = {
+            Persistent = true;
+            RandomizedDelaySec = "15m";
+            AccuracySec = "1m"; # Wait at most 1 minute to group service with other. It needs for battery saving
         };
-        services.store-clean = {
+        services.nh-clean = {
             serviceConfig = {
-                Type = "oneshot";
-                User = "root";
-                RemainAfterExit = false; # Necessary for correct restart
                 CPUSchedulingPolicy = "idle";
                 IOSchedulingClass = "idle";
-
-                StandardInput = "null";
-                StandardOutput = "journal";
-                StandardError = "journal";
             };
-            path = with pkgs; [
-                nh
-                config.nix.package
-            ];
-            environment = {
-                NIX_REMOTE = "daemon";
-                NO_COLOR = "1";
-                NH_NO_TTY = "1";
-            };
-            script = ''
-                nh clean all --keep 3 --keep-since 3d --optimise
-                /run/current-system/bin/switch-to-configuration boot # Update bootloader
-            '';
+            postStop = "-/run/current-system/bin/switch-to-configuration boot";
         };
     };
 }
