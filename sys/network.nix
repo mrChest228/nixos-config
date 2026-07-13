@@ -17,6 +17,8 @@
                 "ipv6.ip6-privacy" = 2;        # Use random-generated IP-adresses (static IP continue working)
             };
         };
+        useDHCP = false;
+        dhcpcd.enable = false;
         resolvconf.enable = false;
     };
     services.resolved = {
