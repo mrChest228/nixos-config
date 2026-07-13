@@ -44,12 +44,12 @@
 
                 let cmd = ($rest | str join " ")
 
-                let res = (sudo nu --config /home/${vars.user}/.config/nushell/config.nu --env-config /home/${vars.user}/.config/nushell/env.nu -c $"($cmd) | to nuon" | complete)
-                if $res.exit_code != 0 {
-                    $"($res.stdout)\n(ansi red)($res.stderr)\n(ansi red_bold)Command ($cmd) FAILED \(exit code ($res.exit_code)\)(ansi rst)"
-                } else {
-                    ($res.stdout | from nuon)
-                }
+                sudo nu --config /home/${vars.user}/.config/nushell/config.nu --env-config /home/${vars.user}/.config/nushell/env.nu -c $cmd
+                # if $res.exit_code != 0 {
+                #     $"($res.stdout)\n(ansi red)($res.stderr)\n(ansi red_bold)Command ($cmd) FAILED \(exit code ($res.exit_code)\)(ansi rst)"
+                # } else {
+                #     $res.stdout | from nuon)
+                # }
             }
             def config-commit [message?: string] {
                 cd ${vars.configPath}
