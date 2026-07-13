@@ -44,7 +44,7 @@
 
                 let cmd = ($rest | str join " ")
 
-                let res = (sudo nu --config /home/${vars.user}/.config/nushell/config.nu --env-config /home/${vars.user}/.config/nushell/env.nu -c $"($cmd) | to nuon" | complete)
+                let res = (sudo nu --config /home/${vars.user}/.config/nushell/config.nu -c $"($cmd) | to nuon" | complete)
                 if $res.exit_code != 0 {
                     $"($res.stdout)\n(ansi red)($res.stderr)\n(ansi red_bold)Command ($cmd) FAILED \(exit code ($res.exit_code)\)(ansi rst)"
                 } else {
@@ -122,16 +122,16 @@
             }
             def update [message?: string] {
                 cd ${vars.configPath}
-                nix flake update
+                sudo nix flake update
                 if (not ((git status -s) | is-empty) or not ($message | is-empty)) {
-                    try { config-commit (if ($message | is-empty) { $"Update (date now | format date '%Y-%m-%d %H:%M:%S %:z')" } else { $message }) }
+                    try { nudo config-commit (if ($message | is-empty) { $"Update (date now | format date '%Y-%m-%d %H:%M:%S %:z')" } else { $message }) }
                 }
                 rebuild
             }
             def rebuild [message?: string] {
                 cd ${vars.configPath}
                 if (not ((git status -s) | is-empty) or not ($message | is-empty)) {
-                    try { config-commit (if ($message | is-empty) { $"Rebuild (date now | format date '%Y-%m-%d %H:%M:%S %:z')" } else { $message }) }
+                    try { nudo config-commit (if ($message | is-empty) { $"Rebuild (date now | format date '%Y-%m-%d %H:%M:%S %:z')" } else { $message }) }
                 }
 
                 let bootedGen = (readlink -f /run/current-system)
@@ -153,7 +153,7 @@
             def reconf [message?: string] {
                 cd ${vars.configPath}
                 if (not ((git status -s) | is-empty) or not ($message | is-empty)) {
-                    try { config-commit (if ($message | is-empty) { $"Reconf (date now | format date '%Y-%m-%d %H:%M:%S %:z')" } else { $message }) }
+                    try { nudo config-commit (if ($message | is-empty) { $"Reconf (date now | format date '%Y-%m-%d %H:%M:%S %:z')" } else { $message }) }
                 }
                 nh home switch
 
