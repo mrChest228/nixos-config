@@ -37,7 +37,10 @@
             def --wrapped nudo [...rest: string] {
                 if ($rest | is-empty) { return }
 
-                let cmd = ($rest | each { |s| $s | to nuon } | str join " ") # Adds ' if arguments contain spaces. Joins them all into a single string
+                mut nwRest = ($rest | each { |s| $s | to nuon }) # Adds " if argument contains spaces
+                $nwRest.0 = ($nwRest.0 | str replace '^"|"$' ''') # Remove " from the start and the end of command name
+
+                let cmd = ($nwRest | str join " ")
 
                 sudo nu --config /home/${vars.user}/.config/nushell/config.nu --env-config /home/${vars.user}/.config/nushell/env.nu -c $cmd
             }
@@ -95,7 +98,7 @@
                     } else {
                         print $"(ansi cyan)Nothing to commit(ansi rst)"
                         if (not ($message | is-empty) and ($message != (git log -1 --format=%s))) {
-                            let reply = (input "Do you want to rename the last commit? [Y/n]: " | str downcase)
+                            let reply = (input "Do you want to rename the last commit? [Y/n]: " | str lowercase)
                             if ($reply == "" or $reply == "y" or $reply == "ye" or $reply == "yes") {
                                 silent { git commit --amend -m $"($message)" }
                                 true
