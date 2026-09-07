@@ -125,7 +125,7 @@
                 let bootedGen = (readlink -f /run/current-system)
                 let prvGen = (readlink -f /nix/var/nix/profiles/system)
 
-                nh os switch
+                nh os boot # Apply the changes after the reboot to a new generation
                 nh home switch
 
                 let newGen = (readlink -f /nix/var/nix/profiles/system)
