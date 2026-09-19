@@ -3,7 +3,7 @@
         enable = true;
         settings = {
             binds = {
-                "Mod+Return".action.spawn = "wezterm";
+                "Mod+Return".spawn = "wezterm";
             };
         };
     };
