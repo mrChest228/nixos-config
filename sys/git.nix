@@ -12,4 +12,5 @@
             url."ssh://git@github.com/".insteadOf = "https://github.com/";
         };
     };
+    # programs.ssh.knownHosts."github.com".publicKey = "ssh-ed25519 "
 }

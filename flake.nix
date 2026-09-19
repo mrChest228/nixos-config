@@ -9,10 +9,10 @@
         # Fast nix-eval
         determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
         # Niri
-        niri = {
-            url = "github:sodiboo/niri-flake";
-            inputs.nixpkgs.follows = "nixpkgs-unstable";
-        };
+        # niri = {
+        #     url = "github:sodiboo/niri-flake";
+        #     inputs.nixpkgs.follows = "nixpkgs-unstable";
+        # };
         # Libs
         import-tree.url = "github:vic/import-tree";
         nix-index-database = { # Needs for nix-index and comma fast search/index

@@ -1,5 +1,5 @@
 { config, lib, pkgs, vars, self, ... }: {
-    programs.niri = {
+    wayland.windowManager.niri = {
         enable = true;
         settings = {
             binds = {

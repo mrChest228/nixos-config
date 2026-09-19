@@ -111,7 +111,7 @@
                 if $push {
                     git --no-pager log -1 --oneline --format="%C(magenta)%h%C(auto)%d %s"
                     let start = (date now)
-                    silent { git push --force-with-lease }
+                    silent { sudo nu -c 'with-env { GIT_SSH_COMMAND: "ssh -i /root/.ssh/nixos-config -o IdentitiesOnly=yes" } { git push --force-with-lease }' }
                     print $"(ansi green_bold)Successful push in ((date now) - $start)(ansi rst)"
                 }
             }
