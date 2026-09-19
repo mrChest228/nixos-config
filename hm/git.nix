@@ -15,7 +15,6 @@
                     email = "gengenm32111111@gmail.com";
                 };
                 url."ssh://git@github.com/".insteadOf = "https://github.com/";
-                credential."https://github.com".helper = "${pkgs.gh}/bin/gh auth git-credential";
 
                 init.defaultBranch = "main";
                 pull.rebase = false;
