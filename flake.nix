@@ -74,7 +74,7 @@
                     inherit lib vars self; # self is a path to the flake
                 };
                 modules = [
-                    inputs.niri.homeModules.niri
+                    # inputs.niri.homeModules.niri
                     ./hosts/${vars.host}/hm/${vars.user}/_home.nix # _ needs to protect the import with import-tree
                 ];
             });
