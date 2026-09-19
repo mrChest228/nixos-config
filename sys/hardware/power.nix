@@ -1,33 +1,44 @@
-{ config, lib, pkgs, vars, ... }: {
-    services = {
-        power-profiles-daemon.enable = false; # TLP is better
-        tlp = {
-            enable = true;
-            settings = {
-                # Alternating Current
-                # CPU_ENERGY_PERF_POLICY_ON_AC = "balance_perfomance"; # For intel
+{ config, lib, pkgs, vars, self, ... }: {
+    # CPU power limit 65W on AC and 30W on battery and nvidia-powerd/nvidia-persisteced disabling on BAT
+    systemd.services.power-manager = let
+        ACPath = "/sys/class/power_supply/ACAD";
+    in {
+        description = "Manage power limits, enabled services and system settings based on AC connection";
+        after = [ "multi-user.target" ];
+        wantedBy = [ "multi-user.target" ];
 
-                RUNTIME_PM_ON_AC = "on";
-                MAX_LOST_WORK_SECS_ON_AC = 20;
-
-                # Battery
-                # CPU_ENERGY_PERF_POLICY_ON_BAT = "power"; # For intel
-
-                WIFI_PWR_ON_BAT = "on";
-                SOUND_POWER_SAVE_ON_BAT = 1;
-                SOUND_POWER_SAVE_CONTROLLER = "Y";
-                PCIE_ASPM_ON_BAT = "powersave";
-                RUNTIME_PM_ON_BAT = "auto";
-                MAX_LOST_WORK_SECS_ON_BAT = 60;
-                NMI_WATCHDOG = 0;
-
-                # Doesn't work on VICTUS :(
-                START_CHARGE_THRESH_BAT0 = 85;
-                STOP_CHARGE_THRESH_BAT0 = 98;
-            };
+        serviceConfig = {
+            Type = "simple";
+            Restart = "on-failure";
+            RestartSec = "10s";
+            KillMode = "mixed"; # Kill the bash-script without waiting to his sleep end
+            TimeoutStopSec = "1s"; # Kill the process in 1 sec without waiting to himself killing after receiving the SIGTERM signal
         };
-        upower.enable = true; # Power (battery, AC) info
+
+        path = with pkgs; [
+            ryzenadj
+            systemd
+        ];
+
+        script = ''
+            if [ -f ${ACPath}/online ] && [ "$(cat ${ACPath}/online)" == "1" ]; then
+                while true; do
+                    ryzenadj --fast-limit=65000 --slow-limit=54000 --stapm-limit=54000 --tctl-temp=97 --apu-skin-temp=231 --dgpu-skin-temp=231
+                    sleep 3
+                done
+            else
+                while true; do
+                    ryzenadj --fast-limit=30000 --slow-limit=30000 --stapm-limit=30000 --tctl-temp=80 --apu-skin-temp=231 --dgpu-skin-temp=231
+                    sleep 3
+                done
+            fi
+        '';
     };
-    environment.systemPackages = [ pkgs.lm_sensors ];
-    # programs.mangohud.enable = true; # TODO
+    services.udev.extraRules = ''
+        SUBSYSTEM=="power_supply", ACTION=="change", DEVPATH=="/devices/platform/*/power_supply/AC*", ENV{POWER_SUPPLY_ONLINE}=="0|1", RUN+="${pkgs.systemd}/bin/systemctl --no-block restart power-manager"
+    '';
+    services.tlp.settings = {
+        PLATFORM_PROFILE_ON_AC = "performance";
+        PLATFORM_PROFILE_ON_BAT = "quiet";
+    };
 }
