@@ -6,14 +6,14 @@
             fsType = "bcachefs";
             options = [
                 "noatime"
-                "compression=zstd:1" # Fast compression
-                "discard"   # Async TRIM
+                "compression=zstd:1"     # Fast compression
+                "discard"                # Async TRIM
                 "root_reserve_percent=1" # Reserve 1% of partition for root services
             ];
         };
         # Bind-mounts (X-mount.mkdir option to create the target folder)
-        "${vars.configPath}/host" = {
-            device = "${vars.configPath}/hosts/${vars.host}";
+        "${vars.configPath}/cur" = {
+            device = "${vars.configPath}/${vars.host}";
             fsType = "none";
             options = [ "bind" "X-mount.mkdir" ];
         };
@@ -22,7 +22,7 @@
             {}
         else {
             "/home/${user}/cfg" = {
-                device = "${vars.configPath}";
+                device = "${vars.configPath}/${vars.host}";
                 fsType = "none";
                 options = [ "bind" "X-mount.mkdir" ];
             };

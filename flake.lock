@@ -1,5 +1,20 @@
 {
   "nodes": {
+    "common": {
+      "locked": {
+        "lastModified": 1790279321,
+        "narHash": "sha256-UD0mrmTo6dGxhPGIMme1Dzhk5hsFr+ptFsNSKkuJ8T8=",
+        "ref": "refs/heads/main",
+        "rev": "a1bc93a5a3e67888f97f24b523eae0eaf12e68a5",
+        "revCount": 9,
+        "type": "git",
+        "url": "file:///etc/nixos/com"
+      },
+      "original": {
+        "type": "git",
+        "url": "file:///etc/nixos/com"
+      }
+    },
     "determinate": {
       "inputs": {
         "determinate-nixd-aarch64-darwin": "determinate-nixd-aarch64-darwin",
@@ -286,6 +301,7 @@
     },
     "root": {
       "inputs": {
+        "common": "common",
         "determinate": "determinate",
         "home-manager": "home-manager",
         "import-tree": "import-tree",
