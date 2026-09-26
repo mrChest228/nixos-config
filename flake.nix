@@ -20,7 +20,7 @@
             inputs.nixpkgs.follows = "nixpkgs-unstable";
         };
         # All my common modules
-        common.url = "git+file:///etc/nixos/com";
+        common.url = "git+file:///etc/nixos/common";
     };
     outputs = inputs@{ self, nixpkgs-stable, nixpkgs-unstable, home-manager, common, ... }:
         let

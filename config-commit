@@ -1,0 +1,14 @@
+#!/usr/bin/env nu
+# Run only with sudo!
+# Usage: ./commit <message|null>
+# It commits and pushes all the changes in the current folder
+
+def main[message?: string] {
+    cd (path self .)
+    print "Common:"
+    ../common/commit $message
+    GIT_SSH_COMMAND="ssh -i /root/.ssh/nixos-config -o IdentitiesOnly=yes" git pull --rebase --autostash origin main --quiet
+    nix flake update common
+    print (path dirname) ":"
+    ../config-commit $message
+}
