@@ -1,7 +1,7 @@
 { config, lib, com, pkgs, vars, self, ... }: {
     imports = [
-        com.options.all
-        com.topLevel
+        com.options.ALL
+        com.TOP_LEVEL
         ( lib.importTopLevel ./hardware )
         ( lib.importTopLevel ./. )
     ];
