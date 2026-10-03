@@ -1,5 +1,5 @@
-{ config, lib, pkgs, vars, self, ... }: {
-    imports = map (name: self + "/sys/hardware/${name}") [
+{ config, lib, com, pkgs, vars, self, ... }: {
+    imports = map (name: com.hardware.${name}) [
         "amd-integrated.nix"
         "nvidia-prime.nix"
         "power.nix"

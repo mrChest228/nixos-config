@@ -1,3 +1,3 @@
-{ config, lib, pkgs, vars, self, ... }: {
+{ config, lib, com, pkgs, vars, self, ... }: {
     boot.zswap.maxPoolPercent = 40; # I have only 16GB ddr4 (default is 25)
 }

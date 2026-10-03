@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ config, lib, com, pkgs, vars, self, ... }: {
     environment.systemPackages = with pkgs; [
         #dmidecode # Gets BIOS and firmware drivers/microcodes info
         #acpica-tools # Tool for fixing bootloading ACPI-bug

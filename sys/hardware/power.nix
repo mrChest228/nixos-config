@@ -1,4 +1,4 @@
-{ config, lib, pkgs, vars, self, ... }: {
+{ config, lib, com, pkgs, vars, self, ... }: {
     # CPU power limit 65W on AC and 30W on battery and nvidia-powerd/nvidia-persisteced disabling on BAT
     systemd.services.power-manager = let
         ACPath = "/sys/class/power_supply/ACAD";
