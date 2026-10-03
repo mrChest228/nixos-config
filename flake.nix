@@ -30,11 +30,7 @@
             })));
             lib = mkLib nixpkgs-unstable;
 
-            hosts = builtins.attrNames ( # Get only dirs from ./hosts
-                lib.filterAttrs
-                    (name: type: type == "directory")
-                    (builtins.readDir ./hosts)
-            );
+            vars = import ./vars.nix;
 
             pkgsConfig = (arch: {
                 system = arch;
@@ -55,42 +51,33 @@
                 })]
             );
 
-            mkSys = (host: nixpkgs-unstable.lib.nixosSystem (
-                let
-                    vars = (import ./hosts/${host}/vars.nix) // { inherit host; };
-                in {
-                    pkgs = mkPkgs vars.arch;
-                    specialArgs = {
-                        inherit lib vars self; # self is a path to the flake
-                        com = common;
-                    };
-                    modules = [
-                        inputs.determinate.nixosModules.default
-                        inputs.nix-index-database.nixosModules.nix-index
-                        ./hosts/${host}/sys/_config.nix         # _ needs to protect the import with import-tree
-                    ];
-                })
-            );
+            mkSys = (vars: nixpkgs-unstable.lib.nixosSystem {
+                pkgs = mkPkgs vars.arch;
+                specialArgs = {
+                    inherit lib vars self; # self is a path to the flake
+                    com = common.sys;
+                };
+                modules = [
+                    inputs.determinate.nixosModules.default
+                    inputs.nix-index-database.nixosModules.nix-index
+                    ./sys/_config.nix         # _ needs to protect the import with import-tree
+                ];
+            });
             mkHome = (vars: home-manager.lib.homeManagerConfiguration {
                 pkgs = mkPkgs vars.arch;
                 extraSpecialArgs = {
                     inherit lib vars self; # self is a path to the flake
-                    com = common;
+                    com = common.hm;
                 };
                 modules = [
                     # inputs.niri.homeModules.niri
-                    ./hosts/${vars.host}/hm/${vars.user}/_home.nix # _ needs to protect the import with import-tree
+                    ./hm/${vars.user}/_home.nix # _ needs to protect the import with import-tree
                 ];
             });
         in {
-            nixosConfigurations = lib.genAttrs hosts mkSys;
-            homeConfigurations = lib.mergeAttrsList (builtins.concatMap (host: # Merge list of lists of dictionaries into a simple list of dicts and then merge them into a single dict
-                let
-                    vars = (import ./hosts/${host}/vars.nix) // { inherit host; };
-                in
-                    builtins.map (user: {
-                        "${user}@${host}" = (mkHome (vars // { inherit user; }));
-                    }) vars.users # Returns a list of dicts
-            ) hosts);
+            nixosConfigurations.${vars.host} = mkSys vars;
+            homeConfigurations = lib.mergeAttrsList (builtins.map (user: {
+                "${user}@${vars.host}" = (mkHome (vars // { inherit user; }));
+            }) vars.users);
         };
 }

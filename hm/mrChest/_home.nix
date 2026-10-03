@@ -1,7 +1,7 @@
-{ config, lib, pkgs, vars, self, ... }: {
+{ config, lib, com, pkgs, vars, self, ... }: {
     imports = [
-        ( lib.importTopLevel (self + /hm) )
-        ( lib.importTopLevel (self + /hm/${vars.user}) )
+        com.topLevel
+        com.${vars.user}.topLevel
         ( lib.importTopLevel ../. ) # host/hm
         ( lib.importTopLevel ./. )  # host/hm/user
     ];
