@@ -13,7 +13,7 @@
         };
         # Bind-mounts (X-mount.mkdir option to create the target folder)
         "${vars.configPath}/cur" = {
-            device = "${vars.configPath}/nixos-${vars.host}";
+            device = "${vars.configPath}/${vars.host}";
             fsType = "none";
             options = [ "bind" "X-mount.mkdir" ];
         };
@@ -22,7 +22,7 @@
             {}
         else {
             "/home/${user}/cfg" = {
-                device = "${vars.configPath}/nixos-${vars.host}";
+                device = "${vars.configPath}/${vars.host}";
                 fsType = "none";
                 options = [ "bind" "X-mount.mkdir" ];
             };
