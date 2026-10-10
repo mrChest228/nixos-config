@@ -1,15 +1,11 @@
 { config, lib, com, pkgs, vars, self, ... }: {
     imports = [
-        com.TOP_LEVEL
-        com.root."nushell.nix" # shared shell setup moved to hm/root, users may import it (reading root's files is safe)
-        com.root."git.nix"
-        com.${vars.user}.TOP_LEVEL
-        ( lib.importTopLevel ../. ) # host/hm
-        ( lib.importTopLevel ./. )  # host/hm/user
+        com.root.TOP_LEVEL # root imports only hm/root: modules it evaluates must stay root-owned
+        ( lib.importTopLevel ./. )  # host/hm/root
     ];
     home = {
         username = vars.user;
-        homeDirectory = "/home/${vars.user}";
+        homeDirectory = "/root";
         stateVersion = "26.05"; # It manages programs configuring rules. Use the latest version for new settings
         enableNixpkgsReleaseCheck = false; # I use custom pkgs, they're mostly pkgs.unstable, like the unstable HM, but it doesn't know that
         sessionVariables = {
