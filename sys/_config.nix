@@ -2,6 +2,12 @@
     imports = [
         com.options.ALL
         com.TOP_LEVEL
+        com.scripts.config.conf."default.nix"
+        com.scripts.config."update.nix"
+        com.scripts.config."rebuild.nix"
+        com.scripts.config."reconf.nix"
+        com.scripts.config."gen.nix"
+        com.scripts.config."clean.nix"
         ( lib.importTopLevel ./hardware )
         ( lib.importTopLevel ./. )
     ];

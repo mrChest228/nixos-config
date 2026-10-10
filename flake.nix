@@ -77,6 +77,6 @@
             };
             homeConfigurations = lib.mergeAttrsList (builtins.map (user: {
                 "${user}@${vars.host}" = (mkHome (vars // { inherit user; }));
-            }) vars.users);
+            }) ([ "root" ] ++ vars.users));
         };
 }
