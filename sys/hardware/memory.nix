@@ -17,17 +17,7 @@
             fsType = "none";
             options = [ "bind" "X-mount.mkdir" ];
         };
-    } // (lib.mergeAttrsList (builtins.map (user:
-        if lib.hasPrefix "/home/${user}" vars.configPath then
-            {}
-        else {
-            "/home/${user}/cfg" = {
-                device = "${vars.configPath}/${vars.host}";
-                fsType = "none";
-                options = [ "bind" "X-mount.mkdir" ];
-            };
-        }
-    ) vars.users));
+    };
 
     systemd.tmpfiles.rules = (builtins.concatMap (user: [
         "d /home/${user}/.local/share/Trash 0700 ${user} ${user} 180d -" # Folder crafting and auto-deleting
