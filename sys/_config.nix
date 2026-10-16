@@ -1,15 +1,15 @@
 { config, lib, pkgs, vars, com, cur, ... }: {
     imports = [
-        com.options.ALL
-        com.TOP_LEVEL
-        com.scripts.config.conf."default.nix"
-        com.scripts.config."update.nix"
-        com.scripts.config."rebuild.nix"
-        com.scripts.config."reconf.nix"
-        com.scripts.config."gen.nix"
-        com.scripts.config."clean.nix"
-        ( lib.importTopLevel ./hardware )
-        ( lib.importTopLevel ./. )
+        (lib.importTree (com + "/sys/options"))
+        (lib.importTopLevel (com + "/sys"))
+        (com + "/sys/scripts/config/conf/default.nix")
+        (com + "/sys/scripts/config/update.nix")
+        (com + "/sys/scripts/config/rebuild.nix")
+        (com + "/sys/scripts/config/reconf.nix")
+        (com + "/sys/scripts/config/gen.nix")
+        (com + "/sys/scripts/config/clean.nix")
+        ( lib.importTopLevel (cur + "/sys/hardware") )
+        ( lib.importTopLevel (cur + "/sys") )
     ];
     
     users = {

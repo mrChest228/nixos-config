@@ -1,7 +1,7 @@
 { config, lib, pkgs, vars, com, cur, ... }:
 {
     imports = [
-        com."packages+fonts.nix" # Import the default HM packages (like fonts, etc.)
+        (com + "/hm/packages+fonts.nix") # Import the default HM packages (like fonts, etc.)
     ];
     home.packages = with pkgs; [
         # Desktop
