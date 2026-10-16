@@ -1,11 +1,11 @@
-{ config, lib, pkgs, vars, com, cur, ... }: {
-    imports = [
-        (lib.importTopLevel (com + "/hm"))
-        (com + "/hm/root/nushell.nix") # shared shell setup moved to hm/root, users may import it (reading root's files is safe)
-        (com + "/hm/root/git.nix")
-        (lib.importTopLevel (com + "/hm/${vars.user}"))
-        ( lib.importTopLevel (cur + "/hm") ) # host/hm
-        ( lib.importTopLevel (cur + "/hm/${vars.user}") )  # host/hm/user
+{ config, lib, pkgs, vars, com, cur, get, ... }: {
+    imports = get [
+        (com + /hm)
+        (com + /hm/root/nushell.nix) # shared shell setup moved to hm/root, users may import it (reading root's files is safe)
+        (com + /hm/root/git.nix)
+        (com + "/hm/${vars.user}")
+        ../.                         # host/hm
+        ./.                          # host/hm/user
     ];
     home = {
         username = vars.user;

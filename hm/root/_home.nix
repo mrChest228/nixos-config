@@ -1,7 +1,7 @@
-{ config, lib, pkgs, vars, com, cur, ... }: {
-    imports = [
-        (lib.importTopLevel (com + "/hm/root")) # root imports only hm/root: modules it evaluates must stay root-owned
-        ( lib.importTopLevel (cur + "/hm/root") )  # host/hm/root
+{ config, lib, pkgs, vars, com, cur, get, ... }: {
+    imports = get [
+        (com + /hm/root) # root imports only hm/root: modules it evaluates must stay root-owned
+        ./.              # host/hm/root
     ];
     home = {
         username = vars.user;
