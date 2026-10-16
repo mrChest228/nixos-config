@@ -14,7 +14,6 @@
         #     inputs.nixpkgs.follows = "nixpkgs-unstable";
         # };
         # Libs
-        import-tree.url = "github:vic/import-tree";
         nix-index-database = { # Needs for nix-index and comma fast search/index
             url = "github:nix-community/nix-index-database";
             inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -25,8 +24,6 @@
     outputs = inputs@{ self, nixpkgs-stable, nixpkgs-unstable, home-manager, common, ... }:
         let
             mkLib = (pkgs: pkgs.lib.extend (final: prev: (home-manager.lib // {
-                importTree = inputs.import-tree;
-                importTopLevel = dir: (inputs.import-tree.match "^/[^/]+\\.nix$" dir);
                 # imports = get [ ... ]: file -> itself, dir -> its top-level .nix files, dir/... -> every .nix below it.
                 # Names starting with _ are never picked up, so _config.nix / _home.nix stay entry points only.
                 get = builtins.concatMap (p:
