@@ -55,8 +55,8 @@
                 pkgs = mkPkgs vars.arch;
                 extraSpecialArgs = {
                     inherit lib vars;
-                    com = /. + (builtins.unsafeDiscardStringContext common.outPath); # path to the common flake
-                    cur = ./.;                 # path to this flake
+                    com = common.path; # path to the common flake
+                    cur = ./.;         # path to this flake
                 };
                 modules = [
                     # inputs.niri.homeModules.niri
@@ -68,8 +68,8 @@
                 pkgs = mkPkgs vars.arch;
                 specialArgs = {
                     inherit lib vars;
-                    com = /. + (builtins.unsafeDiscardStringContext common.outPath); # path to the common flake
-                    cur = ./.;                 # path to this flake
+                    com = common.path; # path to the common flake
+                    cur = ./.;         # path to this flake
                 };
                 modules = [
                     inputs.determinate.nixosModules.default
