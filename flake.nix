@@ -55,7 +55,7 @@
                 pkgs = mkPkgs vars.arch;
                 extraSpecialArgs = {
                     inherit lib vars;
-                    com = /. + common.outPath; # path to the common flake
+                    com = /. + (builtins.unsafeDiscardStringContext common.outPath); # path to the common flake
                     cur = ./.;                 # path to this flake
                 };
                 modules = [
@@ -68,7 +68,7 @@
                 pkgs = mkPkgs vars.arch;
                 specialArgs = {
                     inherit lib vars;
-                    com = /. + common.outPath; # path to the common flake
+                    com = /. + (builtins.unsafeDiscardStringContext common.outPath); # path to the common flake
                     cur = ./.;                 # path to this flake
                 };
                 modules = [
