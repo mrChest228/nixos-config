@@ -6,7 +6,7 @@
         (com + /sys/scripts/config/update.nix)
         (com + /sys/scripts/config/rebuild.nix)
         (com + /sys/scripts/config/reconf.nix)
-        (com + /sys/scripts/config/gen.nix)
+        (com + /sys/scripts/config/gen/default.nix)
         (com + /sys/scripts/config/clean.nix)
         ./hardware
         ./.
