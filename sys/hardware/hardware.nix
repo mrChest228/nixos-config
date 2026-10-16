@@ -1,4 +1,4 @@
-{ config, lib, com, pkgs, vars, self, ... }: {
+{ config, lib, pkgs, vars, com, cur, ... }: {
     imports = map (name: com.hardware.${name}) [
         "amd-integrated.nix"
         "nvidia-prime.nix"

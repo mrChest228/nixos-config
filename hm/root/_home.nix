@@ -1,4 +1,4 @@
-{ config, lib, com, pkgs, vars, self, ... }: {
+{ config, lib, pkgs, vars, com, cur, ... }: {
     imports = [
         com.root.TOP_LEVEL # root imports only hm/root: modules it evaluates must stay root-owned
         ( lib.importTopLevel ./. )  # host/hm/root

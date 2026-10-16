@@ -1,4 +1,4 @@
-{ config, lib, com, pkgs, vars, self, ... }: {
+{ config, lib, pkgs, vars, com, cur, ... }: {
     imports = [
         com.TOP_LEVEL
         com.root."nushell.nix" # shared shell setup moved to hm/root, users may import it (reading root's files is safe)

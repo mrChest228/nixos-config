@@ -54,8 +54,9 @@
             mkHome = (vars: home-manager.lib.homeManagerConfiguration {
                 pkgs = mkPkgs vars.arch;
                 extraSpecialArgs = {
-                    inherit lib vars self; # self is a path to the flake
-                    com = common.hm;
+                    inherit lib vars;
+                    com = /. + common.outPath; # path to the common flake
+                    cur = ./.;                 # path to this flake
                 };
                 modules = [
                     # inputs.niri.homeModules.niri
@@ -66,8 +67,9 @@
             nixosConfigurations.${vars.host} = nixpkgs-unstable.lib.nixosSystem {
                 pkgs = mkPkgs vars.arch;
                 specialArgs = {
-                    inherit lib vars self; # self is a path to the flake
-                    com = common.sys;
+                    inherit lib vars;
+                    com = /. + common.outPath; # path to the common flake
+                    cur = ./.;                 # path to this flake
                 };
                 modules = [
                     inputs.determinate.nixosModules.default

@@ -1,4 +1,4 @@
-{ config, lib, com, pkgs, vars, self, ... }:
+{ config, lib, pkgs, vars, com, cur, ... }:
 {
     imports = [
         com."packages+fonts.nix" # Import the default HM packages (like fonts, etc.)
