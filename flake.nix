@@ -25,7 +25,8 @@
         let
             mkLib = (pkgs: pkgs.lib.extend (final: prev: (home-manager.lib // {
                 # imports = get [ ... ]: file -> itself, dir -> its top-level .nix files, dir/... -> every .nix below it.
-                # Names starting with _ are never picked up, so _config.nix / _home.nix stay entry points only.
+                # Names starting with _ or . are never picked up (a dir named explicitly is still read, only its _/. children are skipped),
+                # so _config.nix / _home.nix stay entry points only.
                 get = builtins.concatMap (p:
                     if !builtins.isPath p then throw "get: expected a path, got ${builtins.typeOf p}"
                     else if baseNameOf p == "..." then nixFiles true (dirOf p)
@@ -35,7 +36,7 @@
             })));
             nixFiles = recurse: dir: let entries = builtins.readDir dir; in builtins.concatMap (name:
                 let path = dir + "/${name}"; in # path + string keeps the path type
-                if lib.hasPrefix "_" name then []
+                if lib.hasPrefix "_" name || lib.hasPrefix "." name then []
                 else if entries.${name} == "directory" then (if recurse then nixFiles true path else [])
                 else if lib.hasSuffix ".nix" name then [ path ]
                 else []
