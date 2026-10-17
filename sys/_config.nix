@@ -1,9 +1,15 @@
-{ config, lib, com, pkgs, vars, self, ... }: {
-    imports = [
-        com.options.ALL
-        com.TOP_LEVEL
-        ( lib.importTopLevel ./hardware )
-        ( lib.importTopLevel ./. )
+{ config, lib, pkgs, vars, com, cur, get, ... }: {
+    imports = get [
+        (com + /sys/options/...)
+        (com + /sys)
+        (com + /sys/scripts/config/cfg/default.nix)
+        (com + /sys/scripts/config/update.nix)
+        (com + /sys/scripts/config/rebuild.nix)
+        (com + /sys/scripts/config/reconf.nix)
+        (com + /sys/scripts/config/gen/default.nix)
+        (com + /sys/scripts/config/clean.nix)
+        ./hardware
+        ./.
     ];
     
     users = {
