@@ -2,7 +2,7 @@
     imports = get [
         (com + /sys/options/...)
         (com + /sys)
-        (com + /sys/scripts/config/conf/default.nix)
+        (com + /sys/scripts/config/cfg/default.nix)
         (com + /sys/scripts/config/update.nix)
         (com + /sys/scripts/config/rebuild.nix)
         (com + /sys/scripts/config/reconf.nix)
