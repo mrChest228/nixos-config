@@ -2,12 +2,13 @@
     imports = get [
         (com + /sys/options/...)
         (com + /sys)
-        (com + /sys/scripts/config/cfg/default.nix)
-        (com + /sys/scripts/config/update.nix)
-        (com + /sys/scripts/config/rebuild.nix)
-        (com + /sys/scripts/config/reconf.nix)
-        (com + /sys/scripts/config/gen/default.nix)
-        (com + /sys/scripts/config/clean.nix)
+        (com + /sys/config/cfg.nix)
+        (com + /sys/config/gen.nix)
+        (com + /sys/config/update.nix)
+        (com + /sys/config/rebuild.nix)
+        (com + /sys/config/reconf.nix)
+        (com + /sys/config/clean.nix)
+        (com + /sys/config/git.nix)
         ./hardware
         ./.
     ];
@@ -32,4 +33,3 @@
     
     i18n.defaultLocale = "en_US.UTF-8"; # Programs language
 }
-

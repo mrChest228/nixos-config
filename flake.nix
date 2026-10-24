@@ -41,6 +41,21 @@
                 else if lib.hasSuffix ".nix" name then [ path ]
                 else []
             ) (builtins.attrNames entries);
+            # every <root>/pkgs/<name>/package.nix becomes pkgs.<name> (names starting with _ or . are skipped, like in get);
+            # a name that already exists in pkgs (nixpkgs or common) is an error instead of a silent override
+            pkgsFrom = (root: final: prev:
+                let dir = root + /pkgs; in
+                if !builtins.pathExists dir then {} else
+                lib.mapAttrs (name: _:
+                    if prev ? ${name} then throw "${toString dir}/${name} shadows pkgs.${name}"
+                    else import (dir + "/${name}/package.nix") {
+                        inherit lib vars;
+                        pkgs = final;
+                        com = common.path;
+                        cur = ./.;
+                    }
+                ) (lib.filterAttrs (name: type: type == "directory" && !lib.hasPrefix "_" name && !lib.hasPrefix "." name) (builtins.readDir dir))
+            );
             lib = mkLib nixpkgs-unstable;
 
             vars = import ./vars.nix;
@@ -59,9 +74,13 @@
                 ]
             );
             mkPkgs = (arch:
-                (mkPkgsOverlays nixpkgs-unstable arch).appendOverlays [(final: prev: {
-                    stable = (mkPkgsOverlays nixpkgs-stable arch);
-                })]
+                (mkPkgsOverlays nixpkgs-unstable arch).appendOverlays [
+                    (final: prev: {
+                        stable = (mkPkgsOverlays nixpkgs-stable arch);
+                    })
+                    (pkgsFrom common.path)
+                    (pkgsFrom ./.)
+                ]
             );
 
             mkHome = (vars: home-manager.lib.homeManagerConfiguration {
