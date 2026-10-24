@@ -41,27 +41,56 @@
                 else if lib.hasSuffix ".nix" name then [ path ]
                 else []
             ) (builtins.attrNames entries);
-            # every <root>/pkgs/<name>/package.nix becomes pkgs.<name> (names starting with _ or . are skipped, like in get);
-            # a name that already exists in pkgs (nixpkgs or common) is an error instead of a silent override
+            # A <root>/pkgs/<name>.nix or package.nix directory is a package; directories without package.nix are recursive groups.
+            # Names starting with _ or . are skipped at every level; packages replace prior values and groups merge into attrsets.
+            # Host packages are applied after common, so a host package wins over a common package of the same name.
             pkgsFrom = (root: final: prev:
-                let dir = root + /pkgs; in
-                if !builtins.pathExists dir then {} else
-                lib.mapAttrs (name: _:
-                    if prev ? ${name} then throw "${toString dir}/${name} shadows pkgs.${name}"
-                    else import (dir + "/${name}/package.nix") {
+                let
+                    dir = root + /pkgs;
+                    packageArgs = {
                         inherit lib vars;
                         pkgs = final;
                         com = common.path;
                         cur = ./.;
-                    }
-                ) (lib.filterAttrs (name: type: type == "directory" && !lib.hasPrefix "_" name && !lib.hasPrefix "." name) (builtins.readDir dir))
+                    };
+                    visible = name: !lib.hasPrefix "_" name && !lib.hasPrefix "." name;
+                    scan = directory: previous:
+                        if !builtins.pathExists directory then {} else
+                        let
+                            entries = lib.filterAttrs (name: _: visible name) (builtins.readDir directory);
+                            packageFiles = lib.filterAttrs (name: type:
+                                (type == "regular" || type == "symlink") && lib.hasSuffix ".nix" name
+                            ) entries;
+                            packageDirs = lib.filterAttrs (_: type: type == "directory") entries;
+                            filePackages = builtins.listToAttrs (builtins.map (file: {
+                                name = lib.removeSuffix ".nix" file;
+                                value = import (directory + "/${file}") packageArgs;
+                            }) (builtins.attrNames packageFiles));
+                            dirPackages = builtins.listToAttrs (builtins.map (name:
+                                let
+                                    path = directory + "/${name}";
+                                    packagePath = path + /package.nix;
+                                    old = if builtins.hasAttr name previous then builtins.getAttr name previous else {};
+                                    additions = scan path (if builtins.isAttrs old then old else {});
+                                in {
+                                    inherit name;
+                                    value = if builtins.pathExists packagePath then
+                                        import packagePath packageArgs
+                                    else if builtins.isAttrs old then old // additions
+                                    else additions;
+                                }
+                            ) (builtins.attrNames packageDirs));
+                            conflicts = builtins.filter (name: builtins.hasAttr name dirPackages) (builtins.attrNames filePackages);
+                        in
+                        if conflicts != [] then throw "${toString directory}: package/group name collision: ${lib.concatStringsSep ", " conflicts}"
+                        else filePackages // dirPackages;
+                in if builtins.pathExists dir then scan dir prev else {}
             );
             lib = mkLib nixpkgs-unstable;
 
             vars = import ./vars.nix;
 
             pkgsConfig = (arch: {
-                system = arch;
                 hostPlatform = arch;
                 config = {
                     allowUnfree = true;
