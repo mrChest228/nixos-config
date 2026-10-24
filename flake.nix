@@ -44,9 +44,8 @@
             # A <root>/pkgs/<name>.nix or package.nix directory is a package; directories without package.nix are recursive groups.
             # Names starting with _ or . are skipped at every level; packages replace prior values and groups merge into attrsets.
             # Host packages are applied after common, so a host package wins over a common package of the same name.
-            pkgsFrom = (root: final: prev:
+            myPkgs = (dir: final: prev:
                 let
-                    dir = root + /pkgs;
                     packageArgs = {
                         inherit lib vars;
                         pkgs = final;
@@ -107,8 +106,8 @@
                     (final: prev: {
                         stable = (mkPkgsOverlays nixpkgs-stable arch);
                     })
-                    (pkgsFrom common.path)
-                    (pkgsFrom ./.)
+                    (myPkgs (common.path + /pkgs))
+                    (myPkgs ./pkgs)
                 ]
             );
 
