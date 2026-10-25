@@ -25,7 +25,7 @@
         let
             vars = import ./vars.nix;
             # my lib modules and packages, shared by every host (common/lib/*.nix, common/pkgs, ./pkgs)
-            custom = import (common.path + /custom.nix) { inherit vars; com = common.path; cur = ./.; };
+            custom = import (common.path + /custom.nix) { inherit (nixpkgs-unstable) lib; inherit vars; com = common.path; cur = ./.; };
             mkLib = (pkgs: pkgs.lib.extend (final: prev: home-manager.lib // custom.lib final prev));
             lib = mkLib nixpkgs-unstable;
 
