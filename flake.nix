@@ -24,9 +24,9 @@
     outputs = inputs@{ self, nixpkgs-stable, nixpkgs-unstable, home-manager, common, ... }:
         let
             vars = import ./vars.nix;
-            # lib and pkgs additions shared by every host (common/lib/*.nix, common/pkgs, ./pkgs)
-            common-overlays = import (common.path + /overlays.nix) { inherit vars; com = common.path; cur = ./.; };
-            mkLib = (pkgs: pkgs.lib.extend (final: prev: home-manager.lib // common-overlays.lib final prev));
+            # my lib modules and packages, shared by every host (common/lib/*.nix, common/pkgs, ./pkgs)
+            custom = import (common.path + /custom.nix) { inherit vars; com = common.path; cur = ./.; };
+            mkLib = (pkgs: pkgs.lib.extend (final: prev: home-manager.lib // custom.lib final prev));
             lib = mkLib nixpkgs-unstable;
 
             pkgsConfig = (arch: {
@@ -35,9 +35,15 @@
                     allowUnfree = true;
                 };
             });
+            # every overlay lives here, so pkgs.stable gets them too (lazy: unused packages cost nothing)
             mkPkgsOverlays = (pkgs: arch:
                 (import pkgs (pkgsConfig arch)).appendOverlays [
                     (final: prev: { lib = mkLib pkgs; }) # Normal lib everywhere
+                    custom.pkgs
+                    (final: prev: {
+                        # the same nix the determinate module installs; otherwise comma warns about eval-cores/lazy-trees
+                        comma = prev.comma.override { nix = inputs.determinate.inputs.nix.packages.${arch}.default; };
+                    })
                 ]
             );
             mkPkgs = (arch:
@@ -45,7 +51,6 @@
                     (final: prev: {
                         stable = (mkPkgsOverlays nixpkgs-stable arch);
                     })
-                    common-overlays.pkgs
                 ]
             );
 
