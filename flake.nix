@@ -23,12 +23,12 @@
     };
     outputs = inputs@{ self, nixpkgs-stable, nixpkgs-unstable, home-manager, common, ... }:
         let
-            # nixpkgs lib + home-manager lib + common's helpers (get, getFiles, getTree, myPkgs from common/lib/)
+            # nixpkgs lib + home-manager lib + common/lib (get, getFiles, getTree)
             mkLib = (pkgs: pkgs.lib.extend (final: prev: home-manager.lib // (common.lib { lib = final; })));
             lib = mkLib nixpkgs-unstable;
 
             vars = import ./vars.nix;
-            myPkgs = lib.myPkgs { inherit vars; com = common.path; cur = ./.; };
+            myPkgs = common.myPkgs { inherit lib vars; com = common.path; cur = ./.; };
 
             pkgsConfig = (arch: {
                 hostPlatform = arch;
