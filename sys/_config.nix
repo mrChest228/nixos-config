@@ -2,13 +2,7 @@
     imports = get [
         (com + /sys/options/...)
         (com + /sys)
-        (com + /sys/config/cfg.nix)
-        (com + /sys/config/gen.nix)
-        (com + /sys/config/update.nix)
-        (com + /sys/config/rebuild.nix)
-        (com + /sys/config/reconf.nix)
-        (com + /sys/config/clean.nix)
-        (com + /sys/config/git.nix)
+        (com + /sys/config)
         ./hardware
         ./.
     ];
