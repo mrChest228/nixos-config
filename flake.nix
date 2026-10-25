@@ -46,13 +46,7 @@
                     })
                 ]
             );
-            mkPkgs = (arch:
-                (mkPkgsOverlays nixpkgs-unstable arch).appendOverlays [
-                    (final: prev: {
-                        stable = (mkPkgsOverlays nixpkgs-stable arch);
-                    })
-                ]
-            );
+            mkPkgs = (arch: (mkPkgsOverlays nixpkgs-unstable arch).appendOverlays [ (final: prev: { stable = mkPkgsOverlays nixpkgs-stable arch; }) ]);
 
             mkHome = (vars: home-manager.lib.homeManagerConfiguration {
                 pkgs = mkPkgs vars.arch;
