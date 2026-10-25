@@ -24,13 +24,30 @@
     outputs = inputs@{ self, nixpkgs-stable, nixpkgs-unstable, home-manager, common, ... }:
         let
             vars = import ./vars.nix;
-            # lib (nixpkgs + home-manager + common/lib) and pkgs builder from common; host overlays go in `overlays`
-            mk = import (common.path + /mk.nix) {
-                inherit nixpkgs-stable nixpkgs-unstable home-manager vars;
-                com = common.path;
-                cur = ./.;
-            };
-            inherit (mk) lib mkPkgs;
+            # lib and pkgs additions shared by every host (common/lib/*.nix, common/pkgs, ./pkgs)
+            common-overlays = import (common.path + /overlays.nix) { inherit vars; com = common.path; cur = ./.; };
+            mkLib = (pkgs: pkgs.lib.extend (final: prev: home-manager.lib // common-overlays.lib final prev));
+            lib = mkLib nixpkgs-unstable;
+
+            pkgsConfig = (arch: {
+                hostPlatform = arch;
+                config = {
+                    allowUnfree = true;
+                };
+            });
+            mkPkgsOverlays = (pkgs: arch:
+                (import pkgs (pkgsConfig arch)).appendOverlays [
+                    (final: prev: { lib = mkLib pkgs; }) # Normal lib everywhere
+                ]
+            );
+            mkPkgs = (arch:
+                (mkPkgsOverlays nixpkgs-unstable arch).appendOverlays [
+                    (final: prev: {
+                        stable = (mkPkgsOverlays nixpkgs-stable arch);
+                    })
+                    common-overlays.pkgs
+                ]
+            );
 
             mkHome = (vars: home-manager.lib.homeManagerConfiguration {
                 pkgs = mkPkgs vars.arch;
