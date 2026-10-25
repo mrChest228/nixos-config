@@ -23,35 +23,14 @@
     };
     outputs = inputs@{ self, nixpkgs-stable, nixpkgs-unstable, home-manager, common, ... }:
         let
-            # nixpkgs lib + home-manager lib + common/lib (get, getFiles, getTree)
-            mkLib = (pkgs: pkgs.lib.extend (final: prev: home-manager.lib // (common.lib { lib = final; })));
-            lib = mkLib nixpkgs-unstable;
-
             vars = import ./vars.nix;
-            myPkgs = common.myPkgs { inherit lib vars; com = common.path; cur = ./.; };
-
-            pkgsConfig = (arch: {
-                hostPlatform = arch;
-                config = {
-                    allowUnfree = true;
-                };
-            });
-            mkPkgsOverlays = (pkgs: arch:
-                (import pkgs (pkgsConfig arch)).appendOverlays [
-                    (final: prev: { lib = mkLib pkgs; }) # Normal lib everywhere
-                    
-                ]
-            );
-            mkPkgs = (arch:
-                (mkPkgsOverlays nixpkgs-unstable arch).appendOverlays [
-                    (final: prev: {
-                        stable = (mkPkgsOverlays nixpkgs-stable arch);
-                    })
-                    # host packages come after common, so a host package wins over a common one of the same name
-                    (myPkgs (common.path + /pkgs))
-                    (myPkgs ./pkgs)
-                ]
-            );
+            # lib (nixpkgs + home-manager + common/lib) and pkgs builder from common; host overlays go in `overlays`
+            mk = import (common.path + /mk.nix) {
+                inherit nixpkgs-stable nixpkgs-unstable home-manager vars;
+                com = common.path;
+                cur = ./.;
+            };
+            inherit (mk) lib mkPkgs;
 
             mkHome = (vars: home-manager.lib.homeManagerConfiguration {
                 pkgs = mkPkgs vars.arch;
