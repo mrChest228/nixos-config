@@ -25,8 +25,8 @@
         let
             vars = import ./vars.nix;
             # my lib modules and packages, shared by every host (common/lib/*.nix, common/pkgs, ./pkgs)
-            handmade = import (common.path + /handmade.nix) { inherit (nixpkgs-unstable) lib; inherit vars; };
-            mkLib = (pkgs: pkgs.lib.extend (final: prev: home-manager.lib // handmade.mkLib (common.path + /lib) final));
+            handmade = import (common.path + /handmade.nix) { inherit (nixpkgs-unstable) lib; inherit vars; com = common.path; cur = ./.; };
+            mkLib = (pkgs: pkgs.lib.extend (final: prev: home-manager.lib // handmade.myLibs (common.path + /lib) final));
             lib = mkLib nixpkgs-unstable;
 
             pkgsConfig = (arch: {
@@ -39,8 +39,8 @@
             mkPkgsOverlays = (pkgs: arch:
                 (import pkgs (pkgsConfig arch)).appendOverlays [
                     (final: prev: { lib = mkLib pkgs; }) # Normal lib everywhere
-                    (handmade.mkPkgs (common.path + /pkgs))
-                    (handmade.mkPkgs ./pkgs) # a host package replaces a common one, a host group extends it
+                    (handmade.myPkgs (common.path + /pkgs))
+                    (handmade.myPkgs ./pkgs) # a host package replaces a common one, a host group extends it
                     (final: prev: {
                         # the same nix the determinate module installs; otherwise comma warns about eval-cores/lazy-trees
                         comma = prev.comma.override { nix = inputs.determinate.inputs.nix.packages.${arch}.default; };
