@@ -24,10 +24,9 @@
     outputs = inputs@{ self, nixpkgs-stable, nixpkgs-unstable, home-manager, common, ... }:
         let
             vars = import ./vars.nix;
-            pkgArgs = { inherit vars; com = common.path; cur = ./.; }; # what my packages get besides lib and pkgs
             # my lib modules and packages, shared by every host (common/lib/*.nix, common/pkgs, ./pkgs)
-            custom = import (common.path + /custom.nix) { inherit (nixpkgs-unstable) lib; };
-            mkLib = (pkgs: pkgs.lib.extend (final: prev: home-manager.lib // custom.mkLib (common.path + /lib) final));
+            handmade = import (common.path + /handmade.nix) { inherit (nixpkgs-unstable) lib; inherit vars; };
+            mkLib = (pkgs: pkgs.lib.extend (final: prev: home-manager.lib // handmade.mkLib (common.path + /lib) final));
             lib = mkLib nixpkgs-unstable;
 
             pkgsConfig = (arch: {
@@ -40,8 +39,8 @@
             mkPkgsOverlays = (pkgs: arch:
                 (import pkgs (pkgsConfig arch)).appendOverlays [
                     (final: prev: { lib = mkLib pkgs; }) # Normal lib everywhere
-                    (custom.mkPkgs pkgArgs (common.path + /pkgs))
-                    (custom.mkPkgs pkgArgs ./pkgs) # a host package replaces a common one, a host group extends it
+                    (handmade.mkPkgs (common.path + /pkgs))
+                    (handmade.mkPkgs ./pkgs) # a host package replaces a common one, a host group extends it
                     (final: prev: {
                         # the same nix the determinate module installs; otherwise comma warns about eval-cores/lazy-trees
                         comma = prev.comma.override { nix = inputs.determinate.inputs.nix.packages.${arch}.default; };
