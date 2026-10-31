@@ -14,7 +14,6 @@
         #     inputs.nixpkgs.follows = "nixpkgs-unstable";
         # };
         # Libs
-        import-tree.url = "github:vic/import-tree";
         nix-index-database = { # Needs for nix-index and comma fast search/index
             url = "github:nix-community/nix-index-database";
             inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -24,59 +23,62 @@
     };
     outputs = inputs@{ self, nixpkgs-stable, nixpkgs-unstable, home-manager, common, ... }:
         let
-            mkLib = (pkgs: pkgs.lib.extend (final: prev: (home-manager.lib // {
-                importTree = inputs.import-tree;
-                importTopLevel = dir: (inputs.import-tree.match "^/[^/]+\\.nix$" dir);
-            })));
+            vars = import ./vars.nix;
+            # my lib modules and packages, shared by every host (common/lib/*.nix, common/pkgs, ./pkgs)
+            handmade = import (common.path + /handmade.nix) { inherit (nixpkgs-unstable) lib; inherit vars; com = common.path; cur = ./.; };
+            mkLib = (pkgs: pkgs.lib.extend (final: prev: home-manager.lib // handmade.myLibs (common.path + /lib) final));
             lib = mkLib nixpkgs-unstable;
 
-            vars = import ./vars.nix;
-
             pkgsConfig = (arch: {
-                system = arch;
                 hostPlatform = arch;
                 config = {
                     allowUnfree = true;
                 };
             });
+            # every overlay lives here, so pkgs.stable gets them too (lazy: unused packages cost nothing)
             mkPkgsOverlays = (pkgs: arch:
                 (import pkgs (pkgsConfig arch)).appendOverlays [
                     (final: prev: { lib = mkLib pkgs; }) # Normal lib everywhere
-                    
+                    (handmade.myPkgs (common.path + /pkgs))
+                    (handmade.myPkgs ./pkgs) # a host package replaces a common one, a host group extends it
+                    (final: prev: {
+                        # the same nix the determinate module installs; otherwise comma warns about eval-cores/lazy-trees
+                        comma = prev.comma.override { nix = inputs.determinate.inputs.nix.packages.${arch}.default; };
+                    })
                 ]
             );
-            mkPkgs = (arch:
-                (mkPkgsOverlays nixpkgs-unstable arch).appendOverlays [(final: prev: {
-                    stable = (mkPkgsOverlays nixpkgs-stable arch);
-                })]
-            );
+            mkPkgs = (arch: (mkPkgsOverlays nixpkgs-unstable arch).appendOverlays [ (final: prev: { stable = mkPkgsOverlays nixpkgs-stable arch; }) ]);
 
             mkHome = (vars: home-manager.lib.homeManagerConfiguration {
                 pkgs = mkPkgs vars.arch;
                 extraSpecialArgs = {
-                    inherit lib vars self; # self is a path to the flake
-                    com = common.hm;
+                    inherit lib vars;
+                    inherit (lib) get;
+                    com = common.path; # path to the common flake
+                    cur = ./.;         # path to this flake
                 };
                 modules = [
                     # inputs.niri.homeModules.niri
-                    ./hm/${vars.user}/_home.nix # _ needs to protect the import with import-tree
+                    ./hm/${vars.user}/_home.nix # _ hides it from get
                 ];
             });
         in {
             nixosConfigurations.${vars.host} = nixpkgs-unstable.lib.nixosSystem {
                 pkgs = mkPkgs vars.arch;
                 specialArgs = {
-                    inherit lib vars self; # self is a path to the flake
-                    com = common.sys;
+                    inherit lib vars;
+                    inherit (lib) get;
+                    com = common.path; # path to the common flake
+                    cur = ./.;         # path to this flake
                 };
                 modules = [
                     inputs.determinate.nixosModules.default
                     inputs.nix-index-database.nixosModules.nix-index
-                    ./sys/_config.nix         # _ needs to protect the import with import-tree
+                    ./sys/_config.nix         # _ hides it from get
                 ];
             };
             homeConfigurations = lib.mergeAttrsList (builtins.map (user: {
                 "${user}@${vars.host}" = (mkHome (vars // { inherit user; }));
-            }) vars.users);
+            }) ([ "root" ] ++ vars.users));
         };
 }

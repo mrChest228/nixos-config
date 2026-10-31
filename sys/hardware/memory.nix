@@ -1,4 +1,4 @@
-{ config, lib, com, pkgs, vars, self, ... }: {
+{ config, lib, pkgs, vars, com, cur, ... }: {
     fileSystems = {
         # Partitions
         "/" = {
@@ -13,21 +13,11 @@
         };
         # Bind-mounts (X-mount.mkdir option to create the target folder)
         "${vars.configPath}/cur" = {
-            device = "${vars.configPath}/nixos-${vars.host}";
+            device = "${vars.configPath}/${vars.host}";
             fsType = "none";
             options = [ "bind" "X-mount.mkdir" ];
         };
-    } // (lib.mergeAttrsList (builtins.map (user:
-        if lib.hasPrefix "/home/${user}" vars.configPath then
-            {}
-        else {
-            "/home/${user}/cfg" = {
-                device = "${vars.configPath}/nixos-${vars.host}";
-                fsType = "none";
-                options = [ "bind" "X-mount.mkdir" ];
-            };
-        }
-    ) vars.users));
+    };
 
     systemd.tmpfiles.rules = (builtins.concatMap (user: [
         "d /home/${user}/.local/share/Trash 0700 ${user} ${user} 180d -" # Folder crafting and auto-deleting

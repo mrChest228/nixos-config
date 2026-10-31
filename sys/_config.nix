@@ -1,9 +1,11 @@
-{ config, lib, com, pkgs, vars, self, ... }: {
-    imports = [
-        com.options.ALL
-        com.TOP_LEVEL
-        ( lib.importTopLevel ./hardware )
-        ( lib.importTopLevel ./. )
+{ config, lib, pkgs, vars, com, cur, get, ... }: {
+    imports = get [
+        (com + /sys/options/...)
+        (com + /sys)
+        (com + /sys/config)
+        (com + /sys/config/_update.nix)
+        ./hardware
+        ./.
     ];
     
     users = {
@@ -26,4 +28,3 @@
     
     i18n.defaultLocale = "en_US.UTF-8"; # Programs language
 }
-
