@@ -3,6 +3,7 @@
         (com + /sys/options/...)
         (com + /sys)
         (com + /sys/config)
+        (com + /sys/config/_update.nix)
         ./hardware
         ./.
     ];
